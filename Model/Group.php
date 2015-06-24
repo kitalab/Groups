@@ -6,15 +6,18 @@
  * @property Language $Language
  * @property User $User
  *
-* @author   Jun Nishikawa <topaz2@m0n0m0n0.com>
-* @link     http://www.netcommons.org NetCommons Project
-* @license  http://www.netcommons.org/license.txt NetCommons License
+ * @author Kohei Teraguchi <kteraguchi@commonsnet.org>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
  */
 
 App::uses('GroupsAppModel', 'Groups.Model');
 
 /**
- * Summary for Group Model
+ * Group Model
+ *
+ * @author Kohei Teraguchi <kteraguchi@commonsnet.org>
+ * @package NetCommons\Groups\Model
  */
 class Group extends GroupsAppModel {
 
@@ -24,7 +27,6 @@ class Group extends GroupsAppModel {
  * @var string
  */
 	public $useDbConfig = 'master';
-
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 

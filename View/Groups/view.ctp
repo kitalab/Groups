@@ -80,35 +80,35 @@
 			<dt><?php echo __('Id'); ?></dt>
 		<dd>
 	<?php echo $group['Room']['id']; ?>
-&nbsp;</dd>
+	&nbsp;</dd>
 		<dt><?php echo __('Group Id'); ?></dt>
 		<dd>
 	<?php echo $group['Room']['group_id']; ?>
-&nbsp;</dd>
+	&nbsp;</dd>
 		<dt><?php echo __('Space Id'); ?></dt>
 		<dd>
 	<?php echo $group['Room']['space_id']; ?>
-&nbsp;</dd>
+	&nbsp;</dd>
 		<dt><?php echo __('Top Page Id'); ?></dt>
 		<dd>
 	<?php echo $group['Room']['top_page_id']; ?>
-&nbsp;</dd>
+	&nbsp;</dd>
 		<dt><?php echo __('Created User'); ?></dt>
 		<dd>
 	<?php echo $group['Room']['created_user']; ?>
-&nbsp;</dd>
+	&nbsp;</dd>
 		<dt><?php echo __('Created'); ?></dt>
 		<dd>
 	<?php echo $group['Room']['created']; ?>
-&nbsp;</dd>
+	&nbsp;</dd>
 		<dt><?php echo __('Modified User'); ?></dt>
 		<dd>
 	<?php echo $group['Room']['modified_user']; ?>
-&nbsp;</dd>
+	&nbsp;</dd>
 		<dt><?php echo __('Modified'); ?></dt>
 		<dd>
 	<?php echo $group['Room']['modified']; ?>
-&nbsp;</dd>
+	&nbsp;</dd>
 		</dl>
 	<?php endif; ?>
 		<div class="actions">
@@ -150,7 +150,7 @@
 		</tr>
 	<?php endforeach; ?>
 	</table>
-<?php endif; ?>
+	<?php endif; ?>
 
 	<div class="actions">
 		<ul>
@@ -191,7 +191,7 @@
 		</tr>
 	<?php endforeach; ?>
 	</table>
-<?php endif; ?>
+	<?php endif; ?>
 
 	<div class="actions">
 		<ul>

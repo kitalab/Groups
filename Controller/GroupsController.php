@@ -1,14 +1,22 @@
 <?php
-App::uses('GroupsAppController', 'Groups.Controller');
 /**
  * Groups Controller
  *
  * @property Group $Group
  * @property PaginatorComponent $Paginator
  *
-* @author   Jun Nishikawa <topaz2@m0n0m0n0.com>
-* @link     http://www.netcommons.org NetCommons Project
-* @license  http://www.netcommons.org/license.txt NetCommons License
+ * @author Kohei Teraguchi <kteraguchi@commonsnet.org>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ */
+
+App::uses('GroupsAppController', 'Groups.Controller');
+
+/**
+ * Groups Controller
+ *
+ * @author Kohei Teraguchi <kteraguchi@commonsnet.org>
+ * @package NetCommons\Groups\Controller
  */
 class GroupsController extends GroupsAppController {
 
@@ -32,9 +40,9 @@ class GroupsController extends GroupsAppController {
 /**
  * view method
  *
- * @throws NotFoundException
- * @param string $id
+ * @param string $id groups.id
  * @return void
+ * @throws NotFoundException
  */
 	public function view($id = null) {
 		if (!$this->Group->exists($id)) {
@@ -67,9 +75,9 @@ class GroupsController extends GroupsAppController {
 /**
  * edit method
  *
- * @throws NotFoundException
- * @param string $id
+ * @param string $id groups.id
  * @return void
+ * @throws NotFoundException
  */
 	public function edit($id = null) {
 		if (!$this->Group->exists($id)) {
@@ -94,9 +102,9 @@ class GroupsController extends GroupsAppController {
 /**
  * delete method
  *
- * @throws NotFoundException
- * @param string $id
+ * @param string $id groups.id
  * @return void
+ * @throws NotFoundException
  */
 	public function delete($id = null) {
 		$this->Group->id = $id;
@@ -110,4 +118,5 @@ class GroupsController extends GroupsAppController {
 			$this->Session->setFlash(__('The group could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
-	}}
+	}
+}
