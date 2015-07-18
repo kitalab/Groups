@@ -2,9 +2,9 @@
 /**
  * Group Test Case
  *
-* @author   Jun Nishikawa <topaz2@m0n0m0n0.com>
-* @link     http://www.netcommons.org NetCommons Project
-* @license  http://www.netcommons.org/license.txt NetCommons License
+ * @author Kohei Teraguchi <kteraguchi@commonsnet.org>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
  */
 
 App::uses('Group', 'Groups.Model');
@@ -21,16 +21,15 @@ class GroupTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.groups.group',
-		'plugin.groups.room',
-		'plugin.groups.space',
-		'plugin.groups.box',
-		'plugin.groups.top_page',
-		'plugin.groups.block',
-		'plugin.groups.page',
-		'plugin.groups.language',
+		'plugin.rooms.room',
+		'plugin.public_space.space',
+		'plugin.boxes.box',
+		'plugin.blocks.block',
+		'plugin.pages.page',
+		'plugin.m17n.language',
 		'plugin.groups.groups_language',
-		'plugin.groups.user',
-		'plugin.groups.groups_user'
+		'plugin.users.user',
+		'plugin.users.groups_user'
 	);
 
 /**
@@ -52,6 +51,14 @@ class GroupTest extends CakeTestCase {
 		unset($this->Group);
 
 		parent::tearDown();
+	}
+
+/**
+ * testIndex method
+ *
+ * @return void
+ */
+	public function testIndex() {
 	}
 
 }
