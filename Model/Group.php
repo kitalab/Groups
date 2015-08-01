@@ -52,7 +52,7 @@ class Group extends GroupsAppModel {
  */
 	public $hasAndBelongsToMany = array(
 		'Language' => array(
-			'className' => 'Language',
+			'className' => 'M17n.Language',
 			'joinTable' => 'groups_languages',
 			'foreignKey' => 'group_id',
 			'associationForeignKey' => 'language_id',
