@@ -21,13 +21,6 @@ App::uses('GroupsAppModel', 'Groups.Model');
  */
 class Group extends GroupsAppModel {
 
-/**
- * Use database config
- *
- * @var string
- */
-	public $useDbConfig = 'master';
-
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
