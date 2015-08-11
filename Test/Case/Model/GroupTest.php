@@ -20,16 +20,16 @@ class GroupTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'plugin.boxes.box',
-		'plugin.blocks.block',
+		//'plugin.boxes.box',
+		//'plugin.blocks.block',
 		'plugin.groups.group',
 		//'plugin.groups.groups_language',
 		//'plugin.groups.groups_user',
-		'plugin.m17n.language',
-		'plugin.pages.page',
-		'plugin.public_space.space',
-		'plugin.rooms.room',
-		'plugin.users.user',
+		//'plugin.m17n.language',
+		//'plugin.pages.page',
+		//'plugin.public_space.space',
+		//'plugin.rooms.room',
+		//'plugin.users.user',
 	);
 
 /**
