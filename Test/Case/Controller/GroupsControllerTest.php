@@ -20,15 +20,7 @@ class GroupsControllerTest extends ControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		//'plugin.boxes.box',
-		//'plugin.blocks.block',
 		'plugin.groups.group',
-		//'plugin.groups.groups_language',
-		//'plugin.groups.groups_user',
-		//'plugin.m17n.language',
-		//'plugin.pages.page',
-		//'plugin.rooms.room',
-		//'plugin.users.user',
 	);
 
 /**
