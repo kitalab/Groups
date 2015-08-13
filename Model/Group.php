@@ -21,13 +21,6 @@ App::uses('GroupsAppModel', 'Groups.Model');
  */
 class Group extends GroupsAppModel {
 
-/**
- * Use database config
- *
- * @var string
- */
-	public $useDbConfig = 'master';
-
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
@@ -52,7 +45,7 @@ class Group extends GroupsAppModel {
  */
 	public $hasAndBelongsToMany = array(
 		'Language' => array(
-			'className' => 'Language',
+			'className' => 'M17n.Language',
 			'joinTable' => 'groups_languages',
 			'foreignKey' => 'group_id',
 			'associationForeignKey' => 'language_id',
