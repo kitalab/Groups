@@ -1,6 +1,6 @@
 <?php
 /**
- * Group Model
+ * GroupsUser Model
  *
  * @property Group $Group
  * @property User $User
@@ -15,12 +15,12 @@
 App::uses('GroupsAppModel', 'Groups.Model');
 
 /**
- * Group Model
+ * GroupsUser Model
  *
  * @author Kazutaka Yamada <yamada.kazutaka@withone.co.jp>
  * @package NetCommons\Groups\Model
  */
-class Group extends GroupsAppModel {
+class GroupsUser extends GroupsAppModel {
 
 /**
  * Validation rules
@@ -30,23 +30,24 @@ class Group extends GroupsAppModel {
 	public $validate = array();
 
 /**
- * hasAndBelongsToMany associations
+ * belongsTo associations
  *
  * @var array
  */
-	public $hasAndBelongsToMany = array(
-		'User' => array(
-			'className' => 'User',
-			'joinTable' => 'groups_users',
+	public $belongsTo = array(
+		'Group' => array(
+			'className' => 'Group',
 			'foreignKey' => 'group_id',
-			'associationForeignKey' => 'user_id',
-			'unique' => 'keepExisting',
 			'conditions' => '',
 			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
+			'order' => ''
+		),
+		'User' => array(
+			'className' => 'User',
+			'foreignKey' => 'user_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 }
