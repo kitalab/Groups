@@ -36,14 +36,14 @@ class GroupsUser extends GroupsAppModel {
  */
 	public $belongsTo = array(
 		'Group' => array(
-			'className' => 'Group',
+			'className' => 'Groups.Group',
 			'foreignKey' => 'group_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		),
 		'User' => array(
-			'className' => 'User',
+			'className' => 'Users.User',
 			'foreignKey' => 'user_id',
 			'conditions' => '',
 			'fields' => '',
