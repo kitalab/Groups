@@ -36,7 +36,7 @@ class Group extends GroupsAppModel {
  */
 	public $hasAndBelongsToMany = array(
 		'User' => array(
-			'className' => 'User',
+			'className' => 'Users.User',
 			'joinTable' => 'groups_users',
 			'foreignKey' => 'group_id',
 			'associationForeignKey' => 'user_id',
