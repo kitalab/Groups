@@ -3,11 +3,12 @@
  * Groups Controller
  *
  * @property Group $Group
- * @property PaginatorComponent $Paginator
  *
- * @author Kohei Teraguchi <kteraguchi@commonsnet.org>
+ * @author Noriko Arai <arai@nii.ac.jp>
+ * @author Masaki Goto <go8ogle@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2015, NetCommons Project
  */
 
 App::uses('GroupsAppController', 'Groups.Controller');
@@ -21,11 +22,32 @@ App::uses('GroupsAppController', 'Groups.Controller');
 class GroupsController extends GroupsAppController {
 
 /**
- * Components
+ * use model
  *
  * @var array
  */
-	public $components = array('Paginator');
+	public $uses = array(
+		'Groups.Group',
+		'Groups.GroupsUser',
+		'Users.User',
+	);
+
+/**
+ * use component
+ *
+ * @var array
+ */
+	public $components = array(
+//		'ControlPanel.ControlPanelLayout',
+//		'Files.FileUpload',
+		'M17n.SwitchLanguage',
+		'UserAttributes.UserAttributeLayout',
+//		'Users.UserSearch',
+	);
+
+	public $helpers = array(
+		'Users.UserSearch'
+	);
 
 /**
  * index method
@@ -33,8 +55,15 @@ class GroupsController extends GroupsAppController {
  * @return void
  */
 	public function index() {
-		$this->Group->recursive = 0;
-		$this->set('groups', $this->Paginator->paginate());
+
+		// グループ一覧取得
+		$groups = $this->Group->find('all',array(
+			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
+			'conditions' => array('Group.created_user' => Current::read('User.id')),
+			'order' => array('Group.created ASC'),
+			'recursive' => -1,
+		));
+		$this->set('groups', $groups);
 	}
 
 /**
@@ -58,18 +87,19 @@ class GroupsController extends GroupsAppController {
  * @return void
  */
 	public function add() {
-		if ($this->request->is('post')) {
-			$this->Group->create();
-			if ($this->Group->save($this->request->data)) {
-				$this->Session->setFlash(__('The group has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The group could not be saved. Please, try again.'));
+
+		$this->view = 'edit';
+
+		if ($this->request->isPost()) {
+			// 登録処理
+			$group = $this->Group->saveGroup($this->request->data);
+			if ($group) {
+				//正常の場合
+				$this->Session->setFlash('登録OK');
+				$this->redirect('/groups/groups/index/');
+				return;
 			}
 		}
-		$languages = $this->Group->Language->find('list');
-		$users = $this->Group->User->find('list');
-		$this->set(compact('languages', 'users'));
 	}
 
 /**
@@ -84,19 +114,28 @@ class GroupsController extends GroupsAppController {
 			throw new NotFoundException(__('Invalid group'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
-			if ($this->Group->save($this->request->data)) {
-				$this->Session->setFlash(__('The group has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The group could not be saved. Please, try again.'));
+
+			// 更新処理
+			$data = $this->request->data;
+			$data['Group']['id'] = $id;
+			$group = $this->Group->saveGroup($data);
+			if ($group) {
+				//正常の場合
+				$this->Session->setFlash('更新OK');
+				$this->redirect('/groups/groups/index/');
+				return;
 			}
 		} else {
 			$options = array('conditions' => array('Group.' . $this->Group->primaryKey => $id));
 			$this->request->data = $this->Group->find('first', $options);
+			$users = array();
+			if (isset($this->request->data['User'])) {
+				foreach ($this->request->data['User'] as $user) {
+					$users[] = $user;
+				}
+				$this->set('users', $users);
+			}
 		}
-		$languages = $this->Group->Language->find('list');
-		$users = $this->Group->User->find('list');
-		$this->set(compact('languages', 'users'));
 	}
 
 /**
@@ -107,6 +146,7 @@ class GroupsController extends GroupsAppController {
  * @throws NotFoundException
  */
 	public function delete($id = null) {
+
 		$this->Group->id = $id;
 		if (!$this->Group->exists()) {
 			throw new NotFoundException(__('Invalid group'));

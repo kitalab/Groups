@@ -17,10 +17,19 @@ App::uses('GroupsAppModel', 'Groups.Model');
 /**
  * GroupsUser Model
  *
- * @author Kazutaka Yamada <yamada.kazutaka@withone.co.jp>
- * @package NetCommons\Groups\Model
+ * @author Noriko Arai <arai@nii.ac.jp>
+ * @author Masaki Goto <go8ogle@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2015, NetCommons Project
  */
 class GroupsUser extends GroupsAppModel {
+/**
+* use tables
+*
+* @var string
+*/
+	public $useTable = 'groups_users';
 
 /**
  * Validation rules
@@ -50,4 +59,26 @@ class GroupsUser extends GroupsAppModel {
 			'order' => ''
 		)
 	);
+
+	public function saveGroupUser($data) {
+		$this->begin();
+
+		$this->set($data);
+		if (!$this->validates()) {
+			$this->rollback();
+			return false;
+		}
+
+		try {
+			if (!$this->save(null, false)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		} catch (Exception $ex) {
+			$this->rollback($ex);
+		}
+
+		$this->commit();
+
+		return true;
+	}
 }
