@@ -128,13 +128,9 @@ class GroupsController extends GroupsAppController {
 		} else {
 			$options = array('conditions' => array('Group.' . $this->Group->primaryKey => $id));
 			$this->request->data = $this->Group->find('first', $options);
-			$users = array();
-			if (isset($this->request->data['User'])) {
-				foreach ($this->request->data['User'] as $user) {
-					$users[] = $user;
-				}
-				$this->set('users', $users);
-			}
+			// グループユーザ詳細情報を取得
+			$groupUsers = $this->GroupsUser->getGroupUsers($id);
+			$this->request->data['GroupsUsersDetail'] = $groupUsers;
 		}
 	}
 

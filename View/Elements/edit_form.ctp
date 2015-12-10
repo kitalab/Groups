@@ -15,9 +15,9 @@
  */
 
 $usersJson = array();
-if (isset($users) && is_array($users)) {
-	foreach ($users as $user) {
-		$usersJson[] = $this->UserSearch->convertUserArrayByUserSelection(array('User' => $user), 'User');
+if (isset($this->data['GroupsUsersDetail']) && is_array($this->data['GroupsUsersDetail'])) {
+	foreach ($this->data['GroupsUsersDetail'] as $groupUser) {
+		$usersJson[] = $this->UserSearch->convertUserArrayByUserSelection($groupUser, 'User');
 	}
 }
 ?>

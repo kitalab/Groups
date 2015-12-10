@@ -51,13 +51,6 @@ class GroupsUser extends GroupsAppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'User' => array(
-			'className' => 'Users.User',
-			'foreignKey' => 'user_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
 	);
 
 	public function saveGroupUser($data) {
@@ -81,4 +74,51 @@ class GroupsUser extends GroupsAppModel {
 
 		return true;
 	}
+
+	function getGroupUsers($id) {
+		if (empty($id)) {
+			return array();
+		}
+
+		$this->loadModels([
+				'User' => 'Users.User',
+				'UploadFile' => 'Files.UploadFile',
+		]);
+
+		$groupDetail = $this->find('all', array(
+				'recursive' => 0,
+				'fields' => array('GroupsUser.*', 'User.*', 'UploadFile.*'),
+				'conditions' => array(
+						$this->alias . '.group_id' => $id,
+						$this->User->alias . '.is_deleted' => false,
+				),
+				'joins' => array(
+						array(
+								'table' => $this->User->table,
+								'alias' => $this->User->alias,
+								'type' => 'INNER',
+								'conditions' => array(
+										$this->alias . '.user_id' . ' = ' . $this->User->alias . '.id',
+								),
+						),
+						array(
+								'table' => $this->UploadFile->table,
+								'alias' => $this->UploadFile->alias,
+								'type' => 'LEFT',
+								'conditions' => array(
+										$this->User->alias . '.id' . ' = ' . $this->UploadFile->alias . '.content_key',
+										$this->UploadFile->alias . '.field_name' => User::$avatarField,
+								),
+						),
+				),
+				'order' => array($this->alias . '.created' => 'ASC'),
+		));
+
+		return $groupDetail;
+	}
+
+
+
+
+
 }
