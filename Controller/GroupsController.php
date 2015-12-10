@@ -94,8 +94,8 @@ class GroupsController extends GroupsAppController {
 			// 登録処理
 			$group = $this->Group->saveGroup($this->request->data);
 			if ($group) {
-				//正常の場合
-				$this->Session->setFlash('登録OK');
+				// 正常の場合
+				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 				$this->redirect('/groups/groups/index/');
 				return;
 			}
@@ -120,8 +120,8 @@ class GroupsController extends GroupsAppController {
 			$data['Group']['id'] = $id;
 			$group = $this->Group->saveGroup($data);
 			if ($group) {
-				//正常の場合
-				$this->Session->setFlash('更新OK');
+				// 正常の場合
+				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 				$this->redirect('/groups/groups/index/');
 				return;
 			}
@@ -153,9 +153,8 @@ class GroupsController extends GroupsAppController {
 		}
 		$this->request->onlyAllow('post', 'delete');
 		if ($this->Group->delete()) {
-			$this->Session->setFlash(__('The group has been deleted.'));
-		} else {
-			$this->Session->setFlash(__('The group could not be deleted. Please, try again.'));
+			// 正常の場合
+			$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
