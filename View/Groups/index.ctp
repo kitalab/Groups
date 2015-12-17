@@ -2,11 +2,9 @@
 /**
  * Groups index template
  *
- * @author Noriko Arai <arai@nii.ac.jp>
  * @author Masaki Goto <go8ogle@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
- * @copyright Copyright 2015, NetCommons Project
  */
 
 echo $this->NetCommonsHtml->css(array(

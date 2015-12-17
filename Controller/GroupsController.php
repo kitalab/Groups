@@ -16,8 +16,9 @@ App::uses('GroupsAppController', 'Groups.Controller');
 /**
  * Groups Controller
  *
- * @author Kohei Teraguchi <kteraguchi@commonsnet.org>
- * @package NetCommons\Groups\Controller
+ * @author Masaki Goto <go8ogle@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
  */
 class GroupsController extends GroupsAppController {
 
@@ -46,6 +47,7 @@ class GroupsController extends GroupsAppController {
 	);
 
 	public $helpers = array(
+//		'NetCommons.Token',
 		'Users.UserSearch'
 	);
 
@@ -56,6 +58,7 @@ class GroupsController extends GroupsAppController {
  */
 	public function index() {
 
+		// TODO 取得方法変更（アバター表示）
 		// グループ一覧取得
 		$groups = $this->Group->find('all',array(
 			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
@@ -82,6 +85,42 @@ class GroupsController extends GroupsAppController {
 	}
 
 /**
+ * view method
+ *
+ * @return void
+ * @throws NotFoundException
+ */
+	public function select() {
+		$this->viewClass = 'View';
+
+		if ($this->request->isPost()) {
+			$data = array_map(function ($groupId) {
+				return $groupId;
+			}, $this->request->data['GroupSelect']['group_id']);
+			if (!empty($data)) {
+				$groupUsers = array();
+				foreach ($data as $groupId) {
+					$groupUserData = $this->GroupsUser->getGroupUsers($groupId);
+					$groupUsers = array_merge_recursive($groupUsers, $groupUserData);
+				}
+			}
+			$this->set('users', $groupUsers);
+			$this->view = 'Groups.Groups/json/select';
+		} else {
+			// TODO 取得方法変更（アバター表示）
+			// グループ一覧取得
+			$groups = $this->Group->find('all',array(
+				'fields' => array('Group.id', 'Group.name', 'Group.modified'),
+				'conditions' => array('Group.created_user' => Current::read('User.id')),
+				'order' => array('Group.created ASC'),
+				'recursive' => -1,
+			));
+			$this->set('groupList', $groups);
+			$this->layout = 'NetCommons.modal';
+		}
+	}
+
+	/**
  * add method
  *
  * @return void

@@ -17,8 +17,9 @@ App::uses('GroupsAppModel', 'Groups.Model');
 /**
  * Group Model
  *
- * @author Kazutaka Yamada <yamada.kazutaka@withone.co.jp>
- * @package NetCommons\Groups\Model
+ * @author Masaki Goto <go8ogle@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
  */
 class Group extends GroupsAppModel {
 
