@@ -1,4 +1,5 @@
 .nc-groups-select-user-frame {
+	text-align: left;
 	border: 1px solid #999;
 	overflow: auto;
 }
