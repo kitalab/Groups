@@ -43,12 +43,12 @@ NetCommonsApp.directive('groupsSelectedUsers', function () {
 });
 
 /**
- * Sample Javascript
+ * Groups Javascript
  *
  * @param {string} Controller name
  * @param {function($scope, SelectUser)} Controller
  */
-NetCommonsApp.controller('GroupsSelectUser', function ($scope, SelectUser) {
+NetCommonsApp.controller('GroupsSelect', function ($scope) {
 
     /**
      * 会員選択の結果を保持する配列
@@ -56,6 +56,15 @@ NetCommonsApp.controller('GroupsSelectUser', function ($scope, SelectUser) {
      * @return {array}
      */
     $scope.users = [];
+
+    /**
+     * 会員の選択状態を検知する
+     *
+     * @return {array}
+     */
+    $scope.$watch('users', function () {
+        return $scope.users;
+    }, true);
 
     /**
      * initialize
@@ -68,34 +77,9 @@ NetCommonsApp.controller('GroupsSelectUser', function ($scope, SelectUser) {
         });
     };
 
-    /**
-     * 会員の選択状態を検知する
-     *
-     * @return {array}
-     */
-    $scope.$watch('users', function () {
-        return $scope.users;
-    }, true);
-
-    /**
-     * 会員選択ダイアログを表示する
-     *
-     * @param {number} users.id
-     * @return {void}
-     */
-    $scope.showUserSelectionDialog = function (userId, roomId) {
-        SelectUser($scope, userId, roomId).result.then(
-            function (result) {
-                // 選択したユーザを追加
-                $scope.addUsers(result);
-            },
-            function () {
-            }
-        );
-    };
     $scope.addUsers = function (users) {
-        $.each(users, function(index, user) {
-           $scope.users.push(user); 
+        $.each(users, function (index, user) {
+            $scope.users.push(user);
         });
     };
     $scope.deleteUser = function (targetUserId) {
@@ -109,15 +93,27 @@ NetCommonsApp.controller('GroupsSelectUser', function ($scope, SelectUser) {
     };
 });
 
-NetCommonsApp.controller('GroupsSelectGroup', function ($scope, SelectGroup) {
-    //$scope.showGroupSelectionDialog = function(userId, roomId) {
-    $scope.showGroupSelectionDialog = function (userId) {
-        SelectGroup($scope, userId).result.then(
+
+/**
+ * Sample Javascript
+ *
+ * @param {string} Controller name
+ * @param {function($scope, SelectUser)} Controller
+ */
+NetCommonsApp.controller('GroupsSelectUser', function ($scope, $controller, SelectUser) {
+    $controller('GroupsSelect', {$scope: $scope});
+
+    /**
+     * 会員選択ダイアログを表示する
+     *
+     * @param {number} users.id
+     * @return {void}
+     */
+    $scope.showUserSelectionDialog = function (userId, roomId) {
+        SelectUser($scope, userId, roomId).result.then(
             function (result) {
-                //// 選択したユーザを追加
-                //$.each (result, function(index, user){
-                //	$scope.users.push(user);
-                //});
+                // 選択したユーザを追加
+                $scope.$parent.addUsers(result);
             },
             function () {
             }
@@ -125,7 +121,21 @@ NetCommonsApp.controller('GroupsSelectGroup', function ($scope, SelectGroup) {
     };
 });
 
-NetCommonsApp.controller('Group.select', function ($scope, $http, $q, $modalInstance, filterFilter, options) {
+NetCommonsApp.controller('GroupsSelectGroup', function ($scope, SelectGroup) {
+
+    //$scope.showGroupSelectionDialog = function(userId, roomId) {
+    $scope.showGroupSelectionDialog = function (userId) {
+        SelectGroup($scope, userId).result.then(
+            function (result) {
+            },
+            function () {
+            }
+        );
+    };
+});
+
+NetCommonsApp.controller('Group.select', function ($scope, $controller, $http, $q, $modalInstance, filterFilter, options) {
+    $controller('GroupsSelect', {$scope: $scope});
 
     /**
      * ユーザIDを保持する変数
@@ -220,15 +230,13 @@ NetCommonsApp.controller('Group.select', function ($scope, $http, $q, $modalInst
 
         saveGroupSelect()
             .success(function (data) {
-                var userSelectScope = angular.element('#groups-select-users').scope();
                 // 選択したユーザを追加
-                userSelectScope.addUsers(data['users']);
+                $scope.$parent.addUsers(data['users']);
                 $modalInstance.close($scope.selectors);
             })
             .error(function (data, status) {
                 $modalInstance.dismiss('error');
             });
-
     };
 
     /**

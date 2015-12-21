@@ -20,7 +20,7 @@ if (isset($this->data['GroupsUsersDetail']) && is_array($this->data['GroupsUsers
 }
 ?>
 
-<div id="groups-select-users" class="panel panel-default" ng-controller="GroupsSelectUser" ng-init="initialize(<?php echo h(json_encode(array('users' => $usersJson))); ?>)">
+<div id="groups-select-users" class="panel panel-default" ng-controller="GroupsSelect" ng-init="initialize(<?php echo h(json_encode(array('users' => $usersJson))); ?>)">
 	<?php echo $this->NetCommonsForm->create('Group', array('type' => 'file')); ?>
 	<div class="panel-body" ng-controller="GroupsSelectGroup">
 		<!-- グループ名 -->
@@ -29,17 +29,21 @@ if (isset($this->data['GroupsUsersDetail']) && is_array($this->data['GroupsUsers
 			'label' => __d('groups', 'Groups name'),
 		)); ?>
 
-		<div class="text-right">
-			<!-- グループ選択 -->
-<!--			<a href="" ng-click="showGroupSelectionDialog('--><?php //echo Current::read('User.id'); ?><!--', '--><?php //echo 1 ?><!--')">-->
-			<a href="" ng-click="showGroupSelectionDialog('<?php echo Current::read('User.id'); ?>')">
-				<span class="glyphicon glyphicon-search"></span>
-			</a>
+		<div class="text-right clearfix">
 			<!-- 会員検索 -->
-			<!--		<a href="" ng-click="showUserSelectionDialog('--><?php //echo Current::read('User.id'); ?><!--', '--><?php //echo Current::read('Room.id'); ?><!--')">-->
-			<a href="" ng-click="showUserSelectionDialog('<?php echo Current::read('User.id'); ?>', '<?php echo 1 ?>')">
-				<span class="glyphicon glyphicon-search"></span>
-			</a>
+			<div class="pull-right" ng-controller="GroupsSelectUser" >
+<!--				<a href="" ng-click="showUserSelectionDialog('--><?php //echo Current::read('User.id'); ?><!--', '--><?php //echo Current::read('Room.id'); ?><!--')">-->
+				<a href="" ng-click="showUserSelectionDialog('<?php echo Current::read('User.id'); ?>', '<?php echo 1 ?>')">
+					<span class="glyphicon glyphicon-search"></span>
+				</a>
+			</div>
+			<!-- グループ選択 -->
+			<div class="pull-right" ng-controller="GroupsSelectGroup">
+<!--				<a href="" ng-click="showGroupSelectionDialog('--><?php //echo Current::read('User.id'); ?><!--', '--><?php //echo 1 ?><!--')">-->
+				<a href="" ng-click="showGroupSelectionDialog('<?php echo Current::read('User.id'); ?>')">
+					<span class="glyphicon glyphicon-search"></span>
+				</a>
+			</div>
 		</div>
 	
 		<!-- 選択済みユーザ情報 -->
