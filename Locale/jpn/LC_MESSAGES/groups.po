@@ -24,7 +24,7 @@ msgid "Groups modified"
 msgstr "更新日時"
 
 msgid "Groups select user"
-msgstr "会員を選択してください。"
+msgstr "選択してください。"
 
 msgid "Group select"
 msgstr "グループ選択"
