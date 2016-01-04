@@ -82,6 +82,7 @@ class GroupsUser extends GroupsAppModel {
 				'User' => 'Users.User',
 				'UploadFile' => 'Files.UploadFile',
 		]);
+		$this->User->prepare();
 
 		$groupDetail = $this->find('all', array(
 				'recursive' => 0,
