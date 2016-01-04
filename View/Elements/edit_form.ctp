@@ -30,7 +30,7 @@ if (isset($this->data['GroupsUsersDetail']) && is_array($this->data['GroupsUsers
 		)); ?>
 
 		<!-- ユーザ選択 -->
-		<?php echo $this->element('Groups.select_users'); ?>
+		<?php echo $this->element('Groups.select_users', array('usersJson' => $usersJson)); ?>
 	</div>
 
 	<!-- ボタン -->
