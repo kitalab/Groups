@@ -4,7 +4,6 @@
  *
  * @property Group $Group
  *
- * @author Noriko Arai <arai@nii.ac.jp>
  * @author Masaki Goto <go8ogle@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
@@ -48,7 +47,8 @@ class GroupsController extends GroupsAppController {
 
 	public $helpers = array(
 //		'NetCommons.Token',
-		'Users.UserSearch'
+		'Users.UserSearch',
+		'Groups.GroupUserList',
 	);
 
 /**
@@ -57,15 +57,8 @@ class GroupsController extends GroupsAppController {
  * @return void
  */
 	public function index() {
-
-		// TODO 取得方法変更（アバター表示）
 		// グループ一覧取得
-		$groups = $this->Group->find('all',array(
-			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
-			'conditions' => array('Group.created_user' => Current::read('User.id')),
-			'order' => array('Group.created ASC'),
-			'recursive' => -1,
-		));
+		$groups = $this->Group->getGroupList();
 		$this->set('groups', $groups);
 	}
 
@@ -107,14 +100,8 @@ class GroupsController extends GroupsAppController {
 			$this->set('users', $groupUsers);
 			$this->view = 'Groups.Groups/json/select';
 		} else {
-			// TODO 取得方法変更（アバター表示）
 			// グループ一覧取得
-			$groups = $this->Group->find('all',array(
-				'fields' => array('Group.id', 'Group.name', 'Group.modified'),
-				'conditions' => array('Group.created_user' => Current::read('User.id')),
-				'order' => array('Group.created ASC'),
-				'recursive' => -1,
-			));
+			$groups = $this->Group->getGroupList();
 			$this->set('groupList', $groups);
 			$this->layout = 'NetCommons.modal';
 		}

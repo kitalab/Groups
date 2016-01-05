@@ -67,6 +67,30 @@ class Group extends GroupsAppModel {
 	);
 
 /**
+ * グループ一覧取得処理
+ *
+ * @return mixed On success Model::$data, false on failure
+ * @throws InternalErrorException
+ */
+	public function getGroupList() {
+
+		$groups = $this->find('all',array(
+			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
+			'conditions' => array('Group.created_user' => Current::read('User.id')),
+			'order' => array('Group.created ASC'),
+			'recursive' => -1,
+		));
+		if (empty($groups)) {
+			return array();
+		}
+		foreach ($groups as $index => $group) {
+			$groupsUser = $this->GroupsUser->getGroupUsers($group['Group']['id']);
+			$groups[$index]['GroupsUser'] = $groupsUser;
+		}
+
+		return $groups;
+	}
+/**
  * グループの登録処理
  *
  * @param array $data data

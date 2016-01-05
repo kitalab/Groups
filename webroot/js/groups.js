@@ -1,4 +1,25 @@
 /**
+ * Groups Javascript
+ *
+ * @param {string} Controller name
+ * @param {function($scope, SelectUser)} Controller
+ */
+NetCommonsApp.controller('GroupsIndex', function($scope) {
+
+  /**
+   * 検索結果を保持する配列
+   */
+  $scope.groupList = [];
+
+  $scope.initialize = function (groupList) {
+      if (angular.isArray(groupList) && groupList.length > 0) {
+          $scope.groupList = groupList;
+      }
+    };
+});
+
+
+/**
  * Groups JavaScript
  */
 NetCommonsApp.factory('SelectGroup',
@@ -184,7 +205,8 @@ NetCommonsApp.controller('Group.select',
        */
       $scope.select = function(index) {
         var result = filterFilter($scope.groupList,
-            $scope.groupList[index]);
+            //$scope.groupList[index]);
+            {id:$scope.groupList[index]['id']}, true);
 
         if (!angular.isArray($scope.selectors)) {
           $scope.selectors = [];
@@ -203,7 +225,8 @@ NetCommonsApp.controller('Group.select',
         if (!angular.isArray($scope.selectors)) {
           return false;
         }
-        var result = filterFilter($scope.selectors, obj);
+        //var result = filterFilter($scope.selectors, obj);
+        var result = filterFilter($scope.selectors, {id:obj['id']}, true);
         return !(result.length === 0);
       };
 

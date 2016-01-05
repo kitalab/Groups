@@ -9,9 +9,7 @@
 
 $groupListJson = array();
 if (!empty($groupList)) {
-	foreach ($groupList as $group) {
-		$groupListJson[] = $group['Group'];
-	}
+	$groupListJson = $this->GroupUserList->convertGroupUserListForDisplay($groupList);
 }
 
 $data = array(

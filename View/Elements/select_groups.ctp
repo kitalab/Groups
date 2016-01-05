@@ -9,7 +9,7 @@
 ?>
 
 <div class="row">
-	<div class="col-xs-12 group-selection-list" ng-repeat="group in <?php echo $groupType; ?> track by $index" ng-class="{'group-selection-list-offset': $odd}">
+	<div class="col-xs-12 nc-groups-selection-list" ng-repeat="group in <?php echo $groupType; ?> track by $index" ng-class="{'group-selection-list-offset': $odd}">
 		<?php if ($groupType === 'groupList') : ?>
 			<?php echo $this->Button->add('', array(
 				'type' => 'button',
@@ -20,8 +20,11 @@
 			)); ?>
 		<?php endif; ?>
 
-		<span class="">
+		<span class="nc-groups-select-group-name">
 			{{group.name}}
+		</span>
+		<span ng-repeat="groupsUser in group.groupsUser">
+			<img class="user-avatar-xs" ng-src="{{groupsUser.avatar}}" alt="{{groupsUser.handlename}}" title="{{groupsUser.handlename}}" />
 		</span>
 
 		<?php if ($groupType === 'selectors') : ?>
