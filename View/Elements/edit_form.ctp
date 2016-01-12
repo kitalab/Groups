@@ -38,7 +38,13 @@ if (isset($this->data['GroupsUsersDetail']) && is_array($this->data['GroupsUsers
 		<?php echo $this->Button->cancelAndSave(
 				__d('net_commons', 'Cancel'),
 				__d('net_commons', 'OK'),
-				$this->NetCommonsHtml->url(array('action' => 'index'))
+				$this->NetCommonsHtml->url(
+					array(
+						'plugin' => 'users',
+						'controller' => 'users',
+						'action' => 'view' . '/' . Current::read('User.id') . '#/user-groups',
+					)
+				)
 		); ?>
 	</div>
 	<?php echo $this->NetCommonsForm->end(); ?>

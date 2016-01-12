@@ -17,6 +17,9 @@ msgstr ""
 msgid "Groups"
 msgstr "グループ"
 
+msgid "Groups management"
+msgstr "グループ管理"
+
 msgid "Groups name"
 msgstr "グループ名"
 

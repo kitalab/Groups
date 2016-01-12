@@ -1,25 +1,4 @@
 /**
- * Groups Javascript
- *
- * @param {string} Controller name
- * @param {function($scope, SelectUser)} Controller
- */
-NetCommonsApp.controller('GroupsIndex', function($scope) {
-
-  /**
-   * 検索結果を保持する配列
-   */
-  $scope.groupList = [];
-
-  $scope.initialize = function (groupList) {
-      if (angular.isArray(groupList) && groupList.length > 0) {
-          $scope.groupList = groupList;
-      }
-    };
-});
-
-
-/**
  * Groups JavaScript
  */
 NetCommonsApp.factory('SelectGroup',
@@ -51,12 +30,13 @@ NetCommonsApp.directive('groupsSelectedUsers', function() {
   return {
     restrict: 'EA',
     template: '<div id="groups-selected-user-{{user.id}}"' +
-        ' class="col-xs-12 user-selection-list">' +
+        ' class="nc-groups-user-selection-list">' +
         '<img class="user-avatar-xs" ng-src="{{user.avatar}}" />' +
-        '<span>{{user.handlename}}</span>' +
-        '<a id="groups-user-del-link{{user.id}}" href="#" ' +
-        'onclick="return false;" ' +
-        'ng-click="deleteUser(user.id);">' + '×' + '</a>' +
+        '<span class="nc-groups-select-user-name">{{user.handlename}}</span>' +
+        '<button id="groups-user-del-link{{user.id}}" href="#" ' +
+        ' class="btn btn-default btn-xs pull-right" onclick="return false;" ' +
+        'ng-click="deleteUser(user.id);">' +
+        '<span class="glyphicon glyphicon-remove"></span>' + '</button>' +
         '<input type="hidden" name="data[GroupsUser][][user_id]" ' +
         'value="{{user.id}}" />' +
         '</div>',
@@ -105,6 +85,7 @@ NetCommonsApp.controller('GroupsSelect', function($scope) {
   $scope.addUsers = function(users) {
     $.each(users, function(index, user) {
       $scope.users.push(user);
+console.log($scope.users);
     });
   };
   $scope.deleteUser = function(targetUserId) {

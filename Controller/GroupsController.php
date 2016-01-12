@@ -114,6 +114,7 @@ class GroupsController extends GroupsAppController {
  */
 	public function add() {
 
+		$this->PageLayout = $this->Components->load('Pages.PageLayout');
 		$this->view = 'edit';
 
 		if ($this->request->isPost()) {
@@ -122,7 +123,7 @@ class GroupsController extends GroupsAppController {
 			if ($group) {
 				// 正常の場合
 				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
-				$this->redirect('/groups/groups/index/');
+				$this->redirect('/users/users/view/' . Current::read('User.id') . '#/user-groups');
 				return;
 			}
 		}
@@ -139,6 +140,8 @@ class GroupsController extends GroupsAppController {
 		if (!$this->Group->exists($id)) {
 			throw new NotFoundException(__('Invalid group'));
 		}
+		$this->PageLayout = $this->Components->load('Pages.PageLayout');
+
 		if ($this->request->is(array('post', 'put'))) {
 
 			// 更新処理
@@ -148,7 +151,7 @@ class GroupsController extends GroupsAppController {
 			if ($group) {
 				// 正常の場合
 				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
-				$this->redirect('/groups/groups/index/');
+				$this->redirect('/users/users/view/' . Current::read('User.id') . '#/user-groups');
 				return;
 			}
 		} else {
@@ -178,6 +181,6 @@ class GroupsController extends GroupsAppController {
 			// 正常の場合
 			$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 		}
-		return $this->redirect(array('action' => 'index'));
+		return $this->redirect('/users/users/view/' . Current::read('User.id') . '#/user-groups');
 	}
 }

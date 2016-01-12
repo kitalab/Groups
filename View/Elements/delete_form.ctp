@@ -29,7 +29,7 @@
 				</accordion-heading>
 
 				<div class="pull-left">
-					<?php echo sprintf(__d('net_commons', 'Delete all data associated with the %s.'), __d('groups', 'Group')); ?>
+					<?php echo sprintf(__d('net_commons', 'Delete all data associated with the %s.'), __d('groups', 'Groups')); ?>
 				</div>
 				<?php echo $this->NetCommonsForm->hidden('User.id'); ?>
 
