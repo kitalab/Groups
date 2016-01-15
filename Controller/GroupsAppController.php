@@ -2,7 +2,7 @@
 /**
  * GroupsApp Controller
  *
- * @author Masaki Goto <go8ogle@gmail.com>
+ * @author Kohei Teraguchi <kteraguchi@commonsnet.org>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
  */

@@ -106,7 +106,7 @@ class GroupsUser extends GroupsAppModel {
 								'type' => 'LEFT',
 								'conditions' => array(
 										$this->User->alias . '.id' . ' = ' . $this->UploadFile->alias . '.content_key',
-										$this->UploadFile->alias . '.field_name' => User::$avatarField,
+										$this->UploadFile->alias . '.field_name' => UserAttribute::AVATAR_FIELD,
 								),
 						),
 				),
