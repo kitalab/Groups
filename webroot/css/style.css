@@ -1,0 +1,44 @@
+.nc-groups-select-user-frame {
+	text-align: left;
+	border: 1px solid #999;
+	overflow: auto;
+}
+
+.nc-groups-selection-list {
+	margin-bottom: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 5px 10px;
+}
+
+.nc-groups-group-name {
+	word-break: break-all;
+	word-wrap: break-word;
+}
+
+.nc-groups-select-group-name {
+	width: 150px;
+	display:inline-block;
+}
+
+.nc-groups-avatar-list {
+	vertical-align: top;
+}
+
+@media (min-width: 768px) {
+	.nc-groups-user-selection-list {
+		min-width: 200px;
+	}
+}
+
+.nc-groups-user-selection-list {
+	margin: 0 10px 10px 0;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 5px 10px;
+	display: inline-block;
+}
+
+.nc-groups-select-user-name {
+	margin: 0 8px 0 4px;
+}
