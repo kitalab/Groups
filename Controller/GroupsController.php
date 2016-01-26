@@ -46,7 +46,7 @@ class GroupsController extends GroupsAppController {
 	);
 
 	public $helpers = array(
-//		'NetCommons.Token',
+		'NetCommons.Token',
 		'Users.UserSearch',
 		'Groups.GroupUserList',
 	);

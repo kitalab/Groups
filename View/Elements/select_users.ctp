@@ -19,6 +19,7 @@ echo $this->NetCommonsHtml->script(array(
 	'/users/js/user_select.js',
 	'/groups/js/groups.js',
 ));
+$this->NetCommonsForm->unlockField('GroupsUser.user_id');
 ?>
 
 <div class="text-right clearfix" ng-controller="GroupsSelect" ng-init="initialize(<?php echo h(json_encode(array('users' => $usersJson))); ?>)" style="margin: 8px 0;">

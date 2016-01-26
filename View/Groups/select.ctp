@@ -17,15 +17,15 @@ $data = array(
 //	'Room' => array('id' => $roomId),
 	'GroupSelect' => array('group_id' => array()),
 );
-//$tokenFields = Hash::flatten($data);
-//$hiddenFields = $tokenFields;
-//unset($hiddenFields['GroupSelect.group_id']);
-//$hiddenFields = array_keys($hiddenFields);
-//
-//$this->request->data = $data;
-//$this->Token->unlockField('GroupSelect.group_id');
-//$tokens = $this->Token->getToken('Group', '/groups/groups/select/' . Current::read('User.id'), $tokenFields, $hiddenFields);
-//$data += $tokens;
+$tokenFields = Hash::flatten($data);
+$hiddenFields = $tokenFields;
+unset($hiddenFields['GroupSelect.group_id']);
+$hiddenFields = array_keys($hiddenFields);
+
+$this->request->data = $data;
+$this->Token->unlockField('GroupSelect.group_id');
+$tokens = $this->Token->getToken('Group', '/groups/groups/select/' . Current::read('User.id'), $tokenFields, $hiddenFields);
+$data += $tokens;
 
 echo $this->NetCommonsHtml->css(array(
 	'/groups/css/style.css',

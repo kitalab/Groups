@@ -37,7 +37,7 @@ NetCommonsApp.directive('groupsSelectedUsers', function() {
         ' class="btn btn-default btn-xs pull-right" onclick="return false;" ' +
         'ng-click="deleteUser(user.id);">' +
         '<span class="glyphicon glyphicon-remove"></span>' + '</button>' +
-        '<input type="hidden" name="data[GroupsUser][][user_id]" ' +
+        '<input type="hidden" name="data[GroupsUser][user_id][]" ' +
         'value="{{user.id}}" />' +
         '</div>',
     transclude: false,
@@ -85,7 +85,6 @@ NetCommonsApp.controller('GroupsSelect', function($scope) {
   $scope.addUsers = function(users) {
     $.each(users, function(index, user) {
       $scope.users.push(user);
-console.log($scope.users);
     });
   };
   $scope.deleteUser = function(targetUserId) {
@@ -261,8 +260,7 @@ NetCommonsApp.controller('Group.select',
 
         $http.get('/net_commons/net_commons/csrfToken.json')
             .success(function(token) {
-              // TODO トークン系見直し
-              //$scope.data._Token.key = token.data._Token.key;
+              $scope.data._Token.key = token.data._Token.key;
 
               //POSTリクエスト
               $http.post(
