@@ -16,6 +16,7 @@ echo $this->NetCommonsHtml->script(array(
 ));
 ?>
 
+<?php if (! (int)$isModal): ?>
 <ul class="nav nav-tabs" role="tablist">
 	<li class="disabled">
 		<a href="">
@@ -36,9 +37,10 @@ echo $this->NetCommonsHtml->script(array(
 	</li>
 </ul>
 <br>
+<?php endif; ?>
 
 <!-- 編集フォーム -->
-<?php echo $this->element('Groups.edit_form'); ?>
+<?php echo $this->element('Groups.edit_form', array('isModal' => $isModal)); ?>
 
 <!-- 削除エリア -->
 <?php if ($this->params['action'] === 'edit') : ?>

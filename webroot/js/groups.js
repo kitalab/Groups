@@ -1,24 +1,99 @@
 /**
  * Groups JavaScript
  */
+NetCommonsApp.service('SelectGroupUsers',
+    function() {
+        var service = {
+            selectUsers: null
+        };
+        return service;
+    }
+);
+
+
+/**
+ * Groups JavaScript
+ */
+NetCommonsApp.factory('AddGroup',
+    ['NetCommonsModal', function(NetCommonsModal) {
+        return function($scope, userId, selectors, SelectGroupUsers) {
+            return NetCommonsModal.show(
+                //$scope, 'GroupsSelect',
+                $scope, 'Group.add',
+                //$scope, 'GroupsEdit',
+                $scope.baseUrl + '/groups/groups/add/' + userId + '/' + Math.random() + '?isModal=1',
+                {
+                    //scope: $scope,
+                    backdrop: 'static',
+                    resolve: {
+                        options: {
+                            userId: userId,
+                            //roomId: roomId,
+                            selectors: selectors,
+                        }
+                    }
+                }
+            );
+        }
+    }]
+);
+
+
+NetCommonsApp.controller('GroupsAddGroup'
+    , function($scope, $controller, AddGroup, SelectGroupUsers) {
+        $controller('GroupsSelect', {$scope: $scope});
+        //$controller('GroupsEdit', {$scope: $scope});
+
+        $scope.showGroupAddDialog = function(userId) {
+            AddGroup($scope, userId).result.then(
+                function(result) {
+                    // ポップアップを閉じたあとも、ユーザ選択情報を保持
+                    var groupSelectScope = angular.element('#group-user-select').scope();
+                    SelectGroupUsers.selectUsers = groupSelectScope.users;
+                },
+                function() {
+                }
+            );
+        };
+    });
+
+
+NetCommonsApp.controller('Group.add'
+    , function($scope, $controller, $modalInstance, SelectGroupUsers) {
+        $controller('GroupsSelect', {$scope: $scope});
+
+        $scope.cancel = function() {
+console.log('cancel');
+            $modalInstance.close();
+        };
+        $scope.save = function() {
+console.log('save');
+            $modalInstance.close();
+        };
+    });
+
+
+/**
+ * Groups JavaScript
+ */
 NetCommonsApp.factory('SelectGroup',
     ['NetCommonsModal', function(NetCommonsModal) {
-      return function($scope, userId, selectors) {
-        return NetCommonsModal.show(
-            $scope, 'Group.select',
-            $scope.baseUrl + '/groups/groups/select/' + userId + '/',
-            {
-              backdrop: 'static',
-              resolve: {
-                options: {
-                  userId: userId,
-                  //roomId: roomId,
-                  selectors: selectors
+        return function($scope, userId, selectors) {
+            return NetCommonsModal.show(
+                $scope, 'Group.select',
+                $scope.baseUrl + '/groups/groups/select/' + userId + '/',
+                {
+                    backdrop: 'static',
+                    resolve: {
+                        options: {
+                            userId: userId,
+                            //roomId: roomId,
+                            selectors: selectors
+                        }
+                    }
                 }
-              }
-            }
-        );
-      }
+            );
+        }
     }]
 );
 
@@ -53,7 +128,7 @@ NetCommonsApp.directive('groupsSelectedUsers', function() {
  * @param {string} Controller name
  * @param {function($scope, SelectUser)} Controller
  */
-NetCommonsApp.controller('GroupsSelect', function($scope) {
+NetCommonsApp.controller('GroupsSelect', function($scope, SelectGroupUsers) {
 
   /**
    * 会員選択の結果を保持する配列
@@ -68,6 +143,7 @@ NetCommonsApp.controller('GroupsSelect', function($scope) {
    * @return {array}
    */
   $scope.$watch('users', function() {
+    SelectGroupUsers.selectUsers = $scope.users;
     return $scope.users;
   }, true);
 
@@ -78,6 +154,9 @@ NetCommonsApp.controller('GroupsSelect', function($scope) {
    */
   $scope.initialize = function(data) {
     angular.forEach(data.users, function(value) {
+      $scope.users.push(value);
+    });
+    angular.forEach(SelectGroupUsers.selectUsers, function(value) {
       $scope.users.push(value);
     });
   };

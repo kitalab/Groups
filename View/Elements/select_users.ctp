@@ -22,7 +22,7 @@ echo $this->NetCommonsHtml->script(array(
 $this->NetCommonsForm->unlockField('GroupsUser.user_id');
 ?>
 
-<div class="text-right clearfix" ng-controller="GroupsSelect" ng-init="initialize(<?php echo h(json_encode(array('users' => $usersJson))); ?>)" style="margin: 8px 0;">
+<div id="group-user-select" class="text-right clearfix" ng-controller="GroupsSelect" ng-init="initialize(<?php echo h(json_encode(array('users' => $usersJson))); ?>)" style="margin: 8px 0;">
 	<!-- 会員検索 -->
 	<div class="pull-right" ng-controller="GroupsSelectUser" >
 		<!--				<a href="" ng-click="showUserSelectionDialog('--><?php //echo Current::read('User.id'); ?><!--', '--><?php //echo Current::read('Room.id'); ?><!--')">-->

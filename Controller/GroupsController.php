@@ -112,21 +112,31 @@ class GroupsController extends GroupsAppController {
  *
  * @return void
  */
-	public function add() {
+	public function add($isModal=null) {
 
-		$this->PageLayout = $this->Components->load('Pages.PageLayout');
 		$this->view = 'edit';
+		if ((int)$isModal) {
+			$this->viewClass = 'View';
+			$this->layout = 'NetCommons.modal';
+		} else {
+			$this->PageLayout = $this->Components->load('Pages.PageLayout');
+		}
 
 		if ($this->request->isPost()) {
 			// 登録処理
 			$group = $this->Group->saveGroup($this->request->data);
 			if ($group) {
 				// 正常の場合
-				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
-				$this->redirect('/users/users/view/' . Current::read('User.id') . '#/user-groups');
-				return;
+				if ($isModal) {
+					return;
+				} else {
+					$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
+					$this->redirect('/users/users/view/' . Current::read('User.id') . '#/user-groups');
+					return;
+				}
 			}
 		}
+		$this->set('isModal', $isModal);
 	}
 
 /**
