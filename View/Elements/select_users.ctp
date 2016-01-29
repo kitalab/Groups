@@ -19,6 +19,9 @@ echo $this->NetCommonsHtml->script(array(
 	'/users/js/user_select.js',
 	'/groups/js/groups.js',
 ));
+if (!isset($usersJson)) {
+	$usersJson = array();
+}
 $this->NetCommonsForm->unlockField('GroupsUser.user_id');
 ?>
 

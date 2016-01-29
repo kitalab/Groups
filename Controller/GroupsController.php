@@ -171,6 +171,8 @@ class GroupsController extends GroupsAppController {
 			$groupUsers = $this->GroupsUser->getGroupUsers($id);
 			$this->request->data['GroupsUsersDetail'] = $groupUsers;
 		}
+		$isModal = 0;
+		$this->set('isModal', $isModal);
 	}
 
 /**
