@@ -19,6 +19,9 @@ if (isset($this->data['GroupsUsersDetail']) && is_array($this->data['GroupsUsers
 	}
 }
 ?>
+<h1>
+	<?php echo h(__d('groups', 'グループ登録')); ?>
+</h1>
 
 <div id="groups-select-users" class="panel panel-default" ng-controller="GroupsAddGroup">
 	<?php echo $this->NetCommonsForm->create('Group', array('type' => 'file')); ?>
