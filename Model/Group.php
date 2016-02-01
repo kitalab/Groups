@@ -35,7 +35,17 @@ class Group extends GroupsAppModel {
  *
  * @var array
  */
-	public $validate = array();
+	public $validate = array(
+		'name' => array(
+			'notBlank' => array(
+				'rule' => array('notBlank'),
+				'required' => true,
+				'allowEmpty' => false,
+				'last' => false,
+				'message' => 'グループ名を入力してください。',
+			)
+		)
+	);
 
 	public $hasMany = array(
 		'GroupsUser' => array(
