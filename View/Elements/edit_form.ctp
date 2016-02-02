@@ -13,8 +13,8 @@
  */
 
 $usersJson = array();
-if (isset($this->data['GroupsUsersDetail']) && is_array($this->data['GroupsUsersDetail'])) {
-	foreach ($this->data['GroupsUsersDetail'] as $groupUser) {
+if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request->data['GroupsUsersDetail'])) {
+	foreach ($this->request->data['GroupsUsersDetail'] as $groupUser) {
 		$usersJson[] = $this->UserSearch->convertUserArrayByUserSelection($groupUser, 'User');
 	}
 }
@@ -42,8 +42,13 @@ if (isset($this->data['GroupsUsersDetail']) && is_array($this->data['GroupsUsers
 		<div class="<?php echo $className; ?>" ng-controller="GroupsSelectGroup">
 <!--		<div class="--><?php //echo $className; ?><!--" ng-controller="GroupsSelectGroup">-->
 			<?php echo $this->element('Groups.select_users', array('usersJson' => $usersJson)); ?>
+			<?php echo $this->NetCommonsForm->error('GroupsUser.user_id'); ?>
 		</div>
 	</div>
+
+	<?php echo $this->NetCommonsForm->hidden('Group.id', array(
+		'value' => isset($this->request->data['Group']['id']) ? $this->request->data['Group']['id'] : null,
+	)); ?>
 
 	<!-- ボタン -->
 	<div class="panel-footer text-center">

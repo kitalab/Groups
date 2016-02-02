@@ -30,6 +30,13 @@ class GroupsUser extends GroupsAppModel {
 	public $useTable = 'groups_users';
 
 /**
+ * 1グループに登録可能な人数の定数
+ *
+ * @var const
+ */
+	const LIMIT_ENTRY_NUM = 100;
+
+/**
  * Validation rules
  *
  * @var array
@@ -50,6 +57,39 @@ class GroupsUser extends GroupsAppModel {
 			'order' => ''
 		),
 	);
+
+	public function beforeValidate($options = array())
+	{
+		$this->validate = array(
+			'user_id' => array(
+				'notBlank' => array(
+					'rule' => array('checkSelectNum'),
+					'required' => true,
+					'message' => 'ユーザを選択してください。',
+				),
+				'maxLength' => array(
+					'rule' => array('checkMaxLength'),
+					'message' => sprintf('登録可能な上限は%s人です。', GroupsUser::LIMIT_ENTRY_NUM),
+				),
+			)
+		);
+
+		return parent::beforeValidate($options);
+	}
+
+	public function checkSelectNum($check) {
+		if (!isset($check['user_id']) || count($check['user_id']) === 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public function checkMaxLength($check) {
+		if (count($check['user_id']) > GroupsUser::LIMIT_ENTRY_NUM) {
+			return false;
+		}
+		return true;
+	}
 
 	public function saveGroupUser($data) {
 		$this->begin();

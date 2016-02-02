@@ -134,7 +134,16 @@ class GroupsController extends GroupsAppController {
 					$this->redirect('/users/users/view/' . Current::read('User.id') . '#/user-groups');
 					return;
 				}
+			} else {
+				if (isset($this->request->data['GroupsUser']['user_id'])) {
+					foreach ($this->request->data['GroupsUser']['user_id'] as $userId) {
+						// ユーザ選択情報を取得
+						$user = $this->User->getUser($userId);
+						$this->request->data['GroupsUsersDetail'][] = $user;
+					}
+				}
 			}
+			$this->NetCommons->handleValidationError($this->Group->validationErrors);
 		}
 		$this->set('isModal', $isModal);
 	}
@@ -163,6 +172,14 @@ class GroupsController extends GroupsAppController {
 				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 				$this->redirect('/users/users/view/' . Current::read('User.id') . '#/user-groups');
 				return;
+			} else {
+				if (isset($this->request->data['GroupsUser']['user_id'])) {
+					foreach ($this->request->data['GroupsUser']['user_id'] as $userId) {
+						// ユーザ選択情報を取得
+						$user = $this->User->getUser($userId);
+						$this->request->data['GroupsUsersDetail'][] = $user;
+					}
+				}
 			}
 		} else {
 			$options = array('conditions' => array('Group.' . $this->Group->primaryKey => $id));

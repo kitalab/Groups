@@ -35,17 +35,7 @@ class Group extends GroupsAppModel {
  *
  * @var array
  */
-	public $validate = array(
-		'name' => array(
-			'notBlank' => array(
-				'rule' => array('notBlank'),
-				'required' => true,
-				'allowEmpty' => false,
-				'last' => false,
-				'message' => 'グループ名を入力してください。',
-			)
-		)
-	);
+	public $validate = array();
 
 	public $hasMany = array(
 		'GroupsUser' => array(
@@ -55,6 +45,10 @@ class Group extends GroupsAppModel {
 		)
 	);
 
+	public $actsAs = array(
+		'Groups.CheckUser'
+	);
+	
 /**
  * hasAndBelongsToMany associations
  *
@@ -75,6 +69,22 @@ class Group extends GroupsAppModel {
 			'finderQuery' => '',
 		)
 	);
+
+	public function beforeValidate($options = array())
+	{
+		$this->validate = array(
+			'name' => array(
+				'notBlank' => array(
+					'rule' => array('notBlank'),
+					'required' => true,
+					'allowEmpty' => false,
+					'message' => 'グループ名を入力してください。',
+				)
+			)
+		);
+
+		return parent::beforeValidate($options);
+	}
 
 /**
  * グループ一覧取得処理
