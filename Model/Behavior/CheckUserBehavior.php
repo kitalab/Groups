@@ -34,10 +34,6 @@ class CheckUserBehavior extends ModelBehavior {
  */
 	public function beforeValidate(Model $model, $options = array()) {
 
-		if (! isset($model->data['GroupsUser']['user_id'])) {
-			$model->data['GroupsUser']['user_id'] = array();
-		}
-
 		$model->loadModels(array(
 			'Group' => 'Groups.Group',
 			'GroupsUser' => 'Groups.GroupsUser',
@@ -45,6 +41,17 @@ class CheckUserBehavior extends ModelBehavior {
 
 		$model->Group->set($model->Group->data['Group']);
 
+		if (! isset($model->data['GroupsUser']['user_id'])) {
+			$model->data['GroupsUser']['user_id'] = array();
+		}
+		$validUsers = array();
+		foreach ($model->data['GroupsUser']['user_id'] as $userId) {
+			if (! $model->GroupsUser->isExists($userId)) {
+				continue;
+			}
+			$validUsers[] = $userId;
+		}
+		$model->data['GroupsUser']['user_id'] = $validUsers;
 		$model->GroupsUser->set($model->data['GroupsUser']);
 		if (! $model->GroupsUser->validates()) {
 				$model->validationErrors = Hash::merge($model->validationErrors, $model->GroupsUser->validationErrors);

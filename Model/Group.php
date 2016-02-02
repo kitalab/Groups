@@ -153,7 +153,6 @@ class Group extends GroupsAppModel {
 
 			// GroupsUserデータの登録
 			if (isset($data['GroupsUser']['user_id']) && count($data['GroupsUser']['user_id']) > 0) {
-				// TODO user_idの存在チェック処理
 				foreach ($data['GroupsUser']['user_id'] as $userId) {
 					$groupUser = array(
 						'group_id' => $groupId,

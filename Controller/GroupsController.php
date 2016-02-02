@@ -138,6 +138,9 @@ class GroupsController extends GroupsAppController {
 				if (isset($this->request->data['GroupsUser']['user_id'])) {
 					foreach ($this->request->data['GroupsUser']['user_id'] as $userId) {
 						// ユーザ選択情報を取得
+						if (! $this->GroupsUser->isExists($userId)) {
+							continue;
+						}
 						$user = $this->User->getUser($userId);
 						$this->request->data['GroupsUsersDetail'][] = $user;
 					}
@@ -176,6 +179,9 @@ class GroupsController extends GroupsAppController {
 				if (isset($this->request->data['GroupsUser']['user_id'])) {
 					foreach ($this->request->data['GroupsUser']['user_id'] as $userId) {
 						// ユーザ選択情報を取得
+						if (! $this->GroupsUser->isExists($userId)) {
+							continue;
+						}
 						$user = $this->User->getUser($userId);
 						$this->request->data['GroupsUsersDetail'][] = $user;
 					}

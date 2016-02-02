@@ -63,12 +63,12 @@ class GroupsUser extends GroupsAppModel {
 		$this->validate = array(
 			'user_id' => array(
 				'notBlank' => array(
-					'rule' => array('checkSelectNum'),
+					'rule' => array('isUserSelected'),
 					'required' => true,
 					'message' => 'ユーザを選択してください。',
 				),
 				'maxLength' => array(
-					'rule' => array('checkMaxLength'),
+					'rule' => array('isUserWithinLimits'),
 					'message' => sprintf('登録可能な上限は%s人です。', GroupsUser::LIMIT_ENTRY_NUM),
 				),
 			)
@@ -77,15 +77,35 @@ class GroupsUser extends GroupsAppModel {
 		return parent::beforeValidate($options);
 	}
 
-	public function checkSelectNum($check) {
+	public function isUserSelected($check) {
 		if (!isset($check['user_id']) || count($check['user_id']) === 0) {
 			return false;
 		}
 		return true;
 	}
 
-	public function checkMaxLength($check) {
+	public function isUserWithinLimits($check) {
 		if (count($check['user_id']) > GroupsUser::LIMIT_ENTRY_NUM) {
+			return false;
+		}
+		return true;
+	}
+
+	public function isExists($userId) {
+		$this->loadModels(array(
+			'User' => 'Users.User',
+		));
+
+		$params = array(
+			'recursive' => -1,
+			'conditions' => array(
+				'User.id' => $userId,
+				'User.is_deleted' => 0,
+			),
+			'fields' => array(),
+		);
+		$userCnt = $this->User->find('count', $params);
+		if (! $userCnt) {
 			return false;
 		}
 		return true;
