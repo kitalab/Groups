@@ -205,7 +205,7 @@ NetCommonsApp.directive('groupsSelectedUsers', function() {
  * @param {string} Controller name
  * @param {function($scope, SelectUser)} Controller
  */
-NetCommonsApp.controller('GroupsSelect', function($scope, SelectGroupUsers) {
+NetCommonsApp.controller('GroupsSelect', function($scope, filterFilter, SelectGroupUsers) {
 
   /**
    * 会員選択の結果を保持する配列
@@ -240,7 +240,10 @@ NetCommonsApp.controller('GroupsSelect', function($scope, SelectGroupUsers) {
 
   $scope.addUsers = function(users) {
     $.each(users, function(index, user) {
-      $scope.users.push(user);
+      var result = filterFilter($scope.users, {id:user.id})
+      if (result.length == 0) {
+        $scope.users.push(user);
+      }
     });
   };
   $scope.deleteUser = function(targetUserId) {
