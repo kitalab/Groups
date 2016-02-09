@@ -37,6 +37,10 @@ echo $this->NetCommonsHtml->script(array(
 	</li>
 </ul>
 <br>
+<?php else: ?>
+	<?php $this->start('title_for_modal'); ?>
+	<?php echo h(__d('groups', 'グループ登録')); ?>
+	<?php $this->end(); ?>
 <?php endif; ?>
 
 <!-- 編集フォーム -->

@@ -19,30 +19,32 @@ if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request-
 	}
 }
 ?>
+<?php if (! (int)$isModal): ?>
 <h1>
 	<?php echo h(__d('groups', 'グループ登録')); ?>
 </h1>
+<?php endif; ?>
 
 <div id="groups-select-users" class="panel panel-default" ng-controller="GroupsAddGroup">
 	<?php echo $this->NetCommonsForm->create('Group', array('type' => 'file')); ?>
-<!--	<div class="panel-body" ng-controller="GroupsSelectGroup">-->
-	<div class="panel-body">
+	<div class="panel-body" ng-controller="GroupsSelectGroup">
 		<!-- グループ名 -->
-		<?php echo $this->NetCommonsForm->input('Group.name', array(
-			'type' => 'text',
-			'label' => __d('groups', 'Groups name'),
-		)); ?>
-
+		<div id="groups-input-name-<?php echo Current::read('User.id'); ?>">
+			<?php echo $this->NetCommonsForm->input('Group.name', array(
+				'type' => 'text',
+				'label' => __d('groups', 'Groups name'),
+				'onkeypress' => 'if (event.keyCode == 13) {return false;}',
+			)); ?>
+		</div>
+		<?php echo $this->NetCommonsForm->error('GroupsUser.user_id'); ?>
+  
 		<!-- ユーザ選択 -->
-		<!-- TODO hiddenを有効にする -->
-<!--		--><?php //if ((int)$isModal): $className = 'hidden' ?>
-		<?php if ((int)$isModal): $className = 'show' ?>
+		<?php if ((int)$isModal): $className = 'hidden' ?>
 		<?php else: $className = 'show' ?>
 		<?php endif; ?>
 		<div class="<?php echo $className; ?>" ng-controller="GroupsSelectGroup">
 <!--		<div class="--><?php //echo $className; ?><!--" ng-controller="GroupsSelectGroup">-->
 			<?php echo $this->element('Groups.select_users', array('usersJson' => $usersJson)); ?>
-			<?php echo $this->NetCommonsForm->error('GroupsUser.user_id'); ?>
 		</div>
 	</div>
 

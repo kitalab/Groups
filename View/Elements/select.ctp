@@ -18,7 +18,7 @@
 		<?php echo h($title); ?>
 	</div>
 	<div class="panel-body">
-		<?php echo $this->element('Groups.select_users'); ?>
+		<?php echo $this->element('Groups.select_users', array('pluginModel' => $pluginModel)); ?>
 		<div class="text-right" ng-controller="GroupsAddGroup">
 			<?php
 				echo $this->Button->addLink('上記の会員でグループを新規作成',

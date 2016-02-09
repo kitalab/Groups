@@ -65,10 +65,12 @@ class GroupsUser extends GroupsAppModel {
 				'notBlank' => array(
 					'rule' => array('isUserSelected'),
 					'required' => true,
+					'last' => false,
 					'message' => 'ユーザを選択してください。',
 				),
 				'maxLength' => array(
 					'rule' => array('isUserWithinLimits'),
+					'last' => false,
 					'message' => sprintf('登録可能な上限は%s人です。', GroupsUser::LIMIT_ENTRY_NUM),
 				),
 			)

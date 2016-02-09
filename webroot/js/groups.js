@@ -100,18 +100,15 @@ NetCommonsApp.controller('Group.add'
         var saveGroup = function(data, options) {
             var deferred = $q.defer();
             var promise = deferred.promise;
-            
             $scope.data = data;
-            var elements = $('input[name="data[_Token][fields]"]');
 
             $http.get('/net_commons/net_commons/csrfToken.json')
                 .success(function(token) {
+                    $scope.data['data[_Token][key]'] = token.data._Token.key;
 
                     //POSTリクエスト
                     $http.post(
-                            //'/groups/groups/add/' + userId,
-                            options['getUrl'],
-                        //$.param({_method: 'POST', data: $scope.data}),
+                        options['getUrl'],
                         $.param($scope.data),
                         {
                             cache: false,
@@ -125,8 +122,13 @@ NetCommonsApp.controller('Group.add'
                             deferred.resolve(data);
                         })
                         .error(function(data, status) {
-                            //error condition
-                            deferred.reject(data, status);
+                            var target = $('#groups-input-name-' + options['userId'] + ' div.has-error');
+                            target.empty();
+                            angular.forEach(data.error.validationErrors, function(errObj) {
+                                angular.forEach(errObj, function(errMsg) {
+                                    target.append('<div class="help-block">' + errMsg + '</div>');
+                                });
+                            });
                         });
                 })
                 .error(function(data, status) {
@@ -189,7 +191,7 @@ NetCommonsApp.directive('groupsSelectedUsers', function() {
         ' class="btn btn-default btn-xs pull-right" onclick="return false;" ' +
         'ng-click="deleteUser(user.id);">' +
         '<span class="glyphicon glyphicon-remove"></span>' + '</button>' +
-        '<input type="hidden" name="data[GroupsUser][user_id][{{user.id}}]" ' +
+        '<input type="hidden" name="data[{{pluginModel}}][user_id][{{user.id}}]" ' +
         'value="{{user.id}}" />' +
         '</div>',
     transclude: false,
@@ -206,6 +208,13 @@ NetCommonsApp.directive('groupsSelectedUsers', function() {
  * @param {function($scope, SelectUser)} Controller
  */
 NetCommonsApp.controller('GroupsSelect', function($scope, filterFilter, SelectGroupUsers) {
+
+  /**
+   * プラグイン側で使用するモデル名
+   *
+   * @return {array}
+   */
+  $scope.pluginModel = null;
 
   /**
    * 会員選択の結果を保持する配列
@@ -229,7 +238,9 @@ NetCommonsApp.controller('GroupsSelect', function($scope, filterFilter, SelectGr
    *
    * @return {void}
    */
-  $scope.initialize = function(data) {
+  $scope.initialize = function(data, pluginModel) {
+    $scope.pluginModel = pluginModel;
+
     angular.forEach(data.users, function(value) {
       $scope.users.push(value);
     });
@@ -245,7 +256,9 @@ NetCommonsApp.controller('GroupsSelect', function($scope, filterFilter, SelectGr
         $scope.users.push(user);
       }
     });
+    SelectGroupUsers.selectUsers = $scope.users;
   };
+
   $scope.deleteUser = function(targetUserId) {
     for (var i = 0; i < $scope.users.length; i++) {
       var user = $scope.users[i];
