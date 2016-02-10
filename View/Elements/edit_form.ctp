@@ -21,7 +21,7 @@ if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request-
 ?>
 <?php if (! (int)$isModal): ?>
 <h1>
-	<?php echo h(__d('groups', 'グループ登録')); ?>
+	<?php echo h(__d('groups', __d('groups', 'Group add'))); ?>
 </h1>
 <?php endif; ?>
 
@@ -32,7 +32,7 @@ if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request-
 		<div id="groups-input-name-<?php echo Current::read('User.id'); ?>">
 			<?php echo $this->NetCommonsForm->input('Group.name', array(
 				'type' => 'text',
-				'label' => __d('groups', 'Groups name'),
+				'label' => __d('groups', 'Group name'),
 				'onkeypress' => 'if (event.keyCode == 13) {return false;}',
 			)); ?>
 		</div>
@@ -43,7 +43,6 @@ if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request-
 		<?php else: $className = 'show' ?>
 		<?php endif; ?>
 		<div class="<?php echo $className; ?>" ng-controller="GroupsSelectGroup">
-<!--		<div class="--><?php //echo $className; ?><!--" ng-controller="GroupsSelectGroup">-->
 			<?php echo $this->element('Groups.select_users', array('usersJson' => $usersJson)); ?>
 		</div>
 	</div>

@@ -3,13 +3,11 @@
  * Group Model
  *
  * @property Group $Group
- * @property User $User
  *
- * @author Noriko Arai <arai@nii.ac.jp>
  * @author Masaki Goto <go8ogle@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
- * @copyright Copyright 2015, NetCommons Project
+ * @copyright Copyright 2016, NetCommons Project
  */
 
 App::uses('GroupsAppModel', 'Groups.Model');
@@ -46,7 +44,7 @@ class Group extends GroupsAppModel {
 	);
 
 	public $actsAs = array(
-		'Groups.CheckUser'
+		'Groups.GroupsUser'
 	);
 	
 /**

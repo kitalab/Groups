@@ -19,20 +19,13 @@ NetCommonsApp.factory('AddGroup',
         return function($scope, userId, selectors, SelectGroupUsers) {
             var getUrl = $scope.baseUrl + '/groups/groups/add/' + userId + '/' + Math.random() + '?isModal=1';
             return NetCommonsModal.show(
-                //$scope, 'GroupsSelect',
                 $scope, 'Group.add',
-                //$scope, 'GroupsEdit',
-                //$scope.baseUrl + '/groups/groups/add/' + userId + '/' + Math.random() + '?isModal=1',
-                //$scope.baseUrl + '/groups/groups/add/' + userId + '?isModal=1',
                 getUrl,
                 {
-                    //scope: $scope,
                     backdrop: 'static',
                     resolve: {
                         options: {
                             userId: userId,
-                            //roomId: roomId,
-                            //selectors: selectors,
                             getUrl: getUrl
                         }
                     }
@@ -46,8 +39,6 @@ NetCommonsApp.factory('AddGroup',
 NetCommonsApp.controller('GroupsAddGroup'
     , function($scope, $controller, AddGroup, SelectGroupUsers) {
         $controller('GroupsSelect', {$scope: $scope});
-        //$controller('GroupsEdit', {$scope: $scope});
-
         $scope.showGroupAddDialog = function(userId) {
             AddGroup($scope, userId).result.then(
                 function(result) {
@@ -83,9 +74,7 @@ NetCommonsApp.controller('Group.add'
             var element = angular.element('#GroupAddForm');
             var data = new Object();
             angular.forEach(element.serializeArray(), function(input) {
-                //if (input['value'] !== '') {
-                    data[input['name']] = input['value'];
-                //}
+                 data[input['name']] = input['value'];
             }, $scope);
             saveGroup(data, options)
                 .success(function(data) {
@@ -166,7 +155,6 @@ NetCommonsApp.factory('SelectGroup',
                     resolve: {
                         options: {
                             userId: userId,
-                            //roomId: roomId,
                             selectors: selectors
                         }
                     }
@@ -251,7 +239,7 @@ NetCommonsApp.controller('GroupsSelect', function($scope, filterFilter, SelectGr
 
   $scope.addUsers = function(users) {
     $.each(users, function(index, user) {
-      var result = filterFilter($scope.users, {id:user.id})
+      var result = filterFilter($scope.users, {id:user.id});
       if (result.length == 0) {
         $scope.users.push(user);
       }

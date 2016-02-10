@@ -21,7 +21,7 @@
 		<?php echo $this->element('Groups.select_users', array('pluginModel' => $pluginModel)); ?>
 		<div class="text-right" ng-controller="GroupsAddGroup">
 			<?php
-				echo $this->Button->addLink('上記の会員でグループを新規作成',
+				echo $this->Button->addLink(__d('groups', 'Create a new group in the above-described member'),
 					'#',
 					array(
 						'tooltip' => __d('net_commons', 'Add'),

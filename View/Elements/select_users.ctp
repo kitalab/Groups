@@ -34,7 +34,7 @@ $this->NetCommonsForm->unlockField($pluginModel . '.user_id');
 		<!--				<a href="" ng-click="showUserSelectionDialog('--><?php //echo Current::read('User.id'); ?><!--', '--><?php //echo Current::read('Room.id'); ?><!--')">-->
 		<a href="" ng-click="showUserSelectionDialog('<?php echo Current::read('User.id'); ?>', '<?php echo 1 ?>')">
 			<span class="glyphicon glyphicon-search"></span>
-			ユーザ検索
+			<?php echo __d('groups', 'User search'); ?>
 		</a>
 	</div>
 	<div class="pull-right" style="margin: 0 8px;">|</div>
@@ -43,13 +43,13 @@ $this->NetCommonsForm->unlockField($pluginModel . '.user_id');
 		<!--				<a href="" ng-click="showGroupSelectionDialog('--><?php //echo Current::read('User.id'); ?><!--', '--><?php //echo 1 ?><!--')">-->
 		<a href="" ng-click="showGroupSelectionDialog('<?php echo Current::read('User.id'); ?>')">
 			<span class="glyphicon glyphicon-search"></span>
-			グループ検索
+			<?php echo __d('groups', 'Group search'); ?>
 		</a>
 	</div>
 	<br class="clearfix" />
 	<div id="groups-select-user-frame" class="panel-body nc-groups-select-user-frame">
 	<!--	ここに選択したユーザ情報を表示-->
-		<span ng-if="users.length == 0"><?php echo __d('groups', 'Groups select user'); ?></span>
+		<span ng-if="users.length == 0"><?php echo __d('groups', 'Select user'); ?></span>
 		<groups-selected-users ng-repeat="user in users"></groups-selected-users>
 	</div>
 </div>

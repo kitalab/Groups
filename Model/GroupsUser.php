@@ -5,11 +5,10 @@
  * @property Group $Group
  * @property User $User
  *
- * @author Noriko Arai <arai@nii.ac.jp>
- * @author Kazutaka Yamada <yamada.kazutaka@withone.co.jp>
+ * @author Masaki Goto <go8ogle@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
- * @copyright Copyright 2014, NetCommons Project
+ * @copyright Copyright 2016, NetCommons Project
  */
 
 App::uses('GroupsAppModel', 'Groups.Model');
@@ -66,12 +65,12 @@ class GroupsUser extends GroupsAppModel {
 					'rule' => array('isUserSelected'),
 					'required' => true,
 					'last' => false,
-					'message' => 'ユーザを選択してください。',
+					'message' => __d('groups', 'Select user'),
 				),
 				'maxLength' => array(
 					'rule' => array('isUserWithinLimits'),
 					'last' => false,
-					'message' => sprintf('登録可能な上限は%s人です。', GroupsUser::LIMIT_ENTRY_NUM),
+					'message' => sprintf(__d('groups', 'Can be registered upper limit is %s'), GroupsUser::LIMIT_ENTRY_NUM),
 				),
 			)
 		);
@@ -177,9 +176,4 @@ class GroupsUser extends GroupsAppModel {
 
 		return $groupDetail;
 	}
-
-
-
-
-
 }

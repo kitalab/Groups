@@ -29,11 +29,12 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 </div>
 
 <div class="table-responsive">
+	<?php if (count($groupListJson) > 0): ?>
 	<table class="table table-condensed">
 		<thead>
 			<tr>
 				<th></th>
-				<th><?php echo __d('groups', 'Groups name'); ?></th>
+				<th><?php echo __d('groups', 'Group name'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -65,4 +66,7 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 		<?php endforeach; ?>
 		</tbody>
 	</table>
+	<?php else: ?>
+		<?php echo __d('groups', 'Not found the group.'); ?>
+	<?php endif;?>
 </div>

@@ -5,15 +5,15 @@
  * @author Masaki Goto <go8ogle@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
- * @copyright Copyright 2015, NetCommons Project
+ * @copyright Copyright 2016, NetCommons Project
  */
 
 App::uses('AppHelper', 'View/Helper');
 
 /**
- * UserSearch Helper
+ * GroupUserList Helper
  *
- * @package NetCommons\Users\View\Helper
+ * @package NetCommons\Groups\View\Helper
  */
 class GroupUserListHelper extends AppHelper {
 
@@ -48,7 +48,7 @@ class GroupUserListHelper extends AppHelper {
 	}
 
 /**
- * ユーザ選択画面でJSONでユーザを表示する
+ * ユーザ選択画面でJSON形式でユーザを表示する
  *
  * @param array $groups グループ一覧データ
  * @return array JSON変換用配列

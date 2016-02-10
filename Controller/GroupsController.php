@@ -7,7 +7,7 @@
  * @author Masaki Goto <go8ogle@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
- * @copyright Copyright 2015, NetCommons Project
+ * @copyright Copyright 2016, NetCommons Project
  */
 
 App::uses('GroupsAppController', 'Groups.Controller');
@@ -38,11 +38,8 @@ class GroupsController extends GroupsAppController {
  * @var array
  */
 	public $components = array(
-//		'ControlPanel.ControlPanelLayout',
-//		'Files.FileUpload',
 		'M17n.SwitchLanguage',
 		'UserAttributes.UserAttributeLayout',
-//		'Users.UserSearch',
 	);
 
 	public $helpers = array(
