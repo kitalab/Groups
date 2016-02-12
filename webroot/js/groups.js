@@ -1,8 +1,6 @@
 /**
  * Groups JavaScript
  */
-<<<<<<< HEAD
-=======
 NetCommonsApp.service('SelectGroupUsers',
     function() {
       var service = {
@@ -150,27 +148,18 @@ NetCommonsApp.controller('Group.add',
 /**
  * Groups JavaScript
  */
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 NetCommonsApp.factory('SelectGroup',
     ['NetCommonsModal', function(NetCommonsModal) {
       return function($scope, userId, selectors) {
         return NetCommonsModal.show(
             $scope, 'Group.select',
-<<<<<<< HEAD
-            $scope.baseUrl + '/groups/groups/select/' + userId + '/',
-=======
             $scope.baseUrl + '/groups/groups/select/' +
                 userId + '/' + Math.random(),
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
             {
               backdrop: 'static',
               resolve: {
                 options: {
                   userId: userId,
-<<<<<<< HEAD
-                  //roomId: roomId,
-=======
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
                   selectors: selectors
                 }
               }
@@ -195,12 +184,8 @@ NetCommonsApp.directive('groupsSelectedUsers', function() {
         ' class="btn btn-default btn-xs pull-right" onclick="return false;" ' +
         'ng-click="deleteUser(user.id);">' +
         '<span class="glyphicon glyphicon-remove"></span>' + '</button>' +
-<<<<<<< HEAD
-        '<input type="hidden" name="data[GroupsUser][][user_id]" ' +
-=======
         '<input type="hidden" ' +
             'name="data[{{pluginModel}}][user_id][{{user.id}}]" ' +
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
         'value="{{user.id}}" />' +
         '</div>',
     transclude: false,
@@ -216,53 +201,6 @@ NetCommonsApp.directive('groupsSelectedUsers', function() {
  * @param {string} Controller name
  * @param {function($scope, SelectUser)} Controller
  */
-<<<<<<< HEAD
-NetCommonsApp.controller('GroupsSelect', function($scope) {
-
-  /**
-   * 会員選択の結果を保持する配列
-   *
-   * @return {array}
-   */
-  $scope.users = [];
-
-  /**
-   * 会員の選択状態を検知する
-   *
-   * @return {array}
-   */
-  $scope.$watch('users', function() {
-    return $scope.users;
-  }, true);
-
-  /**
-   * initialize
-   *
-   * @return {void}
-   */
-  $scope.initialize = function(data) {
-    angular.forEach(data.users, function(value) {
-      $scope.users.push(value);
-    });
-  };
-
-  $scope.addUsers = function(users) {
-    $.each(users, function(index, user) {
-      $scope.users.push(user);
-console.log($scope.users);
-    });
-  };
-  $scope.deleteUser = function(targetUserId) {
-    for (var i = 0; i < $scope.users.length; i++) {
-      var user = $scope.users[i];
-      if (user.id == targetUserId) {
-        $scope.users.splice(i, 1);
-        break;
-      }
-    }
-  };
-});
-=======
 NetCommonsApp.controller('GroupsSelect',
     function($scope, filterFilter, SelectGroupUsers) {
 
@@ -326,7 +264,6 @@ NetCommonsApp.controller('GroupsSelect',
         }
       };
     });
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 
 
 /**
@@ -357,20 +294,6 @@ NetCommonsApp.controller('GroupsSelectUser',
       };
     });
 
-<<<<<<< HEAD
-NetCommonsApp.controller('GroupsSelectGroup', function($scope, SelectGroup) {
-
-  //$scope.showGroupSelectionDialog = function(userId, roomId) {
-  $scope.showGroupSelectionDialog = function(userId) {
-    SelectGroup($scope, userId).result.then(
-        function(result) {
-        },
-        function() {
-        }
-    );
-  };
-});
-=======
 NetCommonsApp.controller('GroupsSelectGroup',
     function($scope, SelectGroup, SelectGroupUsers) {
 
@@ -387,7 +310,6 @@ NetCommonsApp.controller('GroupsSelectGroup',
         );
       };
     });
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 
 NetCommonsApp.controller('Group.select',
     function($scope, $controller, $http, $q,
@@ -435,11 +357,7 @@ NetCommonsApp.controller('Group.select',
       $scope.select = function(index) {
         var result = filterFilter($scope.groupList,
             //$scope.groupList[index]);
-<<<<<<< HEAD
-            {id:$scope.groupList[index]['id']}, true);
-=======
             {id: $scope.groupList[index]['id']}, true);
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 
         if (!angular.isArray($scope.selectors)) {
           $scope.selectors = [];
@@ -459,11 +377,7 @@ NetCommonsApp.controller('Group.select',
           return false;
         }
         //var result = filterFilter($scope.selectors, obj);
-<<<<<<< HEAD
-        var result = filterFilter($scope.selectors, {id:obj['id']}, true);
-=======
         var result = filterFilter($scope.selectors, {id: obj['id']}, true);
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
         return !(result.length === 0);
       };
 
@@ -517,12 +431,7 @@ NetCommonsApp.controller('Group.select',
 
         $http.get('/net_commons/net_commons/csrfToken.json')
             .success(function(token) {
-<<<<<<< HEAD
-              // TODO トークン系見直し
-              //$scope.data._Token.key = token.data._Token.key;
-=======
               $scope.data._Token.key = token.data._Token.key;
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 
               //POSTリクエスト
               $http.post(
