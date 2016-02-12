@@ -3,10 +3,10 @@
  */
 NetCommonsApp.service('SelectGroupUsers',
     function() {
-        var service = {
-            selectUsers: null
-        };
-        return service;
+      var service = {
+        selectUsers: null
+      };
+      return service;
     }
 );
 
@@ -16,127 +16,131 @@ NetCommonsApp.service('SelectGroupUsers',
  */
 NetCommonsApp.factory('AddGroup',
     ['NetCommonsModal', function(NetCommonsModal) {
-        return function($scope, userId, selectors, SelectGroupUsers) {
-            var getUrl = $scope.baseUrl + '/groups/groups/add/' + userId + '/' + Math.random() + '?isModal=1';
-            return NetCommonsModal.show(
-                $scope, 'Group.add',
-                getUrl,
-                {
-                    backdrop: 'static',
-                    resolve: {
-                        options: {
-                            userId: userId,
-                            getUrl: getUrl
-                        }
-                    }
+      return function($scope, userId, selectors, SelectGroupUsers) {
+        var getUrl = $scope.baseUrl + '/groups/groups/add/' + userId +
+            '/' + Math.random() + '?isModal=1';
+        return NetCommonsModal.show(
+            $scope, 'Group.add',
+            getUrl,
+            {
+              backdrop: 'static',
+              resolve: {
+                options: {
+                  userId: userId,
+                  getUrl: getUrl
                 }
-            );
-        }
+              }
+            }
+        );
+      }
     }]
 );
 
 
-NetCommonsApp.controller('GroupsAddGroup'
-    , function($scope, $controller, AddGroup, SelectGroupUsers) {
-        $controller('GroupsSelect', {$scope: $scope});
-        $scope.showGroupAddDialog = function(userId) {
-            AddGroup($scope, userId).result.then(
-                function(result) {
-                    // ポップアップを閉じたあとも、ユーザ選択情報を保持
-                    var groupSelectScope = angular.element('#group-user-select').scope();
-                    SelectGroupUsers.selectUsers = groupSelectScope.users;
-                },
-                function() {
-                    // ポップアップを閉じたあとも、ユーザ選択情報を保持
-                    var groupSelectScope = angular.element('#group-user-select').scope();
-                    SelectGroupUsers.selectUsers = groupSelectScope.users;
-                }
-            );
-        };
+NetCommonsApp.controller('GroupsAddGroup',
+    function($scope, $controller, AddGroup, SelectGroupUsers) {
+      $controller('GroupsSelect', {$scope: $scope});
+      $scope.showGroupAddDialog = function(userId) {
+        AddGroup($scope, userId).result.then(
+            function(result) {
+              // ポップアップを閉じたあとも、ユーザ選択情報を保持
+              var groupSelectScope =
+                  angular.element('#group-user-select').scope();
+              SelectGroupUsers.selectUsers = groupSelectScope.users;
+            },
+            function() {
+              // ポップアップを閉じたあとも、ユーザ選択情報を保持
+              var groupSelectScope =
+                  angular.element('#group-user-select').scope();
+              SelectGroupUsers.selectUsers = groupSelectScope.users;
+            }
+        );
+      };
     });
 
 
-NetCommonsApp.controller('Group.add'
-    , function($scope, $controller, $http, $q, $location, $window,
-               $modalInstance, AddGroup, options, SelectGroupUsers) {
-        
-        $scope.userId = null;
-        $scope.data = null;
-        
-        $controller('GroupsSelect', {$scope: $scope});
+NetCommonsApp.controller('Group.add',
+    function($scope, $controller, $http, $q, $location, $window,
+        $modalInstance, AddGroup, options, SelectGroupUsers) {
 
-        $scope.cancel = function() {
-            //$modalInstance.dismiss('cancel');
-            $modalInstance.close();
-        };
-        $scope.save = function() {
-            
-            var element = angular.element('#GroupAddForm');
-            var data = new Object();
-            angular.forEach(element.serializeArray(), function(input) {
-                 data[input['name']] = input['value'];
-            }, $scope);
-            saveGroup(data, options)
-                .success(function(data) {
-                    $modalInstance.close();
-                })
-                .error(function(data, status) {
-                    $modalInstance.dismiss('error');
-                });
+      $scope.userId = null;
+      $scope.data = null;
+      $controller('GroupsSelect', {$scope: $scope});
 
-        };
+      $scope.cancel = function() {
+        $modalInstance.close();
+      };
 
-        var saveGroup = function(data, options) {
-            var deferred = $q.defer();
-            var promise = deferred.promise;
-            $scope.data = data;
+      $scope.save = function() {
+        var element = angular.element('#GroupAddForm');
+        var data = new Object();
+        angular.forEach(element.serializeArray(), function(input) {
+          data[input['name']] = input['value'];
+        }, $scope);
 
-            $http.get('/net_commons/net_commons/csrfToken.json')
-                .success(function(token) {
-                    $scope.data['data[_Token][key]'] = token.data._Token.key;
+        saveGroup(data, options)
+            .success(function(data) {
+              $modalInstance.close();
+            })
+            .error(function(data, status) {
+              $modalInstance.dismiss('error');
+            });
 
-                    //POSTリクエスト
-                    $http.post(
-                        options['getUrl'],
-                        $.param($scope.data),
-                        {
-                            cache: false,
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            }
-                        }
-                        )
-                        .success(function(data) {
-                            //success condition
-                            deferred.resolve(data);
-                        })
-                        .error(function(data, status) {
-                            var target = $('#groups-input-name-' + options['userId'] + ' div.has-error');
-                            target.empty();
-                            angular.forEach(data.error.validationErrors, function(errObj) {
-                                angular.forEach(errObj, function(errMsg) {
-                                    target.append('<div class="help-block">' + errMsg + '</div>');
-                                });
-                            });
+      };
+
+      var saveGroup = function(data, options) {
+        var deferred = $q.defer();
+        var promise = deferred.promise;
+        $scope.data = data;
+        $http.get('/net_commons/net_commons/csrfToken.json')
+            .success(function(token) {
+              $scope.data['data[_Token][key]'] = token.data._Token.key;
+
+              // POSTリクエスト
+              $http.post(
+                  options['getUrl'],
+                  $.param($scope.data),
+                  {
+                    cache: false,
+                    headers: {
+                      'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                  }
+              )
+              .success(function(data) {
+                    // success condition
+                    deferred.resolve(data);
+                  })
+              .error(function(data, status) {
+                    var target = $('#groups-input-name-' +
+                        options['userId'] + ' div.has-error');
+                    target.empty();
+                    angular.forEach(data.error.validationErrors,
+                        function(errObj) {
+                          angular.forEach(errObj, function(errMsg) {
+                            target.append('<div class="help-block">' +
+                                errMsg + '</div>');
+                          });
                         });
-                })
+                      });
+            })
                 .error(function(data, status) {
-                    //Token error condition
-                    deferred.reject(data, status);
+                  // Token error condition
+                  deferred.reject(data, status);
                 });
 
-            promise.success = function(fn) {
-                promise.then(fn);
-                return promise;
-            };
-
-            promise.error = function(fn) {
-                promise.then(null, fn);
-                return promise;
-            };
-
-            return promise;
+        promise.success = function(fn) {
+          promise.then(fn);
+          return promise;
         };
+
+        promise.error = function(fn) {
+          promise.then(null, fn);
+          return promise;
+        };
+
+        return promise;
+      };
 
     });
 
@@ -146,21 +150,22 @@ NetCommonsApp.controller('Group.add'
  */
 NetCommonsApp.factory('SelectGroup',
     ['NetCommonsModal', function(NetCommonsModal) {
-        return function($scope, userId, selectors) {
-            return NetCommonsModal.show(
-                $scope, 'Group.select',
-                $scope.baseUrl + '/groups/groups/select/' + userId + '/' + Math.random(),
-                {
-                    backdrop: 'static',
-                    resolve: {
-                        options: {
-                            userId: userId,
-                            selectors: selectors
-                        }
-                    }
+      return function($scope, userId, selectors) {
+        return NetCommonsModal.show(
+            $scope, 'Group.select',
+            $scope.baseUrl + '/groups/groups/select/' +
+                userId + '/' + Math.random(),
+            {
+              backdrop: 'static',
+              resolve: {
+                options: {
+                  userId: userId,
+                  selectors: selectors
                 }
-            );
-        }
+              }
+            }
+        );
+      }
     }]
 );
 
@@ -179,7 +184,8 @@ NetCommonsApp.directive('groupsSelectedUsers', function() {
         ' class="btn btn-default btn-xs pull-right" onclick="return false;" ' +
         'ng-click="deleteUser(user.id);">' +
         '<span class="glyphicon glyphicon-remove"></span>' + '</button>' +
-        '<input type="hidden" name="data[{{pluginModel}}][user_id][{{user.id}}]" ' +
+        '<input type="hidden" ' +
+            'name="data[{{pluginModel}}][user_id][{{user.id}}]" ' +
         'value="{{user.id}}" />' +
         '</div>',
     transclude: false,
@@ -195,68 +201,69 @@ NetCommonsApp.directive('groupsSelectedUsers', function() {
  * @param {string} Controller name
  * @param {function($scope, SelectUser)} Controller
  */
-NetCommonsApp.controller('GroupsSelect', function($scope, filterFilter, SelectGroupUsers) {
+NetCommonsApp.controller('GroupsSelect',
+    function($scope, filterFilter, SelectGroupUsers) {
 
-  /**
-   * プラグイン側で使用するモデル名
-   *
-   * @return {array}
-   */
-  $scope.pluginModel = null;
+      /**
+       * プラグイン側で使用するモデル名
+       *
+       * @return {array}
+       */
+      $scope.pluginModel = null;
 
-  /**
-   * 会員選択の結果を保持する配列
-   *
-   * @return {array}
-   */
-  $scope.users = [];
+      /**
+       * 会員選択の結果を保持する配列
+       *
+       * @return {array}
+       */
+      $scope.users = [];
 
-  /**
-   * 会員の選択状態を検知する
-   *
-   * @return {array}
-   */
-  $scope.$watch('users', function() {
-    SelectGroupUsers.selectUsers = $scope.users;
-    return $scope.users;
-  }, true);
+      /**
+       * 会員の選択状態を検知する
+       *
+       * @return {array}
+       */
+      $scope.$watch('users', function() {
+        SelectGroupUsers.selectUsers = $scope.users;
+        return $scope.users;
+      }, true);
 
-  /**
-   * initialize
-   *
-   * @return {void}
-   */
-  $scope.initialize = function(data, pluginModel) {
-    $scope.pluginModel = pluginModel;
+      /**
+       * initialize
+       *
+       * @return {void}
+       */
+      $scope.initialize = function(data, pluginModel) {
+        $scope.pluginModel = pluginModel;
 
-    angular.forEach(data.users, function(value) {
-      $scope.users.push(value);
+        angular.forEach(data.users, function(value) {
+          $scope.users.push(value);
+        });
+        angular.forEach(SelectGroupUsers.selectUsers, function(value) {
+          $scope.users.push(value);
+        });
+      };
+
+      $scope.addUsers = function(users) {
+        $.each(users, function(index, user) {
+          var result = filterFilter($scope.users, {id: user.id});
+          if (result.length == 0) {
+            $scope.users.push(user);
+          }
+        });
+        SelectGroupUsers.selectUsers = $scope.users;
+      };
+
+      $scope.deleteUser = function(targetUserId) {
+        for (var i = 0; i < $scope.users.length; i++) {
+          var user = $scope.users[i];
+          if (user.id == targetUserId) {
+            $scope.users.splice(i, 1);
+            break;
+          }
+        }
+      };
     });
-    angular.forEach(SelectGroupUsers.selectUsers, function(value) {
-      $scope.users.push(value);
-    });
-  };
-
-  $scope.addUsers = function(users) {
-    $.each(users, function(index, user) {
-      var result = filterFilter($scope.users, {id:user.id});
-      if (result.length == 0) {
-        $scope.users.push(user);
-      }
-    });
-    SelectGroupUsers.selectUsers = $scope.users;
-  };
-
-  $scope.deleteUser = function(targetUserId) {
-    for (var i = 0; i < $scope.users.length; i++) {
-      var user = $scope.users[i];
-      if (user.id == targetUserId) {
-        $scope.users.splice(i, 1);
-        break;
-      }
-    }
-  };
-});
 
 
 /**
@@ -287,21 +294,22 @@ NetCommonsApp.controller('GroupsSelectUser',
       };
     });
 
-NetCommonsApp.controller('GroupsSelectGroup', function($scope, SelectGroup, SelectGroupUsers) {
+NetCommonsApp.controller('GroupsSelectGroup',
+    function($scope, SelectGroup, SelectGroupUsers) {
 
-  //$scope.showGroupSelectionDialog = function(userId, roomId) {
-  $scope.showGroupSelectionDialog = function(userId) {
-    SelectGroup($scope, userId).result.then(
-        function(result) {
-        },
-        function() {
-            // ポップアップを閉じたあとも、ユーザ選択情報を保持
-            var groupSelectScope = angular.element('#group-user-select').scope();
-            SelectGroupUsers.selectUsers = groupSelectScope.users;
-        }
-    );
-  };
-});
+      $scope.showGroupSelectionDialog = function(userId) {
+        SelectGroup($scope, userId).result.then(
+            function(result) {
+            },
+            function() {
+              // ポップアップを閉じたあとも、ユーザ選択情報を保持
+              var groupSelectScope =
+                  angular.element('#group-user-select').scope();
+              SelectGroupUsers.selectUsers = groupSelectScope.users;
+            }
+        );
+      };
+    });
 
 NetCommonsApp.controller('Group.select',
     function($scope, $controller, $http, $q,
@@ -349,7 +357,7 @@ NetCommonsApp.controller('Group.select',
       $scope.select = function(index) {
         var result = filterFilter($scope.groupList,
             //$scope.groupList[index]);
-            {id:$scope.groupList[index]['id']}, true);
+            {id: $scope.groupList[index]['id']}, true);
 
         if (!angular.isArray($scope.selectors)) {
           $scope.selectors = [];
@@ -369,7 +377,7 @@ NetCommonsApp.controller('Group.select',
           return false;
         }
         //var result = filterFilter($scope.selectors, obj);
-        var result = filterFilter($scope.selectors, {id:obj['id']}, true);
+        var result = filterFilter($scope.selectors, {id: obj['id']}, true);
         return !(result.length === 0);
       };
 

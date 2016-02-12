@@ -42,6 +42,11 @@ class GroupsController extends GroupsAppController {
 		'UserAttributes.UserAttributeLayout',
 	);
 
+/**
+ * use helper
+ *
+ * @var array
+ */
 	public $helpers = array(
 		'NetCommons.Token',
 		'Users.UserSearch',
@@ -104,9 +109,10 @@ class GroupsController extends GroupsAppController {
 		}
 	}
 
-	/**
+/**
  * add method
  *
+ * @param boolean $isModal モーダル表示の有無
  * @return void
  */
 	public function add($isModal=null) {

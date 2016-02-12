@@ -57,6 +57,15 @@ class GroupsUser extends GroupsAppModel {
 		),
 	);
 
+/**
+ * Called during validation operations, before validation. Please note that custom
+ * validation rules can be defined in $validate.
+ *
+ * @param array $options Options passed from Model::save().
+ * @return bool True if validate operation should continue, false to abort
+ * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforevalidate
+ * @see Model::save()
+ */
 	public function beforeValidate($options = array())
 	{
 		$this->validate = array(
@@ -78,6 +87,12 @@ class GroupsUser extends GroupsAppModel {
 		return parent::beforeValidate($options);
 	}
 
+/**
+ * Check if the user has been selected
+ *
+ * @param mixed $check Value to check
+ * @return bool Success
+ */
 	public function isUserSelected($check) {
 		if (!isset($check['user_id']) || count($check['user_id']) === 0) {
 			return false;
@@ -85,6 +100,12 @@ class GroupsUser extends GroupsAppModel {
 		return true;
 	}
 
+/**
+ * Check whether the user is not a selection upper limit
+ *
+ * @param mixed $check Value to check
+ * @return bool Success
+ */
 	public function isUserWithinLimits($check) {
 		if (count($check['user_id']) > GroupsUser::LIMIT_ENTRY_NUM) {
 			return false;
@@ -92,6 +113,12 @@ class GroupsUser extends GroupsAppModel {
 		return true;
 	}
 
+/**
+ * Check if the user exists
+ *
+ * @param mixed $check Value to check
+ * @return bool Success
+ */
 	public function isExists($userId) {
 		$this->loadModels(array(
 			'User' => 'Users.User',
@@ -112,6 +139,12 @@ class GroupsUser extends GroupsAppModel {
 		return true;
 	}
 
+/**
+ * Register the string attached user information to the group
+ *
+ * @param mixed $data Groups users data
+ * @return bool Success
+ */
 	public function saveGroupUser($data) {
 		$this->begin();
 
@@ -133,6 +166,13 @@ class GroupsUser extends GroupsAppModel {
 
 		return true;
 	}
+
+	/**
+	 * It gets a string attached user information to the group
+	 *
+	 * @param int $id Groups.id
+	 * @return array Group users array
+	 */
 
 	function getGroupUsers($id) {
 		if (empty($id)) {

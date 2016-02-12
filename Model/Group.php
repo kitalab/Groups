@@ -23,7 +23,7 @@ class Group extends GroupsAppModel {
 
 /**
  * use tables
- * 
+ *
  * @var string
  */
 	public $useTable = 'groups';
@@ -35,6 +35,11 @@ class Group extends GroupsAppModel {
  */
 	public $validate = array();
 
+/**
+ * hasMany associations
+ *
+ * @var array
+ */
 	public $hasMany = array(
 		'GroupsUser' => array(
 			'className' => 'Groups.GroupsUser',
@@ -43,10 +48,15 @@ class Group extends GroupsAppModel {
 		)
 	);
 
+/**
+ * use behaviors
+ *
+ * @var array
+ */
 	public $actsAs = array(
 		'Groups.GroupsUser'
 	);
-	
+
 /**
  * hasAndBelongsToMany associations
  *
@@ -68,6 +78,15 @@ class Group extends GroupsAppModel {
 		)
 	);
 
+/**
+ * Called during validation operations, before validation. Please note that custom
+ * validation rules can be defined in $validate.
+ *
+ * @param array $options Options passed from Model::save().
+ * @return bool True if validate operation should continue, false to abort
+ * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforevalidate
+ * @see Model::save()
+ */
 	public function beforeValidate($options = array())
 	{
 		$this->validate = array(
@@ -150,16 +169,15 @@ class Group extends GroupsAppModel {
 			}
 
 			// GroupsUserデータの登録
-			if (isset($data['GroupsUser']['user_id']) && count($data['GroupsUser']['user_id']) > 0) {
-				foreach ($data['GroupsUser']['user_id'] as $userId) {
-					$groupUser = array(
-						'group_id' => $groupId,
-						'user_id' => $userId
-					);
-					$this->GroupsUser->create(false);
-					if (!$this->GroupsUser->saveGroupUser($groupUser)) {
-						throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-					}
+			$groupUsers = Hash::get($data, 'GroupsUser.user_id');
+			foreach ($groupUsers as $userId) {
+				$groupUser = array(
+					'group_id' => $groupId,
+					'user_id' => $userId
+				);
+				$this->GroupsUser->create(false);
+				if (!$this->GroupsUser->saveGroupUser($groupUser)) {
+					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 				}
 			}
 
