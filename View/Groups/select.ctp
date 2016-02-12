@@ -17,6 +17,7 @@ $data = array(
 //	'Room' => array('id' => $roomId),
 	'GroupSelect' => array('group_id' => array()),
 );
+<<<<<<< HEAD
 //$tokenFields = Hash::flatten($data);
 //$hiddenFields = $tokenFields;
 //unset($hiddenFields['GroupSelect.group_id']);
@@ -26,6 +27,17 @@ $data = array(
 //$this->Token->unlockField('GroupSelect.group_id');
 //$tokens = $this->Token->getToken('Group', '/groups/groups/select/' . Current::read('User.id'), $tokenFields, $hiddenFields);
 //$data += $tokens;
+=======
+$tokenFields = Hash::flatten($data);
+$hiddenFields = $tokenFields;
+unset($hiddenFields['GroupSelect.group_id']);
+$hiddenFields = array_keys($hiddenFields);
+
+$this->request->data = $data;
+$this->Token->unlockField('GroupSelect.group_id');
+$tokens = $this->Token->getToken('Group', '/groups/groups/select/' . Current::read('User.id'), $tokenFields, $hiddenFields);
+$data += $tokens;
+>>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 
 echo $this->NetCommonsHtml->css(array(
 	'/groups/css/style.css',

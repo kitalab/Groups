@@ -5,11 +5,10 @@
  * @property Group $Group
  * @property User $User
  *
- * @author Noriko Arai <arai@nii.ac.jp>
- * @author Kazutaka Yamada <yamada.kazutaka@withone.co.jp>
+ * @author Masaki Goto <go8ogle@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
- * @copyright Copyright 2014, NetCommons Project
+ * @copyright Copyright 2016, NetCommons Project
  */
 
 App::uses('GroupsAppModel', 'Groups.Model');
@@ -28,6 +27,20 @@ class GroupsUser extends GroupsAppModel {
 * @var string
 */
 	public $useTable = 'groups_users';
+
+/**
+ * use tables
+ *
+ * @var string
+ */
+	public $useTable = 'groups_users';
+
+/**
+ * 1グループに登録可能な人数の定数
+ *
+ * @var const
+ */
+	const LIMIT_ENTRY_NUM = 100;
 
 /**
  * Validation rules
@@ -51,6 +64,97 @@ class GroupsUser extends GroupsAppModel {
 		),
 	);
 
+<<<<<<< HEAD
+=======
+/**
+ * Called during validation operations, before validation. Please note that custom
+ * validation rules can be defined in $validate.
+ *
+ * @param array $options Options passed from Model::save().
+ * @return bool True if validate operation should continue, false to abort
+ * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforevalidate
+ * @see Model::save()
+ */
+	public function beforeValidate($options = array()) {
+		$this->validate = array(
+			'user_id' => array(
+				'notBlank' => array(
+					'rule' => array('isUserSelected'),
+					'required' => true,
+					'last' => false,
+					'message' => __d('groups', 'Select user'),
+				),
+				'maxLength' => array(
+					'rule' => array('isUserWithinLimits'),
+					'last' => false,
+					'message' => sprintf(__d('groups', 'Can be registered upper limit is %s'), GroupsUser::LIMIT_ENTRY_NUM),
+				),
+			)
+		);
+
+		return parent::beforeValidate($options);
+	}
+
+/**
+ * Check if the user has been selected
+ *
+ * @param mixed $check Value to check
+ * @return bool Success
+ */
+	public function isUserSelected($check) {
+		if (!isset($check['user_id']) || count($check['user_id']) === 0) {
+			return false;
+		}
+		return true;
+	}
+
+/**
+ * Check whether the user is not a selection upper limit
+ *
+ * @param mixed $check Value to check
+ * @return bool Success
+ */
+	public function isUserWithinLimits($check) {
+		if (count($check['user_id']) > GroupsUser::LIMIT_ENTRY_NUM) {
+			return false;
+		}
+		return true;
+	}
+
+/**
+ * Check if the user exists
+ *
+ * @param mixed $userId Value to check
+ * @return bool Success
+ */
+	public function isExists($userId) {
+		$this->loadModels(array(
+			'User' => 'Users.User',
+		));
+
+		$params = array(
+			'recursive' => -1,
+			'conditions' => array(
+				'User.id' => $userId,
+				'User.is_deleted' => 0,
+			),
+			'fields' => array(),
+		);
+		$userCnt = $this->User->find('count', $params);
+		if (! $userCnt) {
+			return false;
+		}
+		return true;
+	}
+
+/**
+ * Register the string attached user information to the group
+ *
+ * @param mixed $data Groups users data
+ * @throws InternalErrorException
+ * @return bool Success
+ */
+>>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 	public function saveGroupUser($data) {
 		$this->begin();
 
@@ -73,7 +177,17 @@ class GroupsUser extends GroupsAppModel {
 		return true;
 	}
 
+<<<<<<< HEAD
 	function getGroupUsers($id) {
+=======
+/**
+ * It gets a string attached user information to the group
+ *
+ * @param int $id Groups.id
+ * @return array Group users array
+ */
+	public function getGroupUsers($id) {
+>>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 		if (empty($id)) {
 			return array();
 		}
@@ -115,9 +229,12 @@ class GroupsUser extends GroupsAppModel {
 
 		return $groupDetail;
 	}
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 }

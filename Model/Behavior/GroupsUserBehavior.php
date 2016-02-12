@@ -1,0 +1,62 @@
+<?php
+/**
+ * GroupsUser Behavior
+ *
+ * @author Masaki Goto <go8ogle@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2016, NetCommons Project
+ */
+
+App::uses('ModelBehavior', 'Model');
+
+/**
+ * GroupsUser Behavior
+ *
+ * 選択したユーザを登録
+ *
+ * @author Masaki Goto <go8ogle@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ */
+class GroupsUserBehavior extends ModelBehavior {
+
+/**
+ * beforeValidate is called before a model is validated, you can use this callback to
+ * add behavior validation rules into a models validate array. Returning false
+ * will allow you to make the validation fail.
+ *
+ * @param Model $model Model using this behavior
+ * @param array $options Options passed from Model::save().
+ * @return mixed False or null will abort the operation. Any other result will continue.
+ * @see Model::save()
+ */
+	public function beforeValidate(Model $model, $options = array()) {
+		$model->loadModels(array(
+			'Group' => 'Groups.Group',
+			'GroupsUser' => 'Groups.GroupsUser',
+		));
+
+		$model->Group->set($model->Group->data['Group']);
+
+		if (! isset($model->data['GroupsUser']['user_id'])) {
+			$model->data['GroupsUser']['user_id'] = array();
+		}
+		$validUsers = array();
+		foreach ($model->data['GroupsUser']['user_id'] as $userId) {
+			if (! $model->GroupsUser->isExists($userId)) {
+				continue;
+			}
+			$validUsers[] = $userId;
+		}
+		$model->data['GroupsUser']['user_id'] = $validUsers;
+		$model->GroupsUser->set($model->data['GroupsUser']);
+		if (! $model->GroupsUser->validates()) {
+				$model->validationErrors = Hash::merge($model->validationErrors, $model->GroupsUser->validationErrors);
+				return false;
+		}
+
+		return true;
+	}
+
+}
