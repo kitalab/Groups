@@ -16,31 +16,6 @@ echo $this->NetCommonsHtml->script(array(
 ));
 ?>
 
-<<<<<<< HEAD
-<ul class="nav nav-tabs" role="tablist">
-	<li class="disabled">
-		<a href="">
-			<?php echo __d('users', 'User information'); ?>
-		</a>
-	</li>
-
-	<li class="disabled">
-		<a href="">
-			<?php echo __d('users', 'Rooms'); ?>
-		</a>
-	</li>
-
-	<li class="active">
-		<a href="#user-groups" aria-controls="user-groups" role="tab" data-toggle="tab">
-			<?php echo __d('groups', 'Groups management'); ?>
-		</a>
-	</li>
-</ul>
-<br>
-
-<!-- 編集フォーム -->
-<?php echo $this->element('Groups.edit_form'); ?>
-=======
 <?php if (! (int)$isModal): ?>
 	<ul class="nav nav-tabs" role="tablist">
 		<li class="disabled">
@@ -70,13 +45,8 @@ echo $this->NetCommonsHtml->script(array(
 
 <!-- 編集フォーム -->
 <?php echo $this->element('Groups.edit_form', array('isModal' => $isModal)); ?>
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 
 <!-- 削除エリア -->
 <?php if ($this->params['action'] === 'edit') : ?>
 	<?php echo $this->element('Groups.delete_form'); ?>
-<<<<<<< HEAD
-<?php endif; ?>
-=======
 <?php endif;
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b

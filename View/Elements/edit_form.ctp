@@ -13,36 +13,12 @@
  */
 
 $usersJson = array();
-<<<<<<< HEAD
-if (isset($this->data['GroupsUsersDetail']) && is_array($this->data['GroupsUsersDetail'])) {
-	foreach ($this->data['GroupsUsersDetail'] as $groupUser) {
-=======
 if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request->data['GroupsUsersDetail'])) {
 	foreach ($this->request->data['GroupsUsersDetail'] as $groupUser) {
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 		$usersJson[] = $this->UserSearch->convertUserArrayByUserSelection($groupUser, 'User');
 	}
 }
 ?>
-<<<<<<< HEAD
-
-<div id="groups-select-users" class="panel panel-default">
-	<?php echo $this->NetCommonsForm->create('Group', array('type' => 'file')); ?>
-	<div class="panel-body" ng-controller="GroupsSelectGroup">
-		<!-- グループ名 -->
-		<?php echo $this->NetCommonsForm->input('Group.name', array(
-			'type' => 'text',
-			'label' => __d('groups', 'Groups name'),
-		)); ?>
-
-		<!-- ユーザ選択 -->
-		<?php echo $this->element('Groups.select_users', array('usersJson' => $usersJson)); ?>
-	</div>
-
-	<!-- ボタン -->
-	<div class="panel-footer text-center">
-		<?php echo $this->Button->cancelAndSave(
-=======
 <?php if (! (int)$isModal): ?>
 	<h1>
 		<?php echo h(__d('groups', __d('groups', 'Group add'))); ?>
@@ -86,7 +62,6 @@ if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request-
 
 		<?php else: ?>
 			<?php echo $this->Button->cancelAndSave(
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 				__d('net_commons', 'Cancel'),
 				__d('net_commons', 'OK'),
 				$this->NetCommonsHtml->url(
@@ -95,10 +70,6 @@ if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request-
 						'controller' => 'users',
 						'action' => 'view' . '/' . Current::read('User.id') . '#/user-groups',
 					)
-<<<<<<< HEAD
-				)
-		); ?>
-=======
 				),
 				array(),
 				$this->NetCommonsHtml->url(
@@ -111,7 +82,6 @@ if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request-
 			); ?>
 		<?php endif; ?>
 		
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 	</div>
 	<?php echo $this->NetCommonsForm->end(); ?>
 </div>

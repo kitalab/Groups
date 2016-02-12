@@ -4,18 +4,10 @@
  *
  * @property Group $Group
  *
-<<<<<<< HEAD
- * @author Noriko Arai <arai@nii.ac.jp>
- * @author Masaki Goto <go8ogle@gmail.com>
- * @link http://www.netcommons.org NetCommons Project
- * @license http://www.netcommons.org/license.txt NetCommons License
- * @copyright Copyright 2015, NetCommons Project
-=======
  * @author Masaki Goto <go8ogle@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2016, NetCommons Project
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
  */
 
 App::uses('GroupsAppModel', 'Groups.Model');
@@ -31,11 +23,7 @@ class Group extends GroupsAppModel {
 
 /**
  * use tables
-<<<<<<< HEAD
- * 
-=======
  *
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
  * @var string
  */
 	public $useTable = 'groups';
@@ -46,14 +34,6 @@ class Group extends GroupsAppModel {
  * @var array
  */
 	public $validate = array();
-
-	public $hasMany = array(
-		'GroupsUser' => array(
-			'className' => 'Groups.GroupsUser',
-			'foreignKey' => 'group_id',
-			'dependent' => false
-		)
-	);
 
 /**
  * hasMany associations
@@ -99,8 +79,6 @@ class Group extends GroupsAppModel {
 	);
 
 /**
-<<<<<<< HEAD
-=======
  * Called during validation operations, before validation. Please note that custom
  * validation rules can be defined in $validate.
  *
@@ -125,19 +103,13 @@ class Group extends GroupsAppModel {
 	}
 
 /**
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
  * グループ一覧取得処理
  *
  * @return mixed On success Model::$data, false on failure
  * @throws InternalErrorException
  */
 	public function getGroupList() {
-<<<<<<< HEAD
-
-		$groups = $this->find('all',array(
-=======
 		$groups = $this->find('all', array(
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
 			'conditions' => array('Group.created_user' => Current::read('User.id')),
 			'order' => array('Group.created ASC'),
@@ -195,17 +167,12 @@ class Group extends GroupsAppModel {
 			}
 
 			// GroupsUserデータの登録
-<<<<<<< HEAD
-			foreach ($data['GroupsUser'] as $groupUser) {
-				$groupUser['group_id'] = $groupId;
-=======
 			$groupUsers = Hash::get($data, 'GroupsUser.user_id');
 			foreach ($groupUsers as $userId) {
 				$groupUser = array(
 					'group_id' => $groupId,
 					'user_id' => $userId
 				);
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 				$this->GroupsUser->create(false);
 				if (!$this->GroupsUser->saveGroupUser($groupUser)) {
 					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
