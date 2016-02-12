@@ -54,33 +54,7 @@ class GroupsController extends GroupsAppController {
 	);
 
 /**
- * index method
- *
- * @return void
- */
-	public function index() {
-		// グループ一覧取得
-		$groups = $this->Group->getGroupList();
-		$this->set('groups', $groups);
-	}
-
-/**
- * view method
- *
- * @param string $id groups.id
- * @return void
- * @throws NotFoundException
- */
-	public function view($id = null) {
-		if (!$this->Group->exists($id)) {
-			throw new NotFoundException(__('Invalid group'));
-		}
-		$options = array('conditions' => array('Group.' . $this->Group->primaryKey => $id));
-		$this->set('group', $this->Group->find('first', $options));
-	}
-
-/**
- * view method
+ * select method
  *
  * @return void
  * @throws NotFoundException

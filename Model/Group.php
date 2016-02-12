@@ -95,7 +95,7 @@ class Group extends GroupsAppModel {
 					'rule' => array('notBlank'),
 					'required' => true,
 					'allowEmpty' => false,
-					'message' => 'グループ名を入力してください。',
+					'message' => __d('groups', 'Please enter group name'),
 				)
 			)
 		);
