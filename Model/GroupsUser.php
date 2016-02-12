@@ -21,12 +21,6 @@ App::uses('GroupsAppModel', 'Groups.Model');
  * @license http://www.netcommons.org/license.txt NetCommons License
  */
 class GroupsUser extends GroupsAppModel {
-/**
-* use tables
-*
-* @var string
-*/
-	public $useTable = 'groups_users';
 
 /**
  * use tables
@@ -64,8 +58,6 @@ class GroupsUser extends GroupsAppModel {
 		),
 	);
 
-<<<<<<< HEAD
-=======
 /**
  * Called during validation operations, before validation. Please note that custom
  * validation rules can be defined in $validate.
@@ -154,7 +146,6 @@ class GroupsUser extends GroupsAppModel {
  * @throws InternalErrorException
  * @return bool Success
  */
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 	public function saveGroupUser($data) {
 		$this->begin();
 
@@ -177,9 +168,6 @@ class GroupsUser extends GroupsAppModel {
 		return true;
 	}
 
-<<<<<<< HEAD
-	function getGroupUsers($id) {
-=======
 /**
  * It gets a string attached user information to the group
  *
@@ -187,7 +175,6 @@ class GroupsUser extends GroupsAppModel {
  * @return array Group users array
  */
 	public function getGroupUsers($id) {
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 		if (empty($id)) {
 			return array();
 		}
@@ -229,12 +216,4 @@ class GroupsUser extends GroupsAppModel {
 
 		return $groupDetail;
 	}
-<<<<<<< HEAD
-
-
-
-
-
-=======
->>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 }
