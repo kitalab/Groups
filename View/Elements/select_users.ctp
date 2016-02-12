@@ -28,7 +28,9 @@ if (!isset($pluginModel)) {
 $this->NetCommonsForm->unlockField($pluginModel . '.user_id');
 ?>
 
-<div id="group-user-select" class="text-right clearfix" ng-controller="GroupsSelect" ng-init="initialize(<?php echo h(json_encode(array('users' => $usersJson))); ?>, '<?php echo h($pluginModel); ?>')" style="margin: 8px 0;">
+<div id="group-user-select" class="text-right clearfix"
+		ng-controller="GroupsSelect" ng-init="initialize(<?php echo h(json_encode(array('users' => $usersJson))); ?>,
+			'<?php echo h($pluginModel); ?>')" style="margin: 8px 0;">
 	<!-- 会員検索 -->
 	<div class="pull-right" ng-controller="GroupsSelectUser" >
 		<!--				<a href="" ng-click="showUserSelectionDialog('--><?php //echo Current::read('User.id'); ?><!--', '--><?php //echo Current::read('Room.id'); ?><!--')">-->

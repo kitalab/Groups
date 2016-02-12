@@ -32,7 +32,6 @@ class GroupsUserBehavior extends ModelBehavior {
  * @see Model::save()
  */
 	public function beforeValidate(Model $model, $options = array()) {
-
 		$model->loadModels(array(
 			'Group' => 'Groups.Group',
 			'GroupsUser' => 'Groups.GroupsUser',

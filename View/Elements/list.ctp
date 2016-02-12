@@ -58,7 +58,10 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 					</span>
 					<span class="nc-groups-avatar-list">
 						<?php foreach ($group['groupsUser'] as $groupsUser): ?>
-							<img class="user-avatar-xs" src="<?php echo $groupsUser['avatar']; ?>" alt="<?php echo $groupsUser['handlename']; ?>" title="<?php echo $groupsUser['handlename']; ?>" />
+							<img class="user-avatar-xs"
+								 src="<?php echo $groupsUser['avatar']; ?>"
+								 alt="<?php echo $groupsUser['handlename']; ?>"
+								 title="<?php echo $groupsUser['handlename']; ?>" />
 						<?php endforeach; ?>
 					</span>
 				</td>

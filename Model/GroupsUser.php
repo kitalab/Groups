@@ -143,7 +143,7 @@ class GroupsUser extends GroupsAppModel {
  * Register the string attached user information to the group
  *
  * @param mixed $data Groups users data
- * @throws Exception $ex
+ * @throws InternalErrorException
  * @return bool Success
  */
 	public function saveGroupUser($data) {
@@ -174,7 +174,7 @@ class GroupsUser extends GroupsAppModel {
  * @param int $id Groups.id
  * @return array Group users array
  */
-	function getGroupUsers($id) {
+	public function getGroupUsers($id) {
 		if (empty($id)) {
 			return array();
 		}
