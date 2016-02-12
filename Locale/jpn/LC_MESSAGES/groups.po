@@ -20,6 +20,7 @@ msgstr "グループ"
 msgid "Groups management"
 msgstr "グループ管理"
 
+<<<<<<< HEAD
 msgid "Groups name"
 msgstr "グループ名"
 
@@ -28,9 +29,38 @@ msgstr "更新日時"
 
 msgid "Groups select user"
 msgstr "選択してください。"
+=======
+msgid "Group name"
+msgstr "グループ名"
+
+msgid "Please enter group name"
+msgstr "グループ名を入力してください。"
+
+msgid "Select user"
+msgstr "ユーザを選択してください。"
+>>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 
 msgid "Group select"
 msgstr "グループ選択"
 
 msgid "Not found the group."
+<<<<<<< HEAD
 msgstr "1件もありません。"
+=======
+msgstr "1件もありません。"
+
+msgid "Can be registered upper limit is %s"
+msgstr "登録可能な上限は%s人です。"
+
+msgid "Group add"
+msgstr "グループ登録"
+
+msgid "Create a new group in the above-described member"
+msgstr "上記の会員でグループを新規作成"
+
+msgid "User search"
+msgstr "ユーザ検索"
+
+msgid "Group search"
+msgstr "グループ検索"
+>>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b

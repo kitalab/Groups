@@ -29,11 +29,19 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 </div>
 
 <div class="table-responsive">
+<<<<<<< HEAD
+=======
+	<?php if (count($groupListJson) > 0): ?>
+>>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 	<table class="table table-condensed">
 		<thead>
 			<tr>
 				<th></th>
+<<<<<<< HEAD
 				<th><?php echo __d('groups', 'Groups name'); ?></th>
+=======
+				<th><?php echo __d('groups', 'Group name'); ?></th>
+>>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 			</tr>
 		</thead>
 		<tbody>
@@ -57,7 +65,14 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 					</span>
 					<span class="nc-groups-avatar-list">
 						<?php foreach ($group['groupsUser'] as $groupsUser): ?>
+<<<<<<< HEAD
 							<img class="user-avatar-xs" src="<?php echo $groupsUser['avatar']; ?>" alt="<?php echo $groupsUser['handlename']; ?>" title="<?php echo $groupsUser['handlename']; ?>" />
+=======
+							<img class="user-avatar-xs"
+								 src="<?php echo $groupsUser['avatar']; ?>"
+								 alt="<?php echo $groupsUser['handlename']; ?>"
+								 title="<?php echo $groupsUser['handlename']; ?>" />
+>>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 						<?php endforeach; ?>
 					</span>
 				</td>
@@ -65,4 +80,10 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 		<?php endforeach; ?>
 		</tbody>
 	</table>
+<<<<<<< HEAD
+=======
+	<?php else: ?>
+		<?php echo __d('groups', 'Not found the group.'); ?>
+	<?php endif;?>
+>>>>>>> 5add7ac49e11c80f097e28a0be820b23d7b6d92b
 </div>
