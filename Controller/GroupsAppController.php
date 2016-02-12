@@ -17,12 +17,13 @@ App::uses('AppController', 'Controller');
  * @package NetCommons\Groups\Controller
  */
 class GroupsAppController extends AppController {
-    /**
-     * use components
-     *
-     * @var array
-     */
-    public $components = array(
-        'Security',
-    );
+
+/**
+ * use components
+ *
+ * @var array
+ */
+	public $components = array(
+		'Security',
+	);
 }

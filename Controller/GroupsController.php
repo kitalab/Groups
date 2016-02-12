@@ -86,11 +86,10 @@ class GroupsController extends GroupsAppController {
 /**
  * add method
  *
- * @param boolean $isModal モーダル表示の有無
+ * @param bool $isModal モーダル表示の有無
  * @return void
  */
-	public function add($isModal=null) {
-
+	public function add($isModal = null) {
 		$this->view = 'edit';
 		if ((int)$isModal) {
 			$this->viewClass = 'View';
@@ -183,7 +182,6 @@ class GroupsController extends GroupsAppController {
  * @throws NotFoundException
  */
 	public function delete($id = null) {
-
 		$this->Group->id = $id;
 		if (!$this->Group->exists()) {
 			throw new NotFoundException(__('Invalid group'));

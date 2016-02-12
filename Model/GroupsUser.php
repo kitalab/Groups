@@ -21,11 +21,12 @@ App::uses('GroupsAppModel', 'Groups.Model');
  * @license http://www.netcommons.org/license.txt NetCommons License
  */
 class GroupsUser extends GroupsAppModel {
+
 /**
-* use tables
-*
-* @var string
-*/
+ * use tables
+ *
+ * @var string
+ */
 	public $useTable = 'groups_users';
 
 /**
@@ -66,8 +67,7 @@ class GroupsUser extends GroupsAppModel {
  * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforevalidate
  * @see Model::save()
  */
-	public function beforeValidate($options = array())
-	{
+	public function beforeValidate($options = array()) {
 		$this->validate = array(
 			'user_id' => array(
 				'notBlank' => array(
@@ -116,7 +116,7 @@ class GroupsUser extends GroupsAppModel {
 /**
  * Check if the user exists
  *
- * @param mixed $check Value to check
+ * @param mixed $userId Value to check
  * @return bool Success
  */
 	public function isExists($userId) {
@@ -143,6 +143,7 @@ class GroupsUser extends GroupsAppModel {
  * Register the string attached user information to the group
  *
  * @param mixed $data Groups users data
+ * @throws Exception $ex
  * @return bool Success
  */
 	public function saveGroupUser($data) {
@@ -167,13 +168,12 @@ class GroupsUser extends GroupsAppModel {
 		return true;
 	}
 
-	/**
-	 * It gets a string attached user information to the group
-	 *
-	 * @param int $id Groups.id
-	 * @return array Group users array
-	 */
-
+/**
+ * It gets a string attached user information to the group
+ *
+ * @param int $id Groups.id
+ * @return array Group users array
+ */
 	function getGroupUsers($id) {
 		if (empty($id)) {
 			return array();

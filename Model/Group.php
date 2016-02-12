@@ -87,8 +87,7 @@ class Group extends GroupsAppModel {
  * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforevalidate
  * @see Model::save()
  */
-	public function beforeValidate($options = array())
-	{
+	public function beforeValidate($options = array()) {
 		$this->validate = array(
 			'name' => array(
 				'notBlank' => array(
@@ -110,8 +109,7 @@ class Group extends GroupsAppModel {
  * @throws InternalErrorException
  */
 	public function getGroupList() {
-
-		$groups = $this->find('all',array(
+		$groups = $this->find('all', array(
 			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
 			'conditions' => array('Group.created_user' => Current::read('User.id')),
 			'order' => array('Group.created ASC'),

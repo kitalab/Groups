@@ -20,9 +20,9 @@ if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request-
 }
 ?>
 <?php if (! (int)$isModal): ?>
-<h1>
-	<?php echo h(__d('groups', __d('groups', 'Group add'))); ?>
-</h1>
+	<h1>
+		<?php echo h(__d('groups', __d('groups', 'Group add'))); ?>
+	</h1>
 <?php endif; ?>
 
 <div id="groups-select-users" class="panel panel-default" ng-controller="GroupsAddGroup">
