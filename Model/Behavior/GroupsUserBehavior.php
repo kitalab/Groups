@@ -35,6 +35,7 @@ class GroupsUserBehavior extends ModelBehavior {
 		$model->loadModels(array(
 			'Group' => 'Groups.Group',
 			'GroupsUser' => 'Groups.GroupsUser',
+			'User' => 'Users.User',
 		));
 
 		$model->Group->set($model->Group->data['Group']);
@@ -42,18 +43,16 @@ class GroupsUserBehavior extends ModelBehavior {
 		if (! isset($model->data['GroupsUser']['user_id'])) {
 			$model->data['GroupsUser']['user_id'] = array();
 		}
-		$validUsers = array();
-		foreach ($model->data['GroupsUser']['user_id'] as $userId) {
-			if (! $model->GroupsUser->isExists($userId)) {
-				continue;
-			}
-			$validUsers[] = $userId;
-		}
-		$model->data['GroupsUser']['user_id'] = $validUsers;
 		$model->GroupsUser->set($model->data['GroupsUser']);
 		if (! $model->GroupsUser->validates()) {
 				$model->validationErrors = Hash::merge($model->validationErrors, $model->GroupsUser->validationErrors);
 				return false;
+		}
+		if (! $model->User->existsUser($model->data['GroupsUser']['user_id'])) {
+			$model->GroupsUser->validationErrors['user_id'][] =
+				sprintf(__d('net_commons', 'Failed on validation errors. Please check the input data.'));
+			$model->validationErrors = Hash::merge($model->validationErrors, $model->GroupsUser->validationErrors);
+			return false;
 		}
 
 		return true;

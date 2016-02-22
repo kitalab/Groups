@@ -114,32 +114,6 @@ class GroupsUser extends GroupsAppModel {
 	}
 
 /**
- * Check if the user exists
- *
- * @param mixed $userId Value to check
- * @return bool Success
- */
-	public function isExists($userId) {
-		$this->loadModels(array(
-			'User' => 'Users.User',
-		));
-
-		$params = array(
-			'recursive' => -1,
-			'conditions' => array(
-				'User.id' => $userId,
-				'User.is_deleted' => 0,
-			),
-			'fields' => array(),
-		);
-		$userCnt = $this->User->find('count', $params);
-		if (! $userCnt) {
-			return false;
-		}
-		return true;
-	}
-
-/**
  * Register the string attached user information to the group
  *
  * @param mixed $data Groups users data
