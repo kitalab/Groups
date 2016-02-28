@@ -1,6 +1,6 @@
 <?php
 /**
- * GroupFixture
+ * GroupsUserFixture
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -10,9 +10,9 @@
  */
 
 /**
- * Summary for GroupFixture
+ * Summary for GroupsUserFixture
  */
-class GroupFixture extends CakeTestFixture {
+class GroupsUserFixture extends CakeTestFixture {
 
 /**
  * Fields
@@ -21,7 +21,8 @@ class GroupFixture extends CakeTestFixture {
  */
 	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'group_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
+		'user_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
 		'created_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'modified_user' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
@@ -40,11 +41,12 @@ class GroupFixture extends CakeTestFixture {
 	public $records = array(
 		array(
 			'id' => '1',
-			'name' => 'Lorem ipsum dolor sit amet',
+			'group_id' => '1',
+			'user_id' => '1',
 			'created_user' => '1',
-			'created' => '2016-02-28 04:57:50',
+			'created' => '2016-02-28 04:58:01',
 			'modified_user' => '1',
-			'modified' => '2016-02-28 04:57:50'
+			'modified' => '2016-02-28 04:58:01'
 		),
 	);
 
