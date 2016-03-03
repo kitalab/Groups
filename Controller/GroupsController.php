@@ -40,6 +40,12 @@ class GroupsController extends GroupsAppController {
 	public $components = array(
 		'M17n.SwitchLanguage',
 		'UserAttributes.UserAttributeLayout',
+		'NetCommons.Permission' => array(
+			//アクセスの権限
+			'allow' => array(
+				'add,edit,delete' => 'content_creatable',
+			),
+		),
 	);
 
 /**
