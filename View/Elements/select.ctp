@@ -26,6 +26,9 @@ if (isset($selectUsers) && is_array($selectUsers)) {
 		$usersJson[] = $this->UserSearch->convertUserArrayByUserSelection($selectUser, 'User');
 	}
 }
+if (! isset($roomId)) {
+	$roomId = Room::PUBLIC_PARENT_ID;	// TODO ROOM_PARENT_IDに変更
+}
 ?>
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -36,6 +39,7 @@ if (isset($selectUsers) && is_array($selectUsers)) {
 			array(
 				'pluginModel' => $pluginModel,
 				'usersJson' => $usersJson,
+				'roomId' => $roomId,
 			)); ?>
 		<div class="text-right" ng-controller="GroupsAddGroup">
 			<?php

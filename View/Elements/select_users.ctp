@@ -33,8 +33,7 @@ $this->NetCommonsForm->unlockField($pluginModel . '.user_id');
 			'<?php echo h($pluginModel); ?>')" style="margin: 8px 0;">
 	<!-- 会員検索 -->
 	<div class="pull-right" ng-controller="GroupsSelectUser" >
-		<!--				<a href="" ng-click="showUserSelectionDialog('--><?php //echo Current::read('User.id'); ?><!--', '--><?php //echo Current::read('Room.id'); ?><!--')">-->
-		<a href="" ng-click="showUserSelectionDialog('<?php echo Current::read('User.id'); ?>', '<?php echo 1 ?>')">
+		<a href="" ng-click="showUserSelectionDialog('<?php echo Current::read('User.id'); ?>', '<?php echo (int)$roomId; ?>')">
 			<span class="glyphicon glyphicon-search"></span>
 			<?php echo __d('groups', 'User search'); ?>
 		</a>
