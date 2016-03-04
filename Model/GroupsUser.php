@@ -145,49 +145,41 @@ class GroupsUser extends GroupsAppModel {
 /**
  * It gets a string attached user information to the group
  *
- * @param int $id Groups.id
+ * @param array $userIdArr GroupsUser.user_id
  * @return array Group users array
  */
-	public function getGroupUsers($id) {
-		if (empty($id)) {
+	public function getGroupUsers($userIdArr) {
+		if (empty($userIdArr)) {
 			return array();
 		}
 
 		$this->loadModels([
-				'User' => 'Users.User',
-				'UploadFile' => 'Files.UploadFile',
+			'User' => 'Users.User',
+			'UploadFile' => 'Files.UploadFile',
 		]);
 		$this->User->prepare();
 
-		$groupDetail = $this->find('all', array(
-				'recursive' => 0,
-				'fields' => array('GroupsUser.*', 'User.*', 'UploadFile.*'),
-				'conditions' => array(
-						$this->alias . '.group_id' => $id,
-						$this->User->alias . '.is_deleted' => false,
+		$groupUsers = $this->User->find('all', array(
+			'recursive' => -1,
+			'fields' => array('User.*', 'UploadFile.*'),
+			'conditions' => array(
+				$this->User->alias . '.id' => $userIdArr,
+				$this->User->alias . '.is_deleted' => false,
+			),
+			'joins' => array(
+				array(
+					'table' => $this->UploadFile->table,
+					'alias' => $this->UploadFile->alias,
+					'type' => 'LEFT',
+					'conditions' => array(
+						$this->User->alias . '.id' . ' = ' . $this->UploadFile->alias . '.content_key',
+						$this->UploadFile->alias . '.field_name' => UserAttribute::AVATAR_FIELD,
+					),
 				),
-				'joins' => array(
-						array(
-								'table' => $this->User->table,
-								'alias' => $this->User->alias,
-								'type' => 'INNER',
-								'conditions' => array(
-										$this->alias . '.user_id' . ' = ' . $this->User->alias . '.id',
-								),
-						),
-						array(
-								'table' => $this->UploadFile->table,
-								'alias' => $this->UploadFile->alias,
-								'type' => 'LEFT',
-								'conditions' => array(
-										$this->User->alias . '.id' . ' = ' . $this->UploadFile->alias . '.content_key',
-										$this->UploadFile->alias . '.field_name' => UserAttribute::AVATAR_FIELD,
-								),
-						),
-				),
-				'order' => array($this->alias . '.created' => 'ASC'),
+			),
+			'order' => array('FIELD(' . $this->User->alias . '.id, ' . implode(',', $userIdArr) . ')'),	// user_id順
 		));
 
-		return $groupDetail;
+		return $groupUsers;
 	}
 }

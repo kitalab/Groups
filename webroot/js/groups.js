@@ -322,9 +322,14 @@ NetCommonsApp.controller('Group.select',
       $scope.userId = options['userId'];
 
       /**
-       * 検索結果を保持する配列
+       * グループを保持する配列
        */
       $scope.groupList = [];
+
+      /**
+       * グループのユーザを保持する配列
+       */
+      $scope.groupUsersList = [];
 
       /**
        * 選択したユーザを保持する配列
@@ -341,12 +346,12 @@ NetCommonsApp.controller('Group.select',
        *
        * @return {void}
        */
-      //$scope.initialize = function(domId, groupList, data, field) {
-      $scope.initialize = function(groupList, data) {
+      $scope.initialize = function(groupList, groupUsersList, data) {
         $scope.data = data;
         if (angular.isArray(groupList) && groupList.length > 0) {
           $scope.groupList = groupList;
         }
+        $scope.groupUsersList = groupUsersList;
       };
 
       /**
@@ -355,15 +360,11 @@ NetCommonsApp.controller('Group.select',
        * @return {void}
        */
       $scope.select = function(index) {
-        var result = filterFilter($scope.groupList,
-            //$scope.groupList[index]);
-            {id: $scope.groupList[index]['id']}, true);
-
         if (!angular.isArray($scope.selectors)) {
           $scope.selectors = [];
         }
-        if (!$scope.selected(result[0])) {
-          $scope.selectors.push(result[0]);
+        if (!$scope.selected($scope.groupList[index])) {
+          $scope.selectors.push($scope.groupList[index]);
         }
       };
 
@@ -376,9 +377,14 @@ NetCommonsApp.controller('Group.select',
         if (!angular.isArray($scope.selectors)) {
           return false;
         }
-        //var result = filterFilter($scope.selectors, obj);
-        var result = filterFilter($scope.selectors, {id: obj['id']}, true);
-        return !(result.length === 0);
+        var result = false;
+        for (var i = 0; i < $scope.selectors.length; i++) {
+          if ($scope.selectors[i]['Group']['id'] === obj['Group']['id']) {
+            result = true;
+            break;
+          }
+        }
+        return result;
       };
 
       /**
@@ -406,7 +412,7 @@ NetCommonsApp.controller('Group.select',
        */
       $scope.save = function() {
         angular.forEach($scope.selectors, function(selector) {
-          this.data.GroupSelect.group_id.push(selector.id);
+          this.data.GroupSelect.group_id.push(selector.Group.id);
         }, $scope);
 
         saveGroupSelect()

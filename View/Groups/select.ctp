@@ -7,9 +7,9 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  */
 
-$groupListJson = array();
-if (!empty($groupList)) {
-	$groupListJson = $this->GroupUserList->convertGroupUserListForDisplay($groupList);
+$groupUsersList = array();
+if (!empty($groupUsers)) {
+	$groupUsersList = $this->GroupUserList->convertGroupUserListForDisplay($groupUsers);
 }
 
 $data = array(
@@ -38,12 +38,17 @@ echo $this->NetCommonsHtml->css(array(
 <?php echo __d('groups', 'Group select'); ?>
 <?php $this->end(); ?>
 
-<div ng-init="initialize(<?php echo h(json_encode($groupListJson)); ?>,
+<div ng-init="initialize(<?php echo h(json_encode($groups)); ?>,
+			<?php echo h(json_encode($groupUsersList));?>,
 			<?php echo h(json_encode($data)); ?>)">
 	<div class="panel panel-default">
 		<div class="panel-body pre-scrollable user-selection-list-group">
 			<div ng-if="groupList.length">
-				<?php echo $this->element('Groups.select_groups', array('groupType' => 'groupList')); ?>
+				<?php echo $this->element('Groups.select_groups', array(
+					'groupType' => 'groupList',
+					'groups' => $groups,
+					'groupUsersList' => $groupUsersList,
+				)); ?>
 			</div>
 			<div ng-if="!groupList.length">
 				<?php echo __d('groups', 'Not found the group.'); ?>
@@ -54,7 +59,11 @@ echo $this->NetCommonsHtml->css(array(
 	<div class="panel panel-default">
 		<div class="panel-body pre-scrollable user-selection-list-group">
 			<div ng-if="selectors.length">
-				<?php echo $this->element('Groups.select_groups', array('groupType' => 'selectors')); ?>
+				<?php echo $this->element('Groups.select_groups', array(
+					'groupType' => 'selectors',
+					'groups' => $groups,
+					'groupUsersList' => $groupUsersList,
+					)); ?>
 			</div>
 			<div ng-if="!selectors.length">
 				<?php echo __d('users', 'Not found the select user.'); ?>

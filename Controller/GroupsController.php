@@ -69,22 +69,20 @@ class GroupsController extends GroupsAppController {
 		$this->viewClass = 'View';
 
 		if ($this->request->isPost()) {
-			$data = array_map(function ($groupId) {
+			$groupIdArr = array_map(function ($groupId) {
 				return $groupId;
 			}, $this->request->data['GroupSelect']['group_id']);
-			if (!empty($data)) {
-				$groupUsers = array();
-				foreach ($data as $groupId) {
-					$groupUserData = $this->GroupsUser->getGroupUsers($groupId);
-					$groupUsers = array_merge_recursive($groupUsers, $groupUserData);
-				}
+			$groupUsers = array();
+			if (!empty($groupIdArr)) {
+				list($groups, $groupUsers) = $this->Group->getGroups($groupIdArr);
 			}
 			$this->set('users', $groupUsers);
 			$this->view = 'Groups.Groups/json/select';
 		} else {
 			// グループ一覧取得
-			$groups = $this->Group->getGroupList();
-			$this->set('groupList', $groups);
+			list($groups, $groupUsers) = $this->Group->getGroupList();
+			$this->set('groups', $groups);
+			$this->set('groupUsers', $groupUsers);
 			$this->layout = 'NetCommons.modal';
 		}
 	}
@@ -118,15 +116,8 @@ class GroupsController extends GroupsAppController {
 				}
 			} else {
 				if (isset($this->request->data['GroupsUser']['user_id'])) {
-					foreach ($this->request->data['GroupsUser']['user_id'] as $userId) {
-						// ユーザ選択情報を取得
-						//if (! $this->GroupsUser->isExists($userId)) {
-						//if (! $this->User->existsUser($userId)) {
-						//	continue;
-						//}
-						$user = $this->User->getUser($userId);
-						$this->request->data['GroupsUsersDetail'][] = $user;
-					}
+					$this->request->data['GroupsUsersDetail'] =
+						$this->GroupsUser->getGroupUsers($this->request->data['GroupsUser']['user_id']);
 				}
 			}
 			$this->NetCommons->handleValidationError($this->Group->validationErrors);
@@ -160,23 +151,13 @@ class GroupsController extends GroupsAppController {
 				return;
 			} else {
 				if (isset($this->request->data['GroupsUser']['user_id'])) {
-					foreach ($this->request->data['GroupsUser']['user_id'] as $userId) {
-						// ユーザ選択情報を取得
-						//if (! $this->GroupsUser->isExists($userId)) {
-						//if (! $this->User->existsUser($userId)) {
-						//	continue;
-						//}
-						$user = $this->User->getUser($userId);
-						$this->request->data['GroupsUsersDetail'][] = $user;
-					}
+					$this->request->data['GroupsUsersDetail'] =
+						$this->GroupsUser->getGroupUsers($this->request->data['GroupsUser']['user_id']);
 				}
 			}
 		} else {
-			$options = array('conditions' => array('Group.' . $this->Group->primaryKey => $id));
-			$this->request->data = $this->Group->find('first', $options);
 			// グループユーザ詳細情報を取得
-			$groupUsers = $this->GroupsUser->getGroupUsers($id);
-			$this->request->data['GroupsUsersDetail'] = $groupUsers;
+			$this->request->data = $this->Group->getGroupById($id);
 		}
 		$isModal = 0;
 		$this->set('isModal', $isModal);

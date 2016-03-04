@@ -21,10 +21,10 @@
 		<?php endif; ?>
 
 		<span class="nc-groups-select-group-name">
-			{{group.name}}
+			{{group.Group.name}}
 		</span>
-		<span ng-repeat="groupsUser in group.groupsUser">
-			<img class="user-avatar-xs" ng-src="{{groupsUser.avatar}}" alt="{{groupsUser.handlename}}" title="{{groupsUser.handlename}}" />
+		<span ng-repeat="groupsUser in group.GroupsUser">
+			<img class="user-avatar-xs" ng-src="{{groupUsersList[groupsUser.user_id].avatar}}" alt="{{groupUsersList[groupsUser.user_id].handlename}}" title="{{groupUsersList[groupsUser.user_id].handlename}}" />
 		</span>
 
 		<?php if ($groupType === 'selectors') : ?>

@@ -48,21 +48,18 @@ class GroupUserListHelper extends AppHelper {
 	}
 
 /**
- * ユーザ選択画面でJSON形式でユーザを表示する
+ * ユーザ情報を画面表示用に変換する処理
  *
- * @param array $groups グループ一覧データ
- * @return array JSON変換用配列
+ * @param array $groupUsers ユーザ配列
+ * @return array 画面表示用ユーザ配列
  */
-	public function convertGroupUserListForDisplay($groups) {
+	public function convertGroupUserListForDisplay($groupUsers) {
 		$result = array();
-		foreach ($groups as $group) {
-			$groupsUsers = array();
-			if (!empty($group['GroupsUser'])) {
-				foreach ($group['GroupsUser'] as $groupsUser) {
-					$groupsUsers[] = $this->UserSearch->convertUserArrayByUserSelection($groupsUser, 'User');
-				}
+		foreach ($groupUsers as $user) {
+			if (! isset($user['User']['id'])) {
+				continue;
 			}
-			$result[] = array_merge_recursive($group['Group'], array('groupsUser' => $groupsUsers));
+			$result[$user['User']['id']] = $this->UserSearch->convertUserArrayByUserSelection($user, 'User');
 		}
 		return $result;
 	}
