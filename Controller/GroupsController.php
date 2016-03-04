@@ -115,9 +115,10 @@ class GroupsController extends GroupsAppController {
 					return;
 				}
 			} else {
-				if (isset($this->request->data['GroupsUser']['user_id'])) {
+				if (isset($this->request->data['GroupsUser'])) {
+					$userIdArr = Hash::extract($this->request->data['GroupsUser'], '{n}.user_id');
 					$this->request->data['GroupsUsersDetail'] =
-						$this->GroupsUser->getGroupUsers($this->request->data['GroupsUser']['user_id']);
+						$this->GroupsUser->getGroupUsers($userIdArr);
 				}
 			}
 			$this->NetCommons->handleValidationError($this->Group->validationErrors);
@@ -150,9 +151,10 @@ class GroupsController extends GroupsAppController {
 				$this->redirect('/users/users/view/' . Current::read('User.id') . '#/user-groups');
 				return;
 			} else {
-				if (isset($this->request->data['GroupsUser']['user_id'])) {
+				if (isset($this->request->data['GroupsUser'])) {
+					$userIdArr = Hash::extract($this->request->data['GroupsUser'], '{n}.user_id');
 					$this->request->data['GroupsUsersDetail'] =
-						$this->GroupsUser->getGroupUsers($this->request->data['GroupsUser']['user_id']);
+						$this->GroupsUser->getGroupUsers($userIdArr);
 				}
 			}
 		} else {

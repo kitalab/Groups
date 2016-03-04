@@ -185,7 +185,7 @@ NetCommonsApp.directive('groupsSelectedUsers', function() {
         'ng-click="deleteUser(user.id);">' +
         '<span class="glyphicon glyphicon-remove"></span>' + '</button>' +
         '<input type="hidden" ' +
-            'name="data[{{pluginModel}}][user_id][{{user.id}}]" ' +
+            'name="data[{{pluginModel}}][{{$index}}][user_id]" ' +
         'value="{{user.id}}" />' +
         '</div>',
     transclude: false,

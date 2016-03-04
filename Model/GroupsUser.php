@@ -68,49 +68,18 @@ class GroupsUser extends GroupsAppModel {
  * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
-		$this->validate = array(
-			'user_id' => array(
-				'notBlank' => array(
-					'rule' => array('isUserSelected'),
-					'required' => true,
-					'last' => false,
-					'message' => __d('groups', 'Select user'),
-				),
-				'maxLength' => array(
-					'rule' => array('isUserWithinLimits'),
-					'last' => false,
-					'message' => sprintf(__d('groups', 'Can be registered upper limit is %s'), GroupsUser::LIMIT_ENTRY_NUM),
-				),
-			)
-		);
+		// ユーザ選択チェック
+		if (! isset($this->data['GroupsUser']) || count($this->data['GroupsUser']) === 0) {
+			$this->validationErrors['user_id'][] = __d('groups', 'Select user');
+			return false;
+		}
+		if (count($this->data['GroupsUser']) > GroupsUser::LIMIT_ENTRY_NUM) {
+			$this->validationErrors['user_id'][] =
+				sprintf(__d('groups', 'Can be registered upper limit is %s'), GroupsUser::LIMIT_ENTRY_NUM);
+			return false;
+		}
 
 		return parent::beforeValidate($options);
-	}
-
-/**
- * Check if the user has been selected
- *
- * @param mixed $check Value to check
- * @return bool Success
- */
-	public function isUserSelected($check) {
-		if (!isset($check['user_id']) || count($check['user_id']) === 0) {
-			return false;
-		}
-		return true;
-	}
-
-/**
- * Check whether the user is not a selection upper limit
- *
- * @param mixed $check Value to check
- * @return bool Success
- */
-	public function isUserWithinLimits($check) {
-		if (count($check['user_id']) > GroupsUser::LIMIT_ENTRY_NUM) {
-			return false;
-		}
-		return true;
 	}
 
 /**

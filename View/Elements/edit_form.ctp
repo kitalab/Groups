@@ -38,7 +38,7 @@ $roomId = Room::PUBLIC_PARENT_ID;	// TODO ROOM_PARENT_IDに変更
 			)); ?>
 		</div>
 		<?php echo $this->NetCommonsForm->error('GroupsUser.user_id'); ?>
-  
+
 		<!-- ユーザ選択 -->
 		<?php if ((int)$isModal): $className = 'hidden' ?>
 		<?php else: $className = 'show' ?>
@@ -85,7 +85,7 @@ $roomId = Room::PUBLIC_PARENT_ID;	// TODO ROOM_PARENT_IDに変更
 				)
 			); ?>
 		<?php endif; ?>
-		
+
 	</div>
 	<?php echo $this->NetCommonsForm->end(); ?>
 </div>

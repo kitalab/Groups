@@ -183,7 +183,7 @@ class Group extends GroupsAppModel {
 			}
 
 			// GroupsUserデータの登録
-			$groupUsers = Hash::get($data, 'GroupsUser.user_id');
+			$groupUsers = Hash::extract($data, 'GroupsUser.{n}.user_id');
 			foreach ($groupUsers as $userId) {
 				$groupUser = array(
 					'group_id' => $groupId,
