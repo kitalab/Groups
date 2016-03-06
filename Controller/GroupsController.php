@@ -68,23 +68,30 @@ class GroupsController extends GroupsAppController {
 	public function select() {
 		$this->viewClass = 'View';
 
-		if ($this->request->isPost()) {
-			$groupIdArr = array_map(function ($groupId) {
-				return $groupId;
-			}, $this->request->data['GroupSelect']['group_id']);
-			$groupUsers = array();
-			if (!empty($groupIdArr)) {
-				list($groups, $groupUsers) = $this->Group->getGroups($groupIdArr);
-			}
-			$this->set('users', $groupUsers);
-			$this->view = 'Groups.Groups/json/select';
-		} else {
-			// グループ一覧取得
-			list($groups, $groupUsers) = $this->Group->getGroupList();
-			$this->set('groups', $groups);
-			$this->set('groupUsers', $groupUsers);
-			$this->layout = 'NetCommons.modal';
+		// グループ一覧取得
+		list($groups, $groupUsers) = $this->Group->getGroupList();
+		$this->set('groups', $groups);
+		$this->set('groupUsers', $groupUsers);
+		$this->layout = 'NetCommons.modal';
+	}
+
+/**
+ * users method
+ *
+ * @return void
+ * @throws NotFoundException
+ */
+	public function users() {
+		$this->viewClass = 'View';
+
+		$groupIds = Hash::get($this->request->query, 'group_id');
+		$groupIdArr = explode(',', $groupIds);
+		$groupUsers = array();
+		if (!empty($groupIdArr)) {
+			list($groups, $groupUsers) = $this->Group->getGroups($groupIdArr);
 		}
+		$this->set('users', $groupUsers);
+		$this->view = 'Groups.Groups/json/select';
 	}
 
 /**

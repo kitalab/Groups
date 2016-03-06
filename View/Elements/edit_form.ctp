@@ -18,7 +18,7 @@ if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request-
 		$usersJson[] = $this->UserSearch->convertUserArrayByUserSelection($groupUser, 'User');
 	}
 }
-$roomId = Room::PUBLIC_PARENT_ID;	// TODO ROOM_PARENT_IDに変更
+$roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
 ?>
 <?php if (! (int)$isModal): ?>
 	<h1>

@@ -435,42 +435,32 @@ NetCommonsApp.controller('Group.select',
         var deferred = $q.defer();
         var promise = deferred.promise;
 
-        $http.get('/net_commons/net_commons/csrfToken.json')
-            .success(function(token) {
-              $scope.data._Token.key = token.data._Token.key;
-
-              //POSTリクエスト
-              $http.post(
-                  '/groups/groups/select/' + $scope.userId,
-                  $.param({_method: 'POST', data: $scope.data}),
-                  {
-                    cache: false,
-                    headers: {
-                      'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                  }
-              )
-                  .success(function(data) {
-                    //success condition
-                    deferred.resolve(data);
-                  })
-                  .error(function(data, status) {
-                    //error condition
-                    deferred.reject(data, status);
-                  });
+        // GETリクエスト
+        var config = {
+          params: {
+            group_id: $scope.data.GroupSelect.group_id.join(',')
+          }
+        };
+        $http.get(
+            '/groups/groups/users/' + $scope.userId,
+            config
+        )
+        .success(function(data) {
+              // success condition
+              deferred.resolve(data);
             })
-            .error(function(data, status) {
-              //Token error condition
+        .error(function(data, status) {
+              // error condition
               deferred.reject(data, status);
             });
 
-        promise.success = function(fn) {
-          promise.then(fn);
+        promise.error = function(fn) {
+          promise.then(null, fn);
           return promise;
         };
 
-        promise.error = function(fn) {
-          promise.then(null, fn);
+        promise.success = function(fn) {
+          promise.then(fn);
           return promise;
         };
 
