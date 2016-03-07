@@ -86,10 +86,12 @@ class GroupsController extends GroupsAppController {
 
 		$groupIds = Hash::get($this->request->query, 'group_id');
 		$groupIdArr = explode(',', $groupIds);
+		$groups = array();
 		$groupUsers = array();
 		if (!empty($groupIdArr)) {
 			list($groups, $groupUsers) = $this->Group->getGroups($groupIdArr);
 		}
+		$this->set('groups', $groups);
 		$this->set('users', $groupUsers);
 		$this->view = 'Groups.Groups/json/select';
 	}
