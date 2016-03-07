@@ -58,27 +58,6 @@ class Group extends GroupsAppModel {
 	);
 
 /**
- * hasAndBelongsToMany associations
- *
- * @var array
- */
-	public $hasAndBelongsToMany = array(
-		'User' => array(
-			'className' => 'Users.User',
-			'joinTable' => 'groups_users',
-			'foreignKey' => 'group_id',
-			'associationForeignKey' => 'user_id',
-			'unique' => 'keepExisting',
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-		)
-	);
-
-/**
  * Called during validation operations, before validation. Please note that custom
  * validation rules can be defined in $validate.
  *
@@ -103,7 +82,7 @@ class Group extends GroupsAppModel {
 	}
 
 /**
- * グループ一覧取得処理
+ * グループ及びグループユーザ一覧取得処理
  *
  * @return mixed On success Model::$data, false on failure
  * @throws InternalErrorException
@@ -113,18 +92,55 @@ class Group extends GroupsAppModel {
 			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
 			'conditions' => array('Group.created_user' => Current::read('User.id')),
 			'order' => array('Group.created ASC'),
-			'recursive' => -1,
+			'recursive' => 1,
 		));
-		if (empty($groups)) {
-			return array();
-		}
-		foreach ($groups as $index => $group) {
-			$groupsUser = $this->GroupsUser->getGroupUsers($group['Group']['id']);
-			$groups[$index]['GroupsUser'] = $groupsUser;
-		}
+		$userIdArr = Hash::extract($groups, '{n}.GroupsUser.{n}.user_id');
+		$userIdArr = array_unique($userIdArr);	// 重複した値をまとめる
+		$groupUsers = $this->GroupsUser->getGroupUsers($userIdArr);
 
-		return $groups;
+		return array($groups, $groupUsers);
 	}
+
+/**
+ * グループ取得処理
+ *
+ * @param int $groupId グループID
+ * @return mixed On success Model::$group, false on failure
+ * @throws InternalErrorException
+ */
+	public function getGroupById($groupId) {
+		$options = array('conditions' => array('Group.' . $this->primaryKey => $groupId));
+		$group = $this->find('first', $options);
+		$userIdArr = Hash::extract($group, 'GroupsUser.{n}.user_id');
+		$groupUsers = $this->GroupsUser->getGroupUsers($userIdArr);
+		$group['GroupsUsersDetail'] = $groupUsers;
+
+		return $group;
+	}
+
+/**
+ * グループ取得処理
+ *
+ * @param int|array $groupId グループID
+ * @return mixed On success Model::$groups, $groupUsers
+ * @throws InternalErrorException
+ */
+	public function getGroups($groupId) {
+		$groups = $this->find('all', array(
+			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
+			'conditions' => array(
+				'Group.' . $this->primaryKey => $groupId,
+				'Group.created_user' => Current::read('User.id'),
+			),
+			'order' => array('Group.created ASC'),
+			'recursive' => 1,
+		));
+		$userIdArr = Hash::extract($groups, '{n}.GroupsUser.{n}.user_id');
+		$groupUsers = $this->GroupsUser->getGroupUsers($userIdArr);
+
+		return array($groups, $groupUsers);
+	}
+
 /**
  * グループの登録処理
  *
@@ -167,7 +183,7 @@ class Group extends GroupsAppModel {
 			}
 
 			// GroupsUserデータの登録
-			$groupUsers = Hash::get($data, 'GroupsUser.user_id');
+			$groupUsers = Hash::extract($data, 'GroupsUser.{n}.user_id');
 			foreach ($groupUsers as $userId) {
 				$groupUser = array(
 					'group_id' => $groupId,

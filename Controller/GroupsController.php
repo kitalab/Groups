@@ -40,6 +40,12 @@ class GroupsController extends GroupsAppController {
 	public $components = array(
 		'M17n.SwitchLanguage',
 		'UserAttributes.UserAttributeLayout',
+		'NetCommons.Permission' => array(
+			//アクセスの権限
+			'allow' => array(
+				'add,edit,delete' => null,
+			),
+		),
 	);
 
 /**
@@ -62,25 +68,32 @@ class GroupsController extends GroupsAppController {
 	public function select() {
 		$this->viewClass = 'View';
 
-		if ($this->request->isPost()) {
-			$data = array_map(function ($groupId) {
-				return $groupId;
-			}, $this->request->data['GroupSelect']['group_id']);
-			if (!empty($data)) {
-				$groupUsers = array();
-				foreach ($data as $groupId) {
-					$groupUserData = $this->GroupsUser->getGroupUsers($groupId);
-					$groupUsers = array_merge_recursive($groupUsers, $groupUserData);
-				}
-			}
-			$this->set('users', $groupUsers);
-			$this->view = 'Groups.Groups/json/select';
-		} else {
-			// グループ一覧取得
-			$groups = $this->Group->getGroupList();
-			$this->set('groupList', $groups);
-			$this->layout = 'NetCommons.modal';
+		// グループ一覧取得
+		list($groups, $groupUsers) = $this->Group->getGroupList();
+		$this->set('groups', $groups);
+		$this->set('groupUsers', $groupUsers);
+		$this->layout = 'NetCommons.modal';
+	}
+
+/**
+ * users method
+ *
+ * @return void
+ * @throws NotFoundException
+ */
+	public function users() {
+		$this->viewClass = 'View';
+
+		$groupIds = Hash::get($this->request->query, 'group_id');
+		$groupIdArr = explode(',', $groupIds);
+		$groups = array();
+		$groupUsers = array();
+		if (!empty($groupIdArr)) {
+			list($groups, $groupUsers) = $this->Group->getGroups($groupIdArr);
 		}
+		$this->set('groups', $groups);
+		$this->set('users', $groupUsers);
+		$this->view = 'Groups.Groups/json/select';
 	}
 
 /**
@@ -111,15 +124,10 @@ class GroupsController extends GroupsAppController {
 					return;
 				}
 			} else {
-				if (isset($this->request->data['GroupsUser']['user_id'])) {
-					foreach ($this->request->data['GroupsUser']['user_id'] as $userId) {
-						// ユーザ選択情報を取得
-						if (! $this->GroupsUser->isExists($userId)) {
-							continue;
-						}
-						$user = $this->User->getUser($userId);
-						$this->request->data['GroupsUsersDetail'][] = $user;
-					}
+				if (isset($this->request->data['GroupsUser'])) {
+					$userIdArr = Hash::extract($this->request->data['GroupsUser'], '{n}.user_id');
+					$this->request->data['GroupsUsersDetail'] =
+						$this->GroupsUser->getGroupUsers($userIdArr);
 				}
 			}
 			$this->NetCommons->handleValidationError($this->Group->validationErrors);
@@ -152,23 +160,15 @@ class GroupsController extends GroupsAppController {
 				$this->redirect('/users/users/view/' . Current::read('User.id') . '#/user-groups');
 				return;
 			} else {
-				if (isset($this->request->data['GroupsUser']['user_id'])) {
-					foreach ($this->request->data['GroupsUser']['user_id'] as $userId) {
-						// ユーザ選択情報を取得
-						if (! $this->GroupsUser->isExists($userId)) {
-							continue;
-						}
-						$user = $this->User->getUser($userId);
-						$this->request->data['GroupsUsersDetail'][] = $user;
-					}
+				if (isset($this->request->data['GroupsUser'])) {
+					$userIdArr = Hash::extract($this->request->data['GroupsUser'], '{n}.user_id');
+					$this->request->data['GroupsUsersDetail'] =
+						$this->GroupsUser->getGroupUsers($userIdArr);
 				}
 			}
 		} else {
-			$options = array('conditions' => array('Group.' . $this->Group->primaryKey => $id));
-			$this->request->data = $this->Group->find('first', $options);
 			// グループユーザ詳細情報を取得
-			$groupUsers = $this->GroupsUser->getGroupUsers($id);
-			$this->request->data['GroupsUsersDetail'] = $groupUsers;
+			$this->request->data = $this->Group->getGroupById($id);
 		}
 		$isModal = 0;
 		$this->set('isModal', $isModal);

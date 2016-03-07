@@ -68,75 +68,18 @@ class GroupsUser extends GroupsAppModel {
  * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
-		$this->validate = array(
-			'user_id' => array(
-				'notBlank' => array(
-					'rule' => array('isUserSelected'),
-					'required' => true,
-					'last' => false,
-					'message' => __d('groups', 'Select user'),
-				),
-				'maxLength' => array(
-					'rule' => array('isUserWithinLimits'),
-					'last' => false,
-					'message' => sprintf(__d('groups', 'Can be registered upper limit is %s'), GroupsUser::LIMIT_ENTRY_NUM),
-				),
-			)
-		);
+		// ユーザ選択チェック
+		if (! isset($this->data['GroupsUser']) || count($this->data['GroupsUser']) === 0) {
+			$this->validationErrors['user_id'][] = __d('groups', 'Select user');
+			return false;
+		}
+		if (count($this->data['GroupsUser']) > GroupsUser::LIMIT_ENTRY_NUM) {
+			$this->validationErrors['user_id'][] =
+				sprintf(__d('groups', 'Can be registered upper limit is %s'), GroupsUser::LIMIT_ENTRY_NUM);
+			return false;
+		}
 
 		return parent::beforeValidate($options);
-	}
-
-/**
- * Check if the user has been selected
- *
- * @param mixed $check Value to check
- * @return bool Success
- */
-	public function isUserSelected($check) {
-		if (!isset($check['user_id']) || count($check['user_id']) === 0) {
-			return false;
-		}
-		return true;
-	}
-
-/**
- * Check whether the user is not a selection upper limit
- *
- * @param mixed $check Value to check
- * @return bool Success
- */
-	public function isUserWithinLimits($check) {
-		if (count($check['user_id']) > GroupsUser::LIMIT_ENTRY_NUM) {
-			return false;
-		}
-		return true;
-	}
-
-/**
- * Check if the user exists
- *
- * @param mixed $userId Value to check
- * @return bool Success
- */
-	public function isExists($userId) {
-		$this->loadModels(array(
-			'User' => 'Users.User',
-		));
-
-		$params = array(
-			'recursive' => -1,
-			'conditions' => array(
-				'User.id' => $userId,
-				'User.is_deleted' => 0,
-			),
-			'fields' => array(),
-		);
-		$userCnt = $this->User->find('count', $params);
-		if (! $userCnt) {
-			return false;
-		}
-		return true;
 	}
 
 /**
@@ -171,49 +114,41 @@ class GroupsUser extends GroupsAppModel {
 /**
  * It gets a string attached user information to the group
  *
- * @param int $id Groups.id
+ * @param array $userIdArr GroupsUser.user_id
  * @return array Group users array
  */
-	public function getGroupUsers($id) {
-		if (empty($id)) {
+	public function getGroupUsers($userIdArr) {
+		if (empty($userIdArr)) {
 			return array();
 		}
 
 		$this->loadModels([
-				'User' => 'Users.User',
-				'UploadFile' => 'Files.UploadFile',
+			'User' => 'Users.User',
+			'UploadFile' => 'Files.UploadFile',
 		]);
 		$this->User->prepare();
 
-		$groupDetail = $this->find('all', array(
-				'recursive' => 0,
-				'fields' => array('GroupsUser.*', 'User.*', 'UploadFile.*'),
-				'conditions' => array(
-						$this->alias . '.group_id' => $id,
-						$this->User->alias . '.is_deleted' => false,
+		$groupUsers = $this->User->find('all', array(
+			'recursive' => -1,
+			'fields' => array('User.*', 'UploadFile.*'),
+			'conditions' => array(
+				$this->User->alias . '.id' => $userIdArr,
+				$this->User->alias . '.is_deleted' => false,
+			),
+			'joins' => array(
+				array(
+					'table' => $this->UploadFile->table,
+					'alias' => $this->UploadFile->alias,
+					'type' => 'LEFT',
+					'conditions' => array(
+						$this->User->alias . '.id' . ' = ' . $this->UploadFile->alias . '.content_key',
+						$this->UploadFile->alias . '.field_name' => UserAttribute::AVATAR_FIELD,
+					),
 				),
-				'joins' => array(
-						array(
-								'table' => $this->User->table,
-								'alias' => $this->User->alias,
-								'type' => 'INNER',
-								'conditions' => array(
-										$this->alias . '.user_id' . ' = ' . $this->User->alias . '.id',
-								),
-						),
-						array(
-								'table' => $this->UploadFile->table,
-								'alias' => $this->UploadFile->alias,
-								'type' => 'LEFT',
-								'conditions' => array(
-										$this->User->alias . '.id' . ' = ' . $this->UploadFile->alias . '.content_key',
-										$this->UploadFile->alias . '.field_name' => UserAttribute::AVATAR_FIELD,
-								),
-						),
-				),
-				'order' => array($this->alias . '.created' => 'ASC'),
+			),
+			'order' => array('FIELD(' . $this->User->alias . '.id, ' . implode(',', $userIdArr) . ')'),	// user_id順
 		));
 
-		return $groupDetail;
+		return $groupUsers;
 	}
 }

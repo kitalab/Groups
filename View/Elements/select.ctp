@@ -13,12 +13,34 @@
  */
 ?>
 
+<?php
+if (! isset($title)) {
+	$title = __d('groups', 'User select');
+}
+if (! isset($pluginModel)) {
+	$pluginModel = 'GroupsUser';
+}
+$usersJson = array();
+if (isset($selectUsers) && is_array($selectUsers)) {
+	foreach ($selectUsers as $selectUser) {
+		$usersJson[] = $this->UserSearch->convertUserArrayByUserSelection($selectUser, 'User');
+	}
+}
+if (! isset($roomId)) {
+	$roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
+}
+?>
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<?php echo h($title); ?>
 	</div>
 	<div class="panel-body">
-		<?php echo $this->element('Groups.select_users', array('pluginModel' => $pluginModel)); ?>
+		<?php echo $this->element('Groups.select_users',
+			array(
+				'pluginModel' => $pluginModel,
+				'usersJson' => $usersJson,
+				'roomId' => $roomId,
+			)); ?>
 		<div class="text-right" ng-controller="GroupsAddGroup">
 			<?php
 				echo $this->Button->addLink(__d('groups', 'Create a new group in the above-described member'),

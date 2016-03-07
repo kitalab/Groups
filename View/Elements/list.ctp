@@ -7,9 +7,9 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  */
 
-$groupListJson = array();
-if (!empty($groups)) {
-	$groupListJson = $this->GroupUserList->convertGroupUserListForDisplay($groups);
+$groupUsersList = array();
+if (!empty($groupUsers)) {
+	$groupUsersList = $this->GroupUserList->convertGroupUserListForDisplay($groupUsers);
 }
 
 echo $this->NetCommonsHtml->css(array(
@@ -29,7 +29,7 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 </div>
 
 <div class="table-responsive">
-	<?php if (count($groupListJson) > 0): ?>
+	<?php if (count($groups) > 0): ?>
 	<table class="table table-condensed">
 		<thead>
 			<tr>
@@ -38,7 +38,7 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 			</tr>
 		</thead>
 		<tbody>
-		<?php foreach($groupListJson as $index => $group): ?>
+		<?php foreach($groups as $index => $group): ?>
 			<tr>
 				<td>
 					<?php echo ($index + 1); ?>
@@ -46,22 +46,28 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 				<td class="nc-groups-group-name">
 					<span class="nc-groups-select-group-name">
 						<?php echo $this->NetCommonsHtml->link(
-							$group['name'],
+							$group['Group']['name'],
 							array(
 								'plugin' => 'groups',
 								'controller' => 'groups',
 								'action' => 'edit',
-								$group['id']
+								$group['Group']['id']
 							),
 							array()
 						);?>
 					</span>
 					<span class="nc-groups-avatar-list">
-						<?php foreach ($group['groupsUser'] as $groupsUser): ?>
+						<?php foreach ($group['GroupsUser'] as $groupsUser): ?>
+							<?php
+								if (! isset($groupUsersList[$groupsUser['user_id']])):
+									continue;
+								endif;
+								$displayUser = $groupUsersList[$groupsUser['user_id']];
+							?>
 							<img class="user-avatar-xs"
-								 src="<?php echo $groupsUser['avatar']; ?>"
-								 alt="<?php echo $groupsUser['handlename']; ?>"
-								 title="<?php echo $groupsUser['handlename']; ?>" />
+								 src="<?php echo $displayUser['avatar']; ?>"
+								 alt="<?php echo $displayUser['handlename']; ?>"
+								 title="<?php echo $displayUser['handlename']; ?>" />
 						<?php endforeach; ?>
 					</span>
 				</td>

@@ -18,6 +18,7 @@ if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request-
 		$usersJson[] = $this->UserSearch->convertUserArrayByUserSelection($groupUser, 'User');
 	}
 }
+$roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
 ?>
 <?php if (! (int)$isModal): ?>
 	<h1>
@@ -37,13 +38,16 @@ if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request-
 			)); ?>
 		</div>
 		<?php echo $this->NetCommonsForm->error('GroupsUser.user_id'); ?>
-  
+
 		<!-- ユーザ選択 -->
 		<?php if ((int)$isModal): $className = 'hidden' ?>
 		<?php else: $className = 'show' ?>
 		<?php endif; ?>
 		<div class="<?php echo $className; ?>" ng-controller="GroupsSelectGroup">
-			<?php echo $this->element('Groups.select_users', array('usersJson' => $usersJson)); ?>
+			<?php echo $this->element('Groups.select_users', array(
+				'usersJson' => $usersJson,
+				'roomId' => $roomId,
+			)); ?>
 		</div>
 	</div>
 
@@ -81,7 +85,7 @@ if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request-
 				)
 			); ?>
 		<?php endif; ?>
-		
+
 	</div>
 	<?php echo $this->NetCommonsForm->end(); ?>
 </div>

@@ -29,6 +29,9 @@ msgstr "グループ名を入力してください。"
 msgid "Select user"
 msgstr "ユーザを選択してください。"
 
+msgid "User select"
+msgstr "ユーザ選択"
+
 msgid "Group select"
 msgstr "グループ選択"
 
