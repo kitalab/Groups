@@ -89,7 +89,7 @@ class GroupsController extends GroupsAppController {
 		$groups = array();
 		$groupUsers = array();
 		if (!empty($groupIdArr)) {
-			list($groups, $groupUsers) = $this->Group->getGroups($groupIdArr);
+			$groupUsers = $this->Group->getGroupUser($groupIdArr);
 		}
 		$this->set('groups', $groups);
 		$this->set('users', $groupUsers);

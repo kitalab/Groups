@@ -122,10 +122,10 @@ class Group extends GroupsAppModel {
  * グループ取得処理
  *
  * @param int|array $groupId グループID
- * @return mixed On success Model::$groups, $groupUsers
+ * @return mixed On success Model::$groupUsers
  * @throws InternalErrorException
  */
-	public function getGroups($groupId) {
+	public function getGroupUser($groupId) {
 		$groups = $this->find('all', array(
 			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
 			'conditions' => array(
@@ -138,7 +138,7 @@ class Group extends GroupsAppModel {
 		$userIdArr = Hash::extract($groups, '{n}.GroupsUser.{n}.user_id');
 		$groupUsers = $this->GroupsUser->getGroupUsers($userIdArr);
 
-		return array($groups, $groupUsers);
+		return $groupUsers;
 	}
 
 /**
