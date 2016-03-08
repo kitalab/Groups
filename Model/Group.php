@@ -94,11 +94,8 @@ class Group extends GroupsAppModel {
 			'order' => array('Group.created ASC'),
 			'recursive' => 1,
 		));
-		$userIdArr = Hash::extract($groups, '{n}.GroupsUser.{n}.user_id');
-		$userIdArr = array_unique($userIdArr);	// 重複した値をまとめる
-		$groupUsers = $this->GroupsUser->getGroupUsers($userIdArr);
 
-		return array($groups, $groupUsers);
+		return $groups;
 	}
 
 /**
