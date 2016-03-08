@@ -29,6 +29,7 @@ class GroupsControllerAddTest extends NetCommonsControllerTestCase {
 		'plugin.groups.groups_user',
 		'plugin.private_space.roles_rooms_user4test',
 		'plugin.private_space.room4test',
+		'plugin.user_attributes.user_attribute_layout',
 	);
 
 /**
@@ -80,6 +81,7 @@ class GroupsControllerAddTest extends NetCommonsControllerTestCase {
 		$this ->_testGetAction(array('action' => 'add'), array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
+		//TODO:assert追加
 		//debug($this -> view);
 	}
 
