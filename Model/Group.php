@@ -84,21 +84,21 @@ class Group extends GroupsAppModel {
 /**
  * グループ及びグループユーザ一覧取得処理
  *
+ * @param array $query find条件
  * @return mixed On success Model::$data, false on failure
  * @throws InternalErrorException
  */
-	public function getGroupList() {
-		$groups = $this->find('all', array(
+	public function getGroupList($query = array()) {
+		$params = array(
 			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
 			'conditions' => array('Group.created_user' => Current::read('User.id')),
 			'order' => array('Group.created ASC'),
 			'recursive' => 1,
-		));
-		$userIdArr = Hash::extract($groups, '{n}.GroupsUser.{n}.user_id');
-		$userIdArr = array_unique($userIdArr);	// 重複した値をまとめる
-		$groupUsers = $this->GroupsUser->getGroupUsers($userIdArr);
+		);
+		$params = Hash::merge($params, $query);
+		$groups = $this->find('all', $params);
 
-		return array($groups, $groupUsers);
+		return $groups;
 	}
 
 /**

@@ -146,7 +146,6 @@ class GroupsUser extends GroupsAppModel {
 					),
 				),
 			),
-			'order' => array('FIELD(' . $this->User->alias . '.id, ' . implode(',', $userIdArr) . ')'),	// user_id順
 		));
 
 		return $groupUsers;
