@@ -85,12 +85,10 @@ class GroupsController extends GroupsAppController {
 
 		$groupIds = Hash::get($this->request->query, 'group_id');
 		$groupIdArr = explode(',', $groupIds);
-		$groups = array();
 		$groupUsers = array();
 		if (!empty($groupIdArr)) {
 			$groupUsers = $this->Group->getGroupUser($groupIdArr);
 		}
-		$this->set('groups', $groups);
 		$this->set('users', $groupUsers);
 		$this->view = 'Groups.Groups/json/select';
 	}
@@ -125,8 +123,8 @@ class GroupsController extends GroupsAppController {
 			} else {
 				if (isset($this->request->data['GroupsUser'])) {
 					$userIdArr = Hash::extract($this->request->data['GroupsUser'], '{n}.user_id');
-					$this->request->data['GroupsUsersDetail'] =
-						$this->GroupsUser->getGroupUsers($userIdArr);
+					$users = $this->GroupsUser->getGroupUsers($userIdArr);
+					$this->set('users', $users);
 				}
 			}
 			$this->NetCommons->handleValidationError($this->Group->validationErrors);
@@ -161,13 +159,18 @@ class GroupsController extends GroupsAppController {
 			} else {
 				if (isset($this->request->data['GroupsUser'])) {
 					$userIdArr = Hash::extract($this->request->data['GroupsUser'], '{n}.user_id');
-					$this->request->data['GroupsUsersDetail'] =
-						$this->GroupsUser->getGroupUsers($userIdArr);
+					$users = $this->GroupsUser->getGroupUsers($userIdArr);
+					$this->set('users', $users);
 				}
 			}
 		} else {
 			// グループユーザ詳細情報を取得
-			$this->request->data = $this->Group->getGroupById($id);
+			$query = array(
+				'conditions' => array(
+					'Group.id' => $id
+				)
+			);
+			$this->Groups->setGroupList($this, $query);
 		}
 		$isModal = 0;
 		$this->set('isModal', $isModal);

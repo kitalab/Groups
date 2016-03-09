@@ -21,17 +21,16 @@ class GroupsComponent extends Component {
  * グループ一覧・グループユーザを設定
  *
  * @param Controller $controller コントローラー
+ * @param array $query find条件
  * @return void
  */
-	public function setGroupList(Controller $controller) {
-		$this->controller = $controller;
-
-		$groups = $this->controller->Group->getGroupList();
-		$this->controller->set('groups', $groups);
+	public function setGroupList(Controller $controller, $query = array()) {
+		$groups = $controller->Group->getGroupList($query);
+		$controller->set('groups', $groups);
 
 		$userIdArr = Hash::extract($groups, '{n}.GroupsUser.{n}.user_id');
 		$userIdArr = array_unique($userIdArr); // 重複した値をまとめる
-		$groupUsers = $this->controller->GroupsUser->getGroupUsers($userIdArr);
-		$this->controller->set('users', $groupUsers);
+		$groupUsers = $controller->GroupsUser->getGroupUsers($userIdArr);
+		$controller->set('users', $groupUsers);
 	}
 }

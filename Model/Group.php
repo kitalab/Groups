@@ -84,16 +84,19 @@ class Group extends GroupsAppModel {
 /**
  * グループ及びグループユーザ一覧取得処理
  *
+ * @param array $query find条件
  * @return mixed On success Model::$data, false on failure
  * @throws InternalErrorException
  */
-	public function getGroupList() {
-		$groups = $this->find('all', array(
+	public function getGroupList($query = array()) {
+		$params = array(
 			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
 			'conditions' => array('Group.created_user' => Current::read('User.id')),
 			'order' => array('Group.created ASC'),
 			'recursive' => 1,
-		));
+		);
+		$params = Hash::merge($params, $query);
+		$groups = $this->find('all', $params);
 
 		return $groups;
 	}
