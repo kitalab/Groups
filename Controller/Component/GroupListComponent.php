@@ -20,7 +20,7 @@ class GroupListComponent extends Component {
 /**
  * グループ一覧・グループユーザを設定
  *
- * @params $controller コントローラー
+ * @param Controller $controller コントローラー
  * @return void
  */
 	public function setGroupList(Controller $controller) {
@@ -33,7 +33,5 @@ class GroupListComponent extends Component {
 		$userIdArr = array_unique($userIdArr); // 重複した値をまとめる
 		$groupUsers = $this->controller->GroupsUser->getGroupUsers($userIdArr);
 		$this->controller->set('users', $groupUsers);
-
-		return;
 	}
 }
