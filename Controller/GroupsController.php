@@ -46,7 +46,7 @@ class GroupsController extends GroupsAppController {
 				'add,edit,delete' => null,
 			),
 		),
-		'Groups.GroupList',
+		'Groups.Groups',
 	);
 
 /**
@@ -70,7 +70,7 @@ class GroupsController extends GroupsAppController {
 		$this->viewClass = 'View';
 
 		// グループ一覧取得・設定
-		$this->GroupList->setGroupList($this);
+		$this->Groups->setGroupList($this);
 		$this->layout = 'NetCommons.modal';
 	}
 

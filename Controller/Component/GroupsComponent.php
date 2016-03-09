@@ -1,6 +1,6 @@
 <?php
 /**
- * Group List Component
+ * Groups Component
  *
  * @author Masaki Goto <go8ogle@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
@@ -15,7 +15,7 @@ App::uses('Component', 'Controller');
  * @author Masaki Goto <go8ogle@gmail.com>
  * @package NetCommons\Groups\Controller\Component
  */
-class GroupListComponent extends Component {
+class GroupsComponent extends Component {
 
 /**
  * グループ一覧・グループユーザを設定
