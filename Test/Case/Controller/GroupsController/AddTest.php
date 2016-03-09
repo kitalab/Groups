@@ -72,27 +72,38 @@ class GroupsControllerAddTest extends NetCommonsControllerTestCase {
 	}
 
 /**
- * add()アクションのGetリクエストテスト
+ * add()アクションのPostリクエストテスト
  *
- * @dataProvider dataProviderAddGet
+ * @dataProvider dataProviderAddPost
  * @return void
  */
-	public function testAddGet($isModel) {
-		//グループ追加画面取得
-		$this->_testGetAction(array('action' => 'add', $isModel), array('method' => 'assertNotEmpty'), null, 'view');
-		//debug($this -> view);
+	public function testAddPost($isModel, $data) {
+		$this->_testPostAction(
+			'post',
+			$data,
+			array('action' => 'add', $isModel),
+			null,
+			'view'
+		);
 	}
 
 /**
- * testAddGet用dataProvider
+ * testAddPost用dataProvider
  * 
  * ### 戻り値
- *  - isModal: モーダル表示の有無
+ *  - isModal:	モーダル表示の有無
+ *  - data:		入力データ
  */
-	public function dataProviderAddGet() {
+	public function dataProviderAddPost() {
 		return array(
-			["isModal" => true],
-			["isModal" => false],
+			[
+				"isModal" => true,
+				"data" => ["Test" => "Test", "GroupsUser" => "1"]
+			],
+			[
+				"isModal" => false,
+				"data" => ["Test" => "Test", "GroupsUser" => "1"]
+			],
 		);
 	}
 
