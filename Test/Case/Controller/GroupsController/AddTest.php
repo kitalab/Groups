@@ -75,12 +75,14 @@ class GroupsControllerAddTest extends NetCommonsControllerTestCase {
  * add()アクションのPostリクエストテスト
  *
  * @dataProvider dataProviderAddPost
+ * @param $isModal		モーダル表示の有無
+ * @param $inputData	入力するデータ
  * @return void
  */
-	public function testAddPost($isModel, $data) {
+	public function testAddPost($isModel = null, $inputData = []) {
 		$this->_testPostAction(
 			'post',
-			$data,
+			$inputData,
 			array('action' => 'add', $isModel),
 			null,
 			'view'
@@ -91,19 +93,39 @@ class GroupsControllerAddTest extends NetCommonsControllerTestCase {
  * testAddPost用dataProvider
  * 
  * ### 戻り値
- *  - isModal:	モーダル表示の有無
- *  - data:		入力データ
+ *  - isModal:		モーダル表示の有無
+ *  - inputData:	入力データ
  */
 	public function dataProviderAddPost() {
 		return array(
-			[
-				"isModal" => true,
-				"data" => ["Test" => "Test", "GroupsUser" => "1"]
-			],
-			[
-				"isModal" => false,
-				"data" => ["Test" => "Test", "GroupsUser" => "1"]
-			],
+			array(
+				'isModal' => false,
+				'inputData' => [
+					'name' => 'test1',
+					'GroupsUser' => [['user_id' => '1']]
+				]
+			),
+			array(
+				'isModal' => false,
+				'inputData' => [
+					'name' => 'test2',
+					'GroupsUser' => [['user_id' => '1']]
+				]
+			),
+			array(
+				'isModal' => true,
+				'inputData' => [
+					'name' => '',
+					'GroupsUser' => [['user_id' => '1']]
+				]
+			),
+			array(
+				'isModal' => true,
+				'inputData' => [
+					'name' => 'test4',
+					'GroupsUser' => [['user_id' => '1']]
+				]
+			),
 		);
 	}
 
