@@ -126,8 +126,7 @@ class GroupsController extends GroupsAppController {
 			} else {
 				if (isset($this->request->data['GroupsUser'])) {
 					$userIdArr = Hash::extract($this->request->data['GroupsUser'], '{n}.user_id');
-					$this->request->data['GroupsUsersDetail'] =
-						$this->GroupsUser->getGroupUsers($userIdArr);
+					$this->request->data['GroupsUsersDetail'] = $this->GroupsUser->getGroupUsers($userIdArr);
 				}
 			}
 			$this->NetCommons->handleValidationError($this->Group->validationErrors);

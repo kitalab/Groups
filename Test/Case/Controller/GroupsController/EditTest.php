@@ -90,7 +90,7 @@ class GroupsControllerEditTest extends NetCommonsControllerTestCase {
 		$this->assertInput('form', null, '/groups/groups/edit', $this->view);
 		$this->assertInput('input', '_method', 'PUT', $this->view);
 
-		//TODO:必要に応じてassert書く
+		//MUST:必要に応じてassert書く
 	}
 
 /**
@@ -100,7 +100,7 @@ class GroupsControllerEditTest extends NetCommonsControllerTestCase {
  */
 	private function __data() {
 		$data = array(
-			//TODO:必要に応じて、assertを追加する
+			//MUST:必要に応じて、assertを追加する
 		);
 
 		return $data;
@@ -136,7 +136,7 @@ class GroupsControllerEditTest extends NetCommonsControllerTestCase {
 		//$this->_testPostAction('put', $this->__data(),
 		//		array('action' => 'edit'), 'BadRequestException', 'view');
 
-		//TODO:必要に応じてassert書く
+		//MUST:必要に応じてassert書く
 	}
 
 }

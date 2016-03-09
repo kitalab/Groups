@@ -77,7 +77,7 @@ class GroupsControllerUsersTest extends NetCommonsControllerTestCase {
 		$this->_testGetAction(array('action' => 'users'), array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
-		//TODO:assert追加
+		//MUST:assert追加
 		debug($this->view);
 	}
 
