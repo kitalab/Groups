@@ -75,9 +75,9 @@ class GroupsControllerAddTest extends NetCommonsControllerTestCase {
  * add()アクションのPostリクエストテスト
  *
  * @dataProvider dataProviderAddPost
- * @param $isModal				モーダル表示の有無
- * @param $inputData			入力するデータ
- * @param $expectedSaveResult 	セーブ結果(想定)
+ * @param $isModal	モーダル表示の有無
+ * @param $inputData	入力するデータ
+ * @param $expectedSaveResult	セーブ結果(想定)
  * @return void
  */
 	public function testAddPost($isModal = null, $inputData = [], $expectedSaveResult = 1) {
@@ -117,9 +117,9 @@ class GroupsControllerAddTest extends NetCommonsControllerTestCase {
 /**
  * 登録データ内容の確認
  *
- * @param $allData				DBから取得したデータ
- * @param $inputData			入力したデータ
- * @param $expectedSaveResult 	セーブ結果(想定)
+ * @param $allData	DBから取得したデータ
+ * @param $inputData	入力したデータ
+ * @param $expectedSaveResult	セーブ結果(想定)
  * @return void
  */
 	private function __assertGroupData($allData, $inputData, $expectedSaveResult) {
@@ -148,8 +148,8 @@ class GroupsControllerAddTest extends NetCommonsControllerTestCase {
  * testAddPost用dataProvider
  * 
  * ### 戻り値
- *  - isModal:				モーダル表示の有無
- *  - inputData:			入力データ
+ *  - isModal:	モーダル表示の有無
+ *  - inputData:	入力データ
  *  - expectedSaveResult:	セーブ結果
  */
 	public function dataProviderAddPost() {
