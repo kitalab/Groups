@@ -12,10 +12,19 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  */
 
-$usersJson = array();
-if (isset($this->request->data['GroupsUsersDetail']) && is_array($this->request->data['GroupsUsersDetail'])) {
-	foreach ($this->request->data['GroupsUsersDetail'] as $groupUser) {
-		$usersJson[] = $this->UserSearch->convertUserArrayByUserSelection($groupUser, 'User');
+if (isset($groups[0])) {
+	$this->request->data = $groups[0];
+}
+$groupUsersList = array();
+if (!empty($users)) {
+	$groupUsersList = $this->GroupUserList->convertGroupUserListForDisplay($users);
+}
+$groupUsers = array();
+if (isset($this->request->data['GroupsUser'])) {
+	foreach ($this->request->data['GroupsUser'] as $groupsUser) {
+		if (isset($groupUsersList[$groupsUser['user_id']])) {
+			$groupUsers[] = $groupUsersList[$groupsUser['user_id']];
+		}
 	}
 }
 $roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
@@ -45,7 +54,7 @@ $roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
 		<?php endif; ?>
 		<div class="<?php echo $className; ?>" ng-controller="GroupsSelectGroup">
 			<?php echo $this->element('Groups.select_users', array(
-				'usersJson' => $usersJson,
+				'usersJson' => $groupUsers,
 				'roomId' => $roomId,
 			)); ?>
 		</div>

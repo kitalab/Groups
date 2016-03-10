@@ -84,21 +84,21 @@ class Group extends GroupsAppModel {
 /**
  * グループ及びグループユーザ一覧取得処理
  *
+ * @param array $query find条件
  * @return mixed On success Model::$data, false on failure
  * @throws InternalErrorException
  */
-	public function getGroupList() {
-		$groups = $this->find('all', array(
+	public function getGroupList($query = array()) {
+		$params = array(
 			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
 			'conditions' => array('Group.created_user' => Current::read('User.id')),
 			'order' => array('Group.created ASC'),
 			'recursive' => 1,
-		));
-		$userIdArr = Hash::extract($groups, '{n}.GroupsUser.{n}.user_id');
-		$userIdArr = array_unique($userIdArr);	// 重複した値をまとめる
-		$groupUsers = $this->GroupsUser->getGroupUsers($userIdArr);
+		);
+		$params = Hash::merge($params, $query);
+		$groups = $this->find('all', $params);
 
-		return array($groups, $groupUsers);
+		return $groups;
 	}
 
 /**
@@ -122,10 +122,10 @@ class Group extends GroupsAppModel {
  * グループ取得処理
  *
  * @param int|array $groupId グループID
- * @return mixed On success Model::$groups, $groupUsers
+ * @return mixed On success Model::$groupUsers
  * @throws InternalErrorException
  */
-	public function getGroups($groupId) {
+	public function getGroupUser($groupId) {
 		$groups = $this->find('all', array(
 			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
 			'conditions' => array(
@@ -138,7 +138,7 @@ class Group extends GroupsAppModel {
 		$userIdArr = Hash::extract($groups, '{n}.GroupsUser.{n}.user_id');
 		$groupUsers = $this->GroupsUser->getGroupUsers($userIdArr);
 
-		return array($groups, $groupUsers);
+		return $groupUsers;
 	}
 
 /**
@@ -183,12 +183,8 @@ class Group extends GroupsAppModel {
 			}
 
 			// GroupsUserデータの登録
-			$groupUsers = Hash::extract($data, 'GroupsUser.{n}.user_id');
-			foreach ($groupUsers as $userId) {
-				$groupUser = array(
-					'group_id' => $groupId,
-					'user_id' => $userId
-				);
+			foreach ($data['GroupsUser'] as $groupUser) {
+				$groupUser['group_id'] = $groupId;
 				$this->GroupsUser->create(false);
 				if (!$this->GroupsUser->saveGroupUser($groupUser)) {
 					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));

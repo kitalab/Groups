@@ -8,8 +8,8 @@
  */
 
 $groupUsersList = array();
-if (!empty($groupUsers)) {
-	$groupUsersList = $this->GroupUserList->convertGroupUserListForDisplay($groupUsers);
+if (!empty($users)) {
+	$groupUsersList = $this->GroupUserList->convertGroupUserListForDisplay($users);
 }
 
 $data = array(
