@@ -30,10 +30,8 @@ class GroupsControllerAddTest extends GroupsControllerTestCase {
  */
 	public function testAddPost($isModal = null, $inputData = [], $expectedSaveResult = 1) {
 		//データを全削除
-		$this->controller->Group->deleteAll(true);
+		$this->__group->deleteAll(true);
 		//データ登録
-		$isError = true;
-		$errMessage = '';
 		try {
 			$this->_testPostAction(
 				'post',
@@ -42,54 +40,20 @@ class GroupsControllerAddTest extends GroupsControllerTestCase {
 				null,
 				'view'
 			);
-			$isError = false;
 		} catch(exception $e){
-			$errMessage .= "Error:" . $e->getCode() . "　" . $e->getMessage() . "\r\n";
-			$errMessage .= $e->getFile() . "  Line:" . $e->getLine() . "\r\n";
-			//$errMessage .= "\r\n".$e->getTraceAsString()."\r\n";
+			$this->_assertException($e);
 		}
-		$this->assertFalse($isError, $errMessage);
-		$allData = $this->controller->Group->find('all');
+		$dbData = $this->__group->find('all');
 
 		//登録データ数を確認
 		$expectedCount = $expectedSaveResult ? 1 : 0;
-		$this->assertCount($expectedCount, $allData);
+		$this->assertCount($expectedCount, $dbData);
 		//登録データが無い場合にはテスト終了
 		if (!$expectedSaveResult) {
 			return;
 		}
 		//登録データ内容の確認
-		$this->__assertGroupData($allData, $inputData, $expectedSaveResult);
-	}
-
-/**
- * 登録データ内容の確認
- *
- * @param $allData	DBから取得したデータ
- * @param $inputData	入力したデータ
- * @param $expectedSaveResult	セーブ結果(想定)
- * @return void
- */
-	private function __assertGroupData($allData, $inputData, $expectedSaveResult) {
-		$inputGroupUserData = isset($inputData['GroupsUser']) ? $inputData['GroupsUser'] : null;
-		//登録データ詳細を取得
-		$saveGroupsData = $allData[0]['Group'];
-		$saveGroupsUserData = $allData[0]['GroupsUser'];
-		//登録したユーザ数を確認
-		$expectedGroupUserCnt = $expectedSaveResult ? count($inputGroupUserData) : 0;
-		$this->assertCount($expectedGroupUserCnt, $saveGroupsUserData);
-		//グループ名が正しく登録されているかを確認
-		$expectedUserName = $inputData['name'];
-		$this->assertEquals($expectedUserName, $saveGroupsData['name']);
-		//グループユーザが正しく登録されているかを確認
-		$saveGroupId = $saveGroupsData['id'];
-		foreach ($saveGroupsUserData as $index => $actualUserData) {
-			$expectedUserId = $inputGroupUserData[$index]['user_id'];
-			$actualUserId = $actualUserData['user_id'];
-			$actualGroupId = $actualUserData['group_id'];
-			$this->assertEquals($saveGroupId, $actualGroupId);
-			$this->assertEquals($expectedUserId, $actualUserId);
-		}
+		$this->_assertGroupData($dbData, $inputData, $expectedSaveResult);
 	}
 
 /**
