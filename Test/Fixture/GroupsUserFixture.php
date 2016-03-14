@@ -4,6 +4,7 @@
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Yuna Miyashita <butackle@gmail.com>
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
@@ -40,13 +41,13 @@ class GroupsUserFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
-			'group_id' => 1,
-			'user_id' => 1,
-			'created_user' => 1,
-			'created' => '2016-03-07 05:25:35',
-			'modified_user' => 1,
-			'modified' => '2016-03-07 05:25:35'
+			'id' => '1',
+			'group_id' => '1',
+			'user_id' => '1',
+			'created_user' => '1',
+			'created' => '2016-02-28 04:58:01',
+			'modified_user' => '1',
+			'modified' => '2016-02-28 04:58:01'
 		),
 	);
 
