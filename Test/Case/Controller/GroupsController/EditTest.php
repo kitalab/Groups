@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
+App::uses('GroupsControllerTestCase', 'Groups.Test/Case/Controller');
 
 /**
  * GroupsController::edit()のテスト
@@ -17,126 +17,158 @@ App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller\GroupsController
  */
-class GroupsControllerEditTest extends NetCommonsControllerTestCase {
-
-/**
- * Fixtures
- *
- * @var array
- */
-	public $fixtures = array(
-		'plugin.groups.group',
-		'plugin.groups.groups_user',
-	);
-
-/**
- * Plugin name
- *
- * @var string
- */
-	public $plugin = 'groups';
-
-/**
- * Controller name
- *
- * @var string
- */
-	protected $_controller = 'groups';
-
-/**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-
-		//ログイン
-		TestAuthGeneral::login($this);
-	}
-
-/**
- * tearDown method
- *
- * @return void
- */
-	public function tearDown() {
-		//ログアウト
-		TestAuthGeneral::logout($this);
-
-		parent::tearDown();
-	}
+class GroupsControllerEditTest extends GroupsControllerTestCase {
 
 /**
  * edit()アクションのGetリクエストテスト
  *
+ * @dataProvider dataProviderEditGet
+ * @param $id ID
+ * @param $exception	想定されるエラー
  * @return void
  */
-	public function testEditGet() {
+	public function testEditGet($id, $exception) {
 		//テスト実行
-		$this->_testGetAction(array('action' => 'edit'),
-				array('method' => 'assertNotEmpty'), null, 'view');
-
-		//チェック
-		$this->__assertEditGet();
-	}
-
-/**
- * edit()のチェック
- *
- * @return void
- */
-	private function __assertEditGet() {
-		$this->assertInput('form', null, '/groups/groups/edit', $this->view);
-		$this->assertInput('input', '_method', 'PUT', $this->view);
-
-		//MUST:必要に応じてassert書く
-	}
-
-/**
- * POSTリクエストデータ生成
- *
- * @return array リクエストデータ
- */
-	private function __data() {
-		$data = array(
-			//MUST:必要に応じて、assertを追加する
+		$this->_testGetAction(
+			array('action' => 'edit', $id),
+			array('method' => 'assertNotEmpty'),
+			$exception,
+			'view'
 		);
-
-		return $data;
 	}
 
 /**
- * edit()アクションのPOSTリクエストテスト
- *
- * @return void
+ * testEditGet用dataProvider
+ * 
+ * ### 戻り値
+ *  - id : ID
+ *  - exception:	想定されるエラー
  */
-	public function testEditPost() {
-		//テスト実行
-		$this->_testPostAction('put', $this->__data(),
-				array('action' => 'edit'), null, 'view');
-
-		//チェック
-		$header = $this->controller->response->header();
-		$pattern = '/' . preg_quote('/group/group/index', '/') . '/';
-		$this->assertRegExp($pattern, $header['Location']);
+	public function dataProviderEditGet() {
+		return array(
+			array(
+				'id' => 1,
+				'exception' => null
+			),
+			array(
+				'id' => 99,
+				'exception' => 'NotFoundException'
+			),
+			array(
+				'id' => null,
+				'exception' => 'NotFoundException'
+			)
+		);
 	}
 
 /**
- * ValidationErrorテスト
+ * edit()アクションのPostリクエストテスト
  *
+ * @dataProvider dataProviderEditPost
+ * @param $rest REST
+ * @param $inputData	入力するデータ
+ * @param $expectedSaveResult	セーブ結果(想定)
  * @return void
  */
-	public function testEditPostValidationError() {
-		$this->_mockForReturnFalse('TODO:MockにするModel名書く', 'TODO:Mockにするメソッド名書く');
+	public function testEditPost($rest = 'post', $inputData = [], $expectedSaveResult = 1) {
+		//データ編集
+		try {
+			$this->_testPostAction(
+				$rest,
+				$inputData,
+				array('action' => 'edit', 1),
+				null,
+				'view'
+			);
+		} catch(exception $e){
+			$this->_assertException($e);
+		}
+		$dbData = $this->__group->find('all');
 
-		//テスト実行
-		$this->_testPostAction('put', $this->__data(),
-				array('action' => 'edit'), null, 'view');
-		//$this->_testPostAction('put', $this->__data(),
-		//		array('action' => 'edit'), 'BadRequestException', 'view');
-
-		//MUST:必要に応じてassert書く
+		//登録データ数を確認
+		$this->assertCount(1, $dbData);
+		//データが編集されている場合には変わっているかどうか。編集エラーの場合は変わっていないかどうか
+		if ($expectedSaveResult) {
+			$this->_assertGroupData($dbData, $inputData, $expectedSaveResult);
+		} else {
+			$this->_assertGroupData($dbData, $this->_getFixtureData(), $expectedSaveResult);
+		}
 	}
 
+/**
+ * testEditPost用dataProvider
+ * 
+ * ### 戻り値
+ *  - rest : REST
+ *  - inputData:	入力データ
+ *  - expectedSaveResult:	セーブ結果
+ */
+	public function dataProviderEditPost() {
+		return array(
+			array(
+				'rest' => 'put',
+				'inputData' => [
+					'Group' => [
+						'id' => 1,
+						'name' => 'test1',
+					],
+					'GroupsUser' => [['user_id' => '1'], ['user_id' => '2']]
+				],
+				'expectedSaveResult' => true,
+			),
+			array(
+				'rest' => 'put',
+				'inputData' => [
+					'Group' => [
+						'id' => 1,
+						'name' => 'test2',
+					],
+					'GroupsUser' => [['user_id' => '3'], ['user_id' => '1']]
+				],
+				'expectedSaveResult' => true,
+			),
+			array(
+				'rest' => 'put',
+				'inputData' => [
+					'Group' => [
+						'id' => 1,
+						'name' => 'test3',
+					],
+				],
+				'expectedSaveResult' => false,
+			),
+			array(
+				'rest' => 'post',
+				'inputData' => [
+					'Group' => [
+						'id' => 1,
+					],
+					'GroupsUser' => [['user_id' => '1']]
+				],
+				'expectedSaveResult' => false,
+			),
+			array(
+				'rest' => 'post',
+				'inputData' => [
+					'Group' => [
+						'id' => 1,
+						'name' => '',
+					],
+					'GroupsUser' => [['user_id' => '1'], ['user_id' => '3'], ['user_id' => '4'], ['user_id' => '2'], ['user_id' => '5']]
+				],
+				'expectedSaveResult' => false,
+			),
+			array(
+				'rest' => 'post',
+				'inputData' => [
+					'Group' => [
+						'id' => 1,
+						'name' => 'test5',
+					],
+					'GroupsUser' => [['user_id' => '4']]
+				],
+				'expectedSaveResult' => true,
+			),
+		);
+	}
 }
