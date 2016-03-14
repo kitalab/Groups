@@ -156,4 +156,28 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 			]
 		);
 	}
+
+/**
+ * paramにIDを入れるテストのdataProvider
+ * 
+ * ### 戻り値
+ *  - id : ID
+ *  - exception:	想定されるエラー
+ */
+	public function dataProviderParamId() {
+		return array(
+			array(
+				'id' => 1,
+				'exception' => null
+			),
+			array(
+				'id' => 99,
+				'exception' => 'NotFoundException'
+			),
+			array(
+				'id' => null,
+				'exception' => 'NotFoundException'
+			)
+		);
+	}
 }

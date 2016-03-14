@@ -22,7 +22,7 @@ class GroupsControllerEditTest extends GroupsControllerTestCase {
 /**
  * edit()アクションのGetリクエストテスト
  *
- * @dataProvider dataProviderEditGet
+ * @dataProvider dataProviderParamId
  * @param $id ID
  * @param $exception	想定されるエラー
  * @return void
@@ -34,30 +34,6 @@ class GroupsControllerEditTest extends GroupsControllerTestCase {
 			array('method' => 'assertNotEmpty'),
 			$exception,
 			'view'
-		);
-	}
-
-/**
- * testEditGet用dataProvider
- * 
- * ### 戻り値
- *  - id : ID
- *  - exception:	想定されるエラー
- */
-	public function dataProviderEditGet() {
-		return array(
-			array(
-				'id' => 1,
-				'exception' => null
-			),
-			array(
-				'id' => 99,
-				'exception' => 'NotFoundException'
-			),
-			array(
-				'id' => null,
-				'exception' => 'NotFoundException'
-			)
 		);
 	}
 
