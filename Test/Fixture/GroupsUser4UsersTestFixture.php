@@ -44,6 +44,15 @@ class GroupsUser4UsersTestFixture extends GroupsUserFixture {
 		),
 		array(
 			'id' => '2',
+			'group_id' => '1',
+			'user_id' => '3',
+			'created_user' => '1',
+			'created' => '2016-03-15 14:12:00',
+			'modified_user' => '1',
+			'modified' => '2016-03-15 14:12:00'
+		),
+		array(
+			'id' => '3',
 			'group_id' => '2',
 			'user_id' => '1',
 			'created_user' => '1',
@@ -52,7 +61,7 @@ class GroupsUser4UsersTestFixture extends GroupsUserFixture {
 			'modified' => '2016-03-15 14:12:00'
 		),
 		array(
-			'id' => '3',
+			'id' => '4',
 			'group_id' => '2',
 			'user_id' => '2',
 			'created_user' => '1',
