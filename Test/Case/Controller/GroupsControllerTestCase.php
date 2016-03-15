@@ -29,9 +29,9 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 		'plugin.groups.group',
 		'plugin.groups.groups_user',
 		'plugin.groups.page4_groups_test',
-		'plugin.private_space.roles_rooms_user4test',
-		'plugin.private_space.room4test',
-		'plugin.user_attributes.user_attribute_layout',
+		'plugin.groups.roles_rooms_user4_groups_test',
+		'plugin.groups.room4_groups_test',
+		'plugin.groups.user_attribute_layout4_groups_test',
 	);
 
 /**
