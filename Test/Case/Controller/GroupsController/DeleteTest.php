@@ -79,6 +79,7 @@ class GroupsControllerDeleteTest extends GroupsControllerTestCase {
 		$this->__testDeleteAction($rest, $id, $exception);
 		//データが削除されているかを確認
 		$this->assertCount(0, $this->__group->find('all'));
+		$this->assertCount(0, $this->controller->GroupsUser->find('all'));
 	}
 
 /**
