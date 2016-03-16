@@ -10,6 +10,8 @@
  */
 
 App::uses('GroupsControllerTestCase', 'Groups.Test/Case/Controller');
+App::uses('GroupFixture', 'Groups.Test/Fixture');
+App::uses('GroupsUserFixture', 'Groups.Test/Fixture');
 
 /**
  * GroupsController::edit()のテスト
@@ -67,7 +69,7 @@ class GroupsControllerEditTest extends GroupsControllerTestCase {
 		if ($expectedSaveResult) {
 			$this->_assertGroupData($dbData, $inputData, $expectedSaveResult);
 		} else {
-			$this->_assertGroupData($dbData, $this->_getFixtureData(), $expectedSaveResult);
+			$this->_assertGroupData($dbData, $this->__getFixtureData(), $expectedSaveResult);
 		}
 	}
 
@@ -145,6 +147,28 @@ class GroupsControllerEditTest extends GroupsControllerTestCase {
 				],
 				'expectedSaveResult' => true,
 			),
+		);
+	}
+
+/**
+ * フィクスチャに入っているデータを返す
+ * 
+ * @return array 
+ */
+	private function __getFixtureData() {
+		$groupFixture = new GroupFixture();
+		$groupsUserFixture = new GroupsUserFixture();
+		$groupData = $groupFixture->records[0];
+		$groupUserData = $groupsUserFixture->records[0];
+
+		return array(
+			'Group' => [
+				'id' => $groupData['id'],
+				'name' => $groupData['name'],
+			],
+			'GroupsUser' => [
+				['user_id' => $groupUserData['user_id']]
+			]
 		);
 	}
 }

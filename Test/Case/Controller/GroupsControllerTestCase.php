@@ -8,8 +8,6 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupFixture', 'Groups.Test/Fixture');
-App::uses('GroupsUserFixture', 'Groups.Test/Fixture');
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 
 /**
@@ -133,28 +131,6 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 			//$errMessage .= "\r\n".$exception->getTraceAsString()."\r\n";
 
 			$this->assertFalse(true, $errMessage);
-	}
-
-/**
- * フィクスチャに入っているデータを返す
- * 
- * @return array 
- */
-	protected function _getFixtureData() {
-		$groupFixture = new GroupFixture();
-		$groupsUserFixture = new GroupsUserFixture();
-		$groupData = $groupFixture->records[0];
-		$groupUserData = $groupsUserFixture->records[0];
-
-		return array(
-			'Group' => [
-				'id' => $groupData['id'],
-				'name' => $groupData['name'],
-			],
-			'GroupsUser' => [
-				['user_id' => $groupUserData['user_id']]
-			]
-		);
 	}
 
 /**
