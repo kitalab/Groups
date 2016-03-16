@@ -22,15 +22,33 @@ class GroupsControllerSelectTest extends GroupsControllerTestCase {
 /**
  * select()アクションのGetリクエストテスト
  *
+ * @dataProvider dataProviderSelectGet
+ * @param $existGroupTableData データ有無
  * @return void
  */
-	public function testSelectGet() {
+	public function testSelectGet($existGroupTableData = 1) {
+		//データが無いテストケースの場合はデータを全削除
+		if (!$existGroupTableData) {
+			$this->__group->deleteAll(true);
+		}
 		//テスト実行
 		$this->_testGetAction(
 			array('action' => 'select'),
 			array('method' => 'assertNotEmpty'),
 			null,
 			'view'
+		);
+	}
+
+/**
+ * testSelectGet用dataProvider
+ * 
+ * ### 戻り値
+ *  - existGroupTableData:	データ有無
+ */
+	public function dataProviderSelectGet() {
+		return array(
+			[true], [false]
 		);
 	}
 

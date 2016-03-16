@@ -117,6 +117,14 @@ class GroupsControllerAddTest extends GroupsControllerTestCase {
 				],
 				'expectedSaveResult' => true,
 			),
+			array(
+				'isModal' => true,
+				'inputData' => [
+					'name' => 'test5',
+					'GroupsUser' => [['user_id' => '3'], ['user_id' => '99999']]
+				],
+				'expectedSaveResult' => false,
+			),
 		);
 	}
 
