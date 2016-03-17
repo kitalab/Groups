@@ -10,7 +10,6 @@
  */
 
 App::uses('GroupsControllerTestCase', 'Groups.Test/Case/Controller/GroupsController');
-App::uses('GroupsUser4UsersTestFixture', 'Groups.Test/Fixture');
 
 /**
  * GroupsController::users()のテスト
@@ -71,7 +70,7 @@ class GroupsControllerUsersTest extends GroupsControllerTestCase {
 			return;
 		}
 		//取得予定のユーザ情報をフィクスチャから取得し、データ数を比較
-		$expectedUserIds = $this->__getExpectedUserIds($paramGroupId);
+		$expectedUserIds = $this->_getExpectedUserIds($paramGroupId);
 		$this->assertCount(
 			count($expectedUserIds),
 			$actualUsers
@@ -96,27 +95,6 @@ class GroupsControllerUsersTest extends GroupsControllerTestCase {
 				);
 			}
 		}
-	}
-
-/**
- * 取得予定のユーザ情報をフィクスチャから取得
- * 
- * @param $paramGroupId
- * @return array
- */
-	private function __getExpectedUserIds($paramGroupId) {
-		$expectedUserIds = array();
-
-		$groupUsers = new GroupsUser4UsersTestFixture();
-		$expectedGroupIds = explode(',', array_pop($paramGroupId));
-		foreach ($groupUsers->records as $record) {
-			if (in_array($record['group_id'], $expectedGroupIds)) {
-				$expectedUserIds[] = (int)$record['user_id'];
-			}
-		}
-
-		sort($expectedUserIds);
-		return array_values(array_unique($expectedUserIds));
 	}
 
 /**

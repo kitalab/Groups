@@ -9,6 +9,8 @@
  */
 
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
+App::uses('GroupsUser4UsersTestFixture', 'Groups.Test/Fixture');
+
 
 /**
  * GroupsControllerのテストケース
@@ -155,5 +157,26 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 				'exception' => 'NotFoundException'
 			)
 		);
+	}
+
+/**
+ * 取得予定のユーザ情報をフィクスチャから取得
+ * 
+ * @param $paramGroupId
+ * @return array
+ */
+	protected function _getExpectedUserIds($paramGroupId) {
+		$expectedUserIds = array();
+
+		$groupUsers = new GroupsUser4UsersTestFixture();
+		$expectedGroupIds = explode(',', array_pop($paramGroupId));
+		foreach ($groupUsers->records as $record) {
+			if (in_array($record['group_id'], $expectedGroupIds)) {
+				$expectedUserIds[] = (int)$record['user_id'];
+			}
+		}
+
+		sort($expectedUserIds);
+		return array_values(array_unique($expectedUserIds));
 	}
 }
