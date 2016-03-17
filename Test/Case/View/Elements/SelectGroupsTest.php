@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
+App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
 
 /**
  * View/Elements/select_groupsのテスト
@@ -17,35 +17,7 @@ App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\View\Elements\SelectGroups
  */
-class GroupsViewElementsSelectGroupsTest extends NetCommonsControllerTestCase {
-
-/**
- * Fixtures
- *
- * @var array
- */
-	public $fixtures = array();
-
-/**
- * Plugin name
- *
- * @var string
- */
-	public $plugin = 'groups';
-
-/**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-
-		//テストプラグインのロード
-		NetCommonsCakeTestCase::loadTestPlugin($this, 'Groups', 'TestGroups');
-		//テストコントローラ生成
-		$this->generateNc('TestGroups.TestViewElementsSelectGroups');
-	}
+class GroupsViewElementsSelectGroupsTest extends GroupsControllerTestCase {
 
 /**
  * View/Elements/select_groupsのテスト
