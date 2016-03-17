@@ -35,7 +35,10 @@ class GroupsComponentSetGroupListTest extends GroupsControllerTestCase {
 
 /**
  * Fixtures Setting
- *
+ * 
+ * @param string $name
+ * @param array $data
+ * @param string $dataName
  * @var array
  */
 	public function __construct($name = null, array $data = array(), $dataName = '') {
@@ -120,8 +123,8 @@ class GroupsComponentSetGroupListTest extends GroupsControllerTestCase {
 /**
  * セットした値が正しいかを確認
  * 
- * @var array $actualDataArray　セットした値
- * @var array $checkOption 検索情報
+ * @param array $actualDataArray　セットした値
+ * @param array $checkOption 検索情報
  * @return void
  */
 	private function __validateViewValues($actualDataArray, $checkOption) {

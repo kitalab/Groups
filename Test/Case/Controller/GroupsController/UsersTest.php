@@ -22,6 +22,9 @@ class GroupsControllerUsersTest extends GroupsControllerTestCase {
 /**
  * Fixtures Setting
  *
+ * @param string $name
+ * @param array $data
+ * @param string $dataName
  * @var array
  */
 	public function __construct($name = null, array $data = array(), $dataName = '') {
