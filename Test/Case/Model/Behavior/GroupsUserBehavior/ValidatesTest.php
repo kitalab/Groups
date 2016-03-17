@@ -9,8 +9,8 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
-App::uses('TestGroupsUserBehaviorValidatesModelFixture', 'Groups.Test/Fixture');
+App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsUserBehavior', 'Groups.Model/Behavior');
 
 /**
  * GroupsUserBehavior::validates()のテスト
@@ -18,56 +18,59 @@ App::uses('TestGroupsUserBehaviorValidatesModelFixture', 'Groups.Test/Fixture');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Model\Behavior\GroupsUserBehavior
  */
-class GroupsUserBehaviorValidatesTest extends NetCommonsModelTestCase {
-
-/**
- * Fixtures
- *
- * @var array
- */
-	public $fixtures = array(
-		'plugin.groups.test_groups_user_behavior_validates_model',
-	);
-
-/**
- * Plugin name
- *
- * @var string
- */
-	public $plugin = 'groups';
-
-/**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-
-		//テストプラグインのロード
-		NetCommonsCakeTestCase::loadTestPlugin($this, 'Groups', 'TestGroups');
-		$this->TestModel = ClassRegistry::init('TestGroups.TestGroupsUserBehaviorValidatesModel');
-	}
+class GroupsUserBehaviorValidatesTest extends GroupsControllerTestCase {
 
 /**
  * validates()のテスト
  *
+ * @dataProvider dataProviderValidates
+ * @param array $inputData 入力データ
+ * @param bool $expectedResult バリデーション結果
  * @return void
  */
-	public function testValidates() {
-		//テストデータ
-		$data = array(
-			'TestGroupsUserBehaviorValidatesModel' => (new TestGroupsUserBehaviorValidatesModelFixture())->records[0],
-		);
-
-		//テスト実施
-		$this->TestModel->set($data);
-		$result = $this->TestModel->validates();
-
-		//チェック
-		//SHOULD:Assertを書く
-		debug($this->TestModel->validationErrors);
-		debug($result);
+	public function testValidates($inputData = [], $expectedResult = 1) {
+		$behaviorGroupsUser = new GroupsUserBehavior();
+		$this->controller->Group->set($inputData);
+		$actualResult = $behaviorGroupsUser->beforeValidate($this->controller->Group, []);
+		$this->assertTrue($expectedResult === $actualResult);
 	}
 
+/**
+ * testValidates用dataProvider
+ * 
+ * ### 戻り値
+ *  - inputData:	入力データ
+ *  - expectedResult:	バリデーション結果
+ */
+	public function dataProviderValidates() {
+		return array(
+			array(
+				[
+					'name' => 'test1',
+					'GroupsUser' => [['user_id' => '1'], ['user_id' => '2']]
+				],
+				true
+			),
+			array(
+				[
+					'name' => 'test1',
+				],
+				false
+			),
+			array(
+				[
+					'name' => 'test1',
+					'GroupsUser' => [['user_id' => '99999999']]
+				],
+				false
+			),
+			array(
+				[
+					'Group',
+					'GroupsUser' => [['user_id' => '1'], ['user_id' => '2']]
+				],
+				true
+			),
+		);
+	}
 }
