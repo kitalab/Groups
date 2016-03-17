@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case/Controller/GroupsController');
+App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
 App::uses('GroupFixture', 'Groups.Test/Fixture');
 App::uses('GroupsUserFixture', 'Groups.Test/Fixture');
 

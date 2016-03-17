@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case/Controller/GroupsController');
+App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
 
 /**
  * GroupsController::add()のテスト
