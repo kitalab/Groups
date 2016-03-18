@@ -1,6 +1,6 @@
 <?php
 /**
- * GroupsUserBehavior::validates()のテスト
+ * GroupsUser::validate()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Yuna Miyashita <butackle@gmail.com>
@@ -10,15 +10,14 @@
  */
 
 App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
-App::uses('GroupsUserBehavior', 'Groups.Model/Behavior');
 
 /**
- * GroupsUserBehavior::validates()のテスト
+ * GroupsUser::validate()のテスト
  *
  * @author Yuna Miyashita <butackle@gmail.com>
- * @package NetCommons\Groups\Test\Case\Model\Behavior\GroupsUserBehavior
+ * @package NetCommons\Groups\Test\Case\Model\GroupsUser
  */
-class GroupsUserBehaviorValidatesTest extends GroupsControllerTestCase {
+class GroupsUserValidateTest extends GroupsControllerTestCase {
 
 /**
  * validates()のテスト
@@ -29,14 +28,10 @@ class GroupsUserBehaviorValidatesTest extends GroupsControllerTestCase {
  * @return void
  */
 	public function testValidates($inputData = [], $validationErrors = []) {
-		$behaviorGroupsUser = new GroupsUserBehavior();
-		$this->controller->Group->set($inputData);
-		$behaviorGroupsUser->beforeValidate($this->controller->Group, []);
-
-		$this->assertEquals(
+		$this->_templateTestBeforeValidation(
+			$inputData,
 			$validationErrors,
-			$this->controller->Group->validationErrors,
-			"バリデーション結果が違います"
+			'GroupsUser'
 		);
 	}
 }

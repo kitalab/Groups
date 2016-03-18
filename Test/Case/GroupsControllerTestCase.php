@@ -1,6 +1,6 @@
 <?php
 /**
- * GroupsControllerのテストケース
+ * Groupsのテストケース
  *
  * @author Yuna Miyashita <butackle@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
@@ -10,10 +10,11 @@
 
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 App::uses('GroupsUser4UsersTestFixture', 'Groups.Test/Fixture');
+App::uses('GroupsUser', 'Groups.Model');
 
 
 /**
- * GroupsControllerのテストケース
+ * Groupsのテストケース
  *
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller
@@ -178,5 +179,101 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 
 		sort($expectedUserIds);
 		return array_values(array_unique($expectedUserIds));
+	}
+
+/**
+ * testValidates用dataProvider
+ * 
+ * @param bool $errorNameEmpty グループ名NULLの際のバリデーション結果
+ * ### 戻り値
+ *  - inputData:	入力データ
+ *  - expectedValidationErrors:	バリデーション結果
+ */
+	public function dataProviderValidates($errorNameEmpty = 0) {
+		//ユーザ登録限界を作成
+		$limitUserEntryArray = array();
+		$limitUserEntryNum = GroupsUser::LIMIT_ENTRY_NUM;
+		for ($i = 0; $i < $limitUserEntryNum + 2; ++$i) {
+			$limitUserEntryArray[] = array(
+				'user_id' => $i
+			);
+		}
+		//グループ名NULLの際のバリデーション結果
+		$resultNameEmpty = [];
+		if ($errorNameEmpty === true) {
+			$resultNameEmpty = [
+				"name" => [ __d('groups', 'Please enter group name') ]
+			];
+		}
+
+		return array(
+			array(
+				[
+					'Group' => [ 'name' => 'test1' ],
+					'GroupsUser' => [['user_id' => '1'], ['user_id' => '2']]
+				],
+				array()
+			),
+			array(
+				[
+					'Group' => [ 'name' => 'test1' ],
+				],
+				[
+					'user_id' => [
+						__d('groups', 'Select user')
+					]
+				]
+			),
+			array(
+				[
+					'Group' => [ 'name' => 'test1' ],
+					'GroupsUser' => [['user_id' => '99999999']]
+				],
+				[
+					'user_id' => [
+						__d('net_commons', 'Failed on validation errors. Please check the input data.')
+					]
+				]
+			),
+			array(
+				[
+					'Group' => [ 'name' => 'test1' ],
+					'GroupsUser' => $limitUserEntryArray
+				],
+				[
+					'user_id' => [
+						sprintf(__d('groups', 'Can be registered upper limit is %s'), $limitUserEntryNum)
+					]
+				]
+			),
+			array(
+				[
+					'Group' => [ 'name' => '' ],
+					'GroupsUser' => [['user_id' => '4'], ['user_id' => '2']]
+				],
+				$resultNameEmpty
+			),
+		);
+	}
+
+/**
+ * バリデーションテストの際の処理
+ *
+ * @param array $inputData 入力データ
+ * @param array $validationErrors バリデーション結果 
+ * @param object $checkClassName 確認するクラス名
+ * @param array $option
+ * @return void
+ */
+	protected function _templateTestBeforeValidation($inputData, $validationErrors, $checkClassName, $option = []) {
+		$checkClass = ClassRegistry::init(Inflector::camelize($this->plugin) . '.' . $checkClassName);
+		$checkClass->set($inputData);
+		$checkClass->validates();
+
+		$this->assertEquals(
+			$validationErrors,
+			$checkClass->validationErrors,
+			"バリデーション結果が違います"
+		);
 	}
 }

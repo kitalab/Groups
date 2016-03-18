@@ -1,6 +1,6 @@
 <?php
 /**
- * GroupsUserBehavior::validates()のテスト
+ * Group::validate()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Yuna Miyashita <butackle@gmail.com>
@@ -10,33 +10,39 @@
  */
 
 App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
-App::uses('GroupsUserBehavior', 'Groups.Model/Behavior');
 
 /**
- * GroupsUserBehavior::validates()のテスト
+ * Group::validate()のテスト
  *
  * @author Yuna Miyashita <butackle@gmail.com>
- * @package NetCommons\Groups\Test\Case\Model\Behavior\GroupsUserBehavior
+ * @package NetCommons\Groups\Test\Case\Model\Group
  */
-class GroupsUserBehaviorValidatesTest extends GroupsControllerTestCase {
+class GroupValidateTest extends GroupsControllerTestCase {
 
 /**
  * validates()のテスト
  *
- * @dataProvider dataProviderValidates
+ * @dataProvider dataProviderGroupValidates
  * @param array $inputData 入力データ
  * @param array $validationErrors バリデーション結果
  * @return void
  */
 	public function testValidates($inputData = [], $validationErrors = []) {
-		$behaviorGroupsUser = new GroupsUserBehavior();
-		$this->controller->Group->set($inputData);
-		$behaviorGroupsUser->beforeValidate($this->controller->Group, []);
-
-		$this->assertEquals(
+		$this->_templateTestBeforeValidation(
+			$inputData,
 			$validationErrors,
-			$this->controller->Group->validationErrors,
-			"バリデーション結果が違います"
+			'Group'
 		);
+	}
+
+/**
+ * testValidates用dataProvider
+ * 
+ * ### 戻り値
+ *  - inputData:	入力データ
+ *  - expectedValidationErrors:	バリデーション結果
+ */
+	public function dataProviderGroupValidates() {
+		return $this->dataProviderValidates(true);
 	}
 }
