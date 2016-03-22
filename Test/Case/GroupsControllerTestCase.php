@@ -50,11 +50,25 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 	protected $_controller = 'groups';
 
 /**
- * グループModel
+ * コントローラのグループモデル
  * 
  * @var object
  */
 	protected $_group;
+
+/**
+ * GroupモデルClass
+ * 
+ * @var object
+ */
+	protected $_classGroup;
+
+/**
+ * GroupsUserモデルClass
+ * 
+ * @var object
+ */
+	protected $_classGroupsUser;
 
 /**
  * setUp method
@@ -69,6 +83,8 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 		CakeSession::write('Auth.User.UserRoleSetting.use_private_room', true);
 
 		$this->_group = $this->controller->Group;
+		$this->_classGroup = ClassRegistry::init(Inflector::camelize($this->plugin) . '.Group');
+		$this->_classGroupsUser = ClassRegistry::init(Inflector::camelize($this->plugin) . '.GroupsUser');
 	}
 
 /**
@@ -261,12 +277,11 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
  *
  * @param array $inputData 入力データ
  * @param array $validationErrors バリデーション結果 
- * @param object $checkClassName 確認するクラス名
+ * @param object $checkClass 確認するModelクラス
  * @param array $option
  * @return void
  */
-	protected function _templateTestBeforeValidation($inputData, $validationErrors, $checkClassName, $option = []) {
-		$checkClass = ClassRegistry::init(Inflector::camelize($this->plugin) . '.' . $checkClassName);
+	protected function _templateTestBeforeValidation($inputData, $validationErrors, $checkClass, $option = []) {
 		$checkClass->set($inputData);
 		$checkClass->validates();
 

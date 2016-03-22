@@ -31,7 +31,7 @@ class GroupValidateTest extends GroupsControllerTestCase {
 		$this->_templateTestBeforeValidation(
 			$inputData,
 			$validationErrors,
-			'Group'
+			$this->_classGroup
 		);
 	}
 
