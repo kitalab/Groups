@@ -29,7 +29,7 @@ class GroupsControllerSelectTest extends GroupsControllerTestCase {
 	public function testSelectGet($existGroupTableData = 1) {
 		//データが無いテストケースの場合はデータを全削除
 		if (!$existGroupTableData) {
-			$this->__group->deleteAll(true);
+			$this->_group->deleteAll(true);
 		}
 		//テスト実行
 		$this->_testGetAction(

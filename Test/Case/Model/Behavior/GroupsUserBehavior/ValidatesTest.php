@@ -30,12 +30,12 @@ class GroupsUserBehaviorValidatesTest extends GroupsControllerTestCase {
  */
 	public function testValidates($inputData = [], $validationErrors = []) {
 		$behaviorGroupsUser = new GroupsUserBehavior();
-		$this->controller->Group->set($inputData);
-		$behaviorGroupsUser->beforeValidate($this->controller->Group, []);
+		$this->_group->set($inputData);
+		$behaviorGroupsUser->beforeValidate($this->_group, []);
 
 		$this->assertEquals(
 			$validationErrors,
-			$this->controller->Group->validationErrors,
+			$this->_group->validationErrors,
 			"バリデーション結果が違います"
 		);
 	}

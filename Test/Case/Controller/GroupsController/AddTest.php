@@ -30,13 +30,13 @@ class GroupsControllerAddTest extends GroupsControllerTestCase {
  */
 	public function testAddPost($isModal = null, $inputData = [], $expectedSaveResult = 1) {
 		//データを全削除
-		$this->__group->deleteAll(true);
+		$this->_group->deleteAll(true);
 		//モーダルウィンドウで登録に成功する場合はモーダルが閉じるので設定する必要はないのだが、テストでエラーが出るため対処
 		if ($expectedSaveResult && $isModal) {
 			$this->controller->viewVars['isModal'] = null;
 		}
 		//データ登録
-		$this->__group->data['Group'] = array();
+		$this->_group->data['Group'] = array();
 		try {
 			$this->_testPostAction(
 				'post',
@@ -48,7 +48,7 @@ class GroupsControllerAddTest extends GroupsControllerTestCase {
 		} catch(exception $e){
 			$this->_assertException($e);
 		}
-		$dbData = $this->__group->find('all');
+		$dbData = $this->_group->find('all');
 
 		//登録データ数を確認
 		$expectedCount = $expectedSaveResult ? 1 : 0;

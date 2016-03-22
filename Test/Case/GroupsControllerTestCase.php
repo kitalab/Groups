@@ -54,7 +54,7 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
  * 
  * @var object
  */
-	protected $__group;
+	protected $_group;
 
 /**
  * setUp method
@@ -68,7 +68,7 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 		TestAuthGeneral::login($this);
 		CakeSession::write('Auth.User.UserRoleSetting.use_private_room', true);
 
-		$this->__group = $this->controller->Group;
+		$this->_group = $this->controller->Group;
 	}
 
 /**

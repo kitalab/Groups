@@ -61,7 +61,7 @@ class GroupsControllerEditTest extends GroupsControllerTestCase {
 		} catch(exception $e){
 			$this->_assertException($e);
 		}
-		$dbData = $this->__group->find('all');
+		$dbData = $this->_group->find('all');
 
 		//登録データ数を確認
 		$this->assertCount(1, $dbData);
