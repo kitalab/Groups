@@ -27,8 +27,8 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'plugin.groups.group',
-		'plugin.groups.groups_user',
+		'Group' => 'plugin.groups.group',
+		'GroupsUser' => 'plugin.groups.groups_user',
 		'plugin.groups.page4_groups_test',
 		'plugin.groups.roles_rooms_user4_groups_test',
 		'plugin.groups.room4_groups_test',
