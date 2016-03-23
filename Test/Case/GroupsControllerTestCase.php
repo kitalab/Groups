@@ -88,6 +88,7 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 		//ログイン
 		TestAuthGeneral::login($this);
 		CakeSession::write('Auth.User.UserRoleSetting.use_private_room', true);
+		Current::initialize($this->controller->request);
 
 		$this->_group = $this->controller->Group;
 		$this->_groupsUser = $this->controller->GroupsUser;
@@ -298,5 +299,28 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 			$checkClass->validationErrors,
 			"バリデーション結果が違います"
 		);
+	}
+
+/**
+ * GroupsUsersDetailの値を確認する
+ * 
+ * @param int $groupId
+ * @param array $detailGroupUsers
+ * @return void
+ */
+	protected function _assertGroupsUsersDetail($groupId, $detailGroupUsers) {
+		$expectedUserIds = $this->_getExpectedUserIds([$groupId]);
+		$this->assertCount(
+			count($expectedUserIds),
+			$detailGroupUsers,
+			'想定と違う値が返っています'
+		);
+		foreach ($expectedUserIds as $index => $userId) {
+			$this->assertEquals(
+				$this->controller->User->findById($userId)['User'],
+				$detailGroupUsers[$index]['User'],
+				'想定と違う値が返っています'
+			);
+		}
 	}
 }
