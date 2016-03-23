@@ -45,6 +45,20 @@ class GroupsUserSaveGroupUserExceptionTest extends GroupsControllerTestCase {
 		$this->setExpectedException('InternalErrorException');
 		$this->_classGroupsUser->saveGroupUser($inputData);
 
+		$this->assertCount(
+			1,
+			$this->_groupsUser->find()
+		);
+	}
+
+/**
+ * tearDown method
+ *
+ * @return void
+ */
+	public function tearDown() {
+		parent::tearDown();
+
 		array_pop($this->fixtures);
 	}
 

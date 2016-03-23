@@ -31,6 +31,13 @@ class GroupsUserSaveGroupUserTest extends GroupsControllerTestCase {
 		$this->assertTrue(
 			$this->_classGroupsUser->saveGroupUser($inputData) === $saveResult, 'セーブ結果が想定と異なります。'
 		);
+
+		$expectedCount = $saveResult ? 2 : 1;
+		$this->assertEqual(
+			$expectedCount,
+			$this->_groupsUser->find('count'),
+			'データ登録数が想定と異なります。'
+		);
 	}
 
 /**

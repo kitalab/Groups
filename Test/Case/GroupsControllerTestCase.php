@@ -50,11 +50,18 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 	protected $_controller = 'groups';
 
 /**
- * コントローラのグループモデル
+ * コントローラのGroupモデル
  * 
  * @var object
  */
 	protected $_group;
+
+/**
+ * コントローラのGroupsUserモデル
+ * 
+ * @var object
+ */
+	protected $_groupsUser;
 
 /**
  * GroupモデルClass
@@ -83,6 +90,7 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 		CakeSession::write('Auth.User.UserRoleSetting.use_private_room', true);
 
 		$this->_group = $this->controller->Group;
+		$this->_groupsUser = $this->controller->GroupsUser;
 		$this->_classGroup = ClassRegistry::init(Inflector::camelize($this->plugin) . '.Group');
 		$this->_classGroupsUser = ClassRegistry::init(Inflector::camelize($this->plugin) . '.GroupsUser');
 	}

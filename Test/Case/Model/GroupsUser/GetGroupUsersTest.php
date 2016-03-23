@@ -27,14 +27,61 @@ class GroupsUsergetGroupUsersTest extends GroupsControllerTestCase {
  * @return void
  */
 	public function testGetGroupUsers($inputData = []) {
-		$result = $this->_classGroupsUser->getGroupUsers($inputData);
-
+		$existUserIds = [1, 2];
+		$expectedCount = 0;
+		$getUsers = $this->_classGroupsUser->getGroupUsers($inputData);
+		//何も渡していない時は空配列が返ってくる
 		if (empty($inputData)) {
 			$this->assertEquals(
-				array(), $result
+				array(), $getUsers
 			);
 			return;
 		}
+		//データ内容確認
+		if (!is_array($inputData)) {
+			$inputData = [$inputData];
+		}
+		sort($inputData);
+		$actualUsers = $getUsers;
+		foreach ($inputData as $userId) {
+			//データ数カウント
+			if (in_array($userId, $existUserIds)) {
+				++$expectedCount;
+			} else {
+				continue;
+			}
+			//データ詳細確認
+			$expectedUser = $this->controller->User->findById($userId);
+			$actualUser = array_shift($actualUsers);
+			$this->assertEquals(
+				$expectedUser['User'],
+				$actualUser['User'],
+				'データ内容が違います'
+			);
+			if (!isset($expectedUser['UploadFile'])) {
+				foreach ($actualUser['UploadFile'] as $val) {
+					$this->assertNull(
+						$val,
+						'データ内容が違います'
+					);
+				}
+				continue;
+			}
+			$this->assertEquals(
+				array_merge(
+					$expectedUser['UploadFile']['avatar'],
+					$expectedUser['UploadFile']
+				),
+				$actualUser['UploadFile'],
+				'データ内容が違います'
+			);
+		}
+		//データ数確認
+		$this->assertCount(
+			$expectedCount,
+			$getUsers,
+			'データ数が違います。'
+		);
 	}
 
 /**
@@ -46,8 +93,10 @@ class GroupsUsergetGroupUsersTest extends GroupsControllerTestCase {
  */
 	public function dataProviderGetGroupUsers() {
 		return array(
+			array(null),
 			array([]),
-			array([1]),
+			array(1),
+			array([2]),
 			array([1, 2]),
 			array([2, 1]),
 			array([1, 999999]),
