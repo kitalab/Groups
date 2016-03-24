@@ -122,10 +122,11 @@ class Group extends GroupsAppModel {
  * グループ取得処理
  *
  * @param int|array $groupId グループID
+ * @param int $roomId ルームID
  * @return mixed On success Model::$groupUsers
  * @throws InternalErrorException
  */
-	public function getGroupUser($groupId) {
+	public function getGroupUser($groupId, $roomId = Room::PUBLIC_PARENT_ID) {
 		$groups = $this->find('all', array(
 			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
 			'conditions' => array(
@@ -136,7 +137,7 @@ class Group extends GroupsAppModel {
 			'recursive' => 1,
 		));
 		$userIdArr = Hash::extract($groups, '{n}.GroupsUser.{n}.user_id');
-		$groupUsers = $this->GroupsUser->getGroupUsers($userIdArr);
+		$groupUsers = $this->GroupsUser->getGroupUsers($userIdArr, $roomId);
 
 		return $groupUsers;
 	}

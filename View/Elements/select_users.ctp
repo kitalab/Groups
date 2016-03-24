@@ -44,8 +44,10 @@ $this->NetCommonsForm->unlockField($pluginModel . '.user_id');
 	<div class="pull-right" style="margin: 0 8px;">|</div>
 	<!-- グループ選択 -->
 	<div class="pull-right" ng-controller="GroupsSelectGroup">
-		<!--				<a href="" ng-click="showGroupSelectionDialog('--><?php //echo Current::read('User.id'); ?><!--', '--><?php //echo 1 ?><!--')">-->
-		<a href="" ng-click="showGroupSelectionDialog('<?php echo Current::read('User.id'); ?>')">
+		<a href="" ng-click="showGroupSelectionDialog(
+			'<?php echo Current::read('User.id'); ?>',
+			'<?php echo (int)$roomId; ?>'
+		)">
 			<span class="glyphicon glyphicon-search"></span>
 			<?php echo __d('groups', 'Group search'); ?>
 		</a>
