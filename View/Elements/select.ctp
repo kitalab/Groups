@@ -41,7 +41,7 @@ if (! isset($roomId)) {
 				'usersJson' => $usersJson,
 				'roomId' => $roomId,
 			)); ?>
-		<div class="text-right" ng-controller="GroupsAddGroup">
+		<div class="text-right" ng-controller="GroupsAddGroup" ng-init="initialize()">
 			<?php
 				echo $this->Button->addLink(__d('groups', 'Create a new group in the above-described member'),
 					'#',

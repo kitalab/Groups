@@ -40,21 +40,34 @@ NetCommonsApp.factory('AddGroup',
 NetCommonsApp.controller('GroupsAddGroup',
     function($scope, $controller, AddGroup, SelectGroupUsers) {
       $controller('GroupsSelect', {$scope: $scope});
+
+      /**
+       * initialize
+       *
+       * @return {void}
+       */
+      $scope.initialize = function() {
+        // ユーザ選択情報を保持
+        $scope.setUsers();
+      };
+
       $scope.showGroupAddDialog = function(userId) {
         AddGroup($scope, userId).result.then(
             function(result) {
               // ポップアップを閉じたあとも、ユーザ選択情報を保持
-              var groupSelectScope =
-                  angular.element('#group-user-select').scope();
-              SelectGroupUsers.selectUsers = groupSelectScope.users;
+              $scope.setUsers();
             },
             function() {
               // ポップアップを閉じたあとも、ユーザ選択情報を保持
-              var groupSelectScope =
-                  angular.element('#group-user-select').scope();
-              SelectGroupUsers.selectUsers = groupSelectScope.users;
+              $scope.setUsers();
             }
         );
+      };
+
+      $scope.setUsers = function() {
+        var groupSelectScope =
+            angular.element('#group-user-select').scope();
+        groupSelectScope.setKeepUsers();
       };
     });
 
@@ -225,7 +238,7 @@ NetCommonsApp.controller('GroupsSelect',
        * @return {array}
        */
       $scope.$watch('users', function() {
-        SelectGroupUsers.selectUsers = $scope.users;
+        $scope.setKeepUsers();
         return $scope.users;
       }, true);
 
@@ -252,7 +265,7 @@ NetCommonsApp.controller('GroupsSelect',
             $scope.users.push(user);
           }
         });
-        SelectGroupUsers.selectUsers = $scope.users;
+        $scope.setKeepUsers();
       };
 
       $scope.deleteUser = function(targetUserId) {
@@ -263,6 +276,10 @@ NetCommonsApp.controller('GroupsSelect',
             break;
           }
         }
+      };
+
+      $scope.setKeepUsers = function() {
+        SelectGroupUsers.selectUsers = $scope.users;
       };
     });
 
@@ -304,9 +321,7 @@ NetCommonsApp.controller('GroupsSelectGroup',
             },
             function() {
               // ポップアップを閉じたあとも、ユーザ選択情報を保持
-              var groupSelectScope =
-                  angular.element('#group-user-select').scope();
-              SelectGroupUsers.selectUsers = groupSelectScope.users;
+              $scope.$parent.setKeepUsers();
             }
         );
       };
