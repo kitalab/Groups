@@ -41,9 +41,9 @@ class Page4GroupsTestFixture extends PageFixture {
 			'rght' => 6,
 			'permalink' => 'test2',
 			'slug' => 'test2',
-			'is_published' => 1,
-			'from' => null,
-			'to' => null,
+			//'is_published' => 1,
+			//'from' => null,
+			//'to' => null,
 			'is_container_fluid' => 1,
 		)
 	);
