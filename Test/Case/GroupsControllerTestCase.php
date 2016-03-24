@@ -11,6 +11,7 @@
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 App::uses('GroupsUser4UsersTestFixture', 'Groups.Test/Fixture');
 App::uses('GroupsUser', 'Groups.Model');
+App::uses('Room', 'Rooms.Model');
 
 
 /**
@@ -322,5 +323,22 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 				'想定と違う値が返っています'
 			);
 		}
+	}
+
+/**
+ * elementの表示を取得
+ *
+ * @param string $path elementのパス
+ * @param array $data Elementの変数
+ * @param array $requestData リクエストdata
+ * @return string 表示文字列
+ */
+	protected function _makeElementView($path, $data = [], $requestData = []) {
+			$this->controller->set('userAttributes', []);
+			$this->controller->request->data = $requestData;
+			$View = new View($this->controller);
+			$View->Room = new Room();
+
+			return $View->element($path, $data);
 	}
 }
