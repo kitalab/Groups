@@ -31,11 +31,23 @@ class GroupsViewElementsListTest extends GroupsControllerTestCase {
 				'groups' => [
 					[
 						'Group' => ['id' => 1, 'name' => 'test'],
-						'GroupsUser' => [['user_id' => 1], ['user_id' => 2]]
+						'GroupsUser' => [
+							['user_id' => 1],
+							['user_id' => 2],
+							['user_id' => 3],
+							['user_id' => 4],
+							['user_id' => 5],
+							['user_id' => 6],
+							['user_id' => 7],
+						]
 					]
 				],
 				'users' => [
 					['User' => ['id' => 1]],
+					['User' => ['id' => 2]],
+					['User' => ['id' => 3]],
+					['User' => ['id' => 4]],
+					['User' => ['id' => 6]],
 				],
 				'groupUsersList' => []
 			]
