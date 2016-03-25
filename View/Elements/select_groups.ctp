@@ -22,9 +22,13 @@
 
 		<span class="nc-groups-select-group-name">
 			{{group.Group.name}}
+			<?php echo sprintf(__d('groups', 'Group users count'), '{{group.GroupsUser.length}}');?>
 		</span>
-		<span ng-repeat="groupsUser in group.GroupsUser">
+		<span ng-repeat="groupsUser in group.GroupsUser | limitTo: <?php echo GroupsUser::LIST_DISPLAY_NUM; ?>">
 			<img class="user-avatar-xs" ng-src="{{groupUsersList[groupsUser.user_id].avatar}}" alt="{{groupUsersList[groupsUser.user_id].handlename}}" title="{{groupUsersList[groupsUser.user_id].handlename}}" />
+		</span>
+		<span ng-if="group.GroupsUser.length > <?php echo groupsUser::LIST_DISPLAY_NUM; ?>">
+			<?php echo __d('groups', 'Group users truncate str') ?>
 		</span>
 
 		<?php if ($groupType === 'selectors') : ?>

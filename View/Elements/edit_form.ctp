@@ -35,7 +35,7 @@ $roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
 	</h1>
 <?php endif; ?>
 
-<div id="groups-select-users" class="panel panel-default" ng-controller="GroupsAddGroup">
+<div id="groups-select-users" class="panel panel-default" ng-controller="GroupsAddGroup" ng-init="initialize()">
 	<?php echo $this->NetCommonsForm->create('Group', array('type' => 'file')); ?>
 	<div class="panel-body" ng-controller="GroupsSelectGroup">
 		<!-- グループ名 -->

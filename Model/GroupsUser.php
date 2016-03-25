@@ -30,6 +30,13 @@ class GroupsUser extends GroupsAppModel {
 	public $useTable = 'groups_users';
 
 /**
+ * 一覧表示するユーザアイコン数の定数
+ *
+ * @var const
+ */
+	const LIST_DISPLAY_NUM = 5;
+
+/**
  * 1グループに登録可能な人数の定数
  *
  * @var const
@@ -115,9 +122,10 @@ class GroupsUser extends GroupsAppModel {
  * It gets a string attached user information to the group
  *
  * @param array $userIdArr GroupsUser.user_id
+ * @param int $roomId Room.id
  * @return array Group users array
  */
-	public function getGroupUsers($userIdArr) {
+	public function getGroupUsers($userIdArr, $roomId = Room::PUBLIC_PARENT_ID) {
 		if (empty($userIdArr)) {
 			return array();
 		}
@@ -125,14 +133,24 @@ class GroupsUser extends GroupsAppModel {
 		$this->loadModels([
 			'User' => 'Users.User',
 			'UploadFile' => 'Files.UploadFile',
+			'RolesRoomsUser' => 'Rooms.RolesRoomsUser',
 		]);
 		$this->User->prepare();
+
+		$rolesRoomsUsers = $this->RolesRoomsUser->getRolesRoomsUsers(array(
+			'Room.id' => $roomId,
+			'RolesRoomsUser.user_id' => $userIdArr
+		));
+		$roomUserIdArr = Hash::extract($rolesRoomsUsers, '{n}.RolesRoomsUser.user_id');
+		if (empty($roomUserIdArr)) {
+			return array();
+		}
 
 		$groupUsers = $this->User->find('all', array(
 			'recursive' => -1,
 			'fields' => array('User.*', 'UploadFile.*'),
 			'conditions' => array(
-				$this->User->alias . '.id' => $userIdArr,
+				$this->User->alias . '.id' => $roomUserIdArr,
 				$this->User->alias . '.is_deleted' => false,
 			),
 			'joins' => array(

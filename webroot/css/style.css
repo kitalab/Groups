@@ -42,3 +42,16 @@
 .nc-groups-select-user-name {
 	margin: 0 8px 0 4px;
 }
+
+.nc-groups-show-add-btn {
+	font-size: 10px;
+	margin-top: 4px;
+}
+
+.nc-groups-user-select {
+	margin: 8px 0;
+}
+
+.nc-groups-search-separator {
+	margin: 0 8px;
+}

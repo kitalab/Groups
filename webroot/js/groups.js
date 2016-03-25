@@ -40,21 +40,34 @@ NetCommonsApp.factory('AddGroup',
 NetCommonsApp.controller('GroupsAddGroup',
     function($scope, $controller, AddGroup, SelectGroupUsers) {
       $controller('GroupsSelect', {$scope: $scope});
+
+      /**
+       * initialize
+       *
+       * @return {void}
+       */
+      $scope.initialize = function() {
+        // ユーザ選択情報を保持
+        $scope.setUsers();
+      };
+
       $scope.showGroupAddDialog = function(userId) {
         AddGroup($scope, userId).result.then(
             function(result) {
               // ポップアップを閉じたあとも、ユーザ選択情報を保持
-              var groupSelectScope =
-                  angular.element('#group-user-select').scope();
-              SelectGroupUsers.selectUsers = groupSelectScope.users;
+              $scope.setUsers();
             },
             function() {
               // ポップアップを閉じたあとも、ユーザ選択情報を保持
-              var groupSelectScope =
-                  angular.element('#group-user-select').scope();
-              SelectGroupUsers.selectUsers = groupSelectScope.users;
+              $scope.setUsers();
             }
         );
+      };
+
+      $scope.setUsers = function() {
+        var groupSelectScope =
+            angular.element('#group-user-select').scope();
+        groupSelectScope.setKeepUsers();
       };
     });
 
@@ -150,7 +163,7 @@ NetCommonsApp.controller('Group.add',
  */
 NetCommonsApp.factory('SelectGroup',
     ['NetCommonsModal', function(NetCommonsModal) {
-      return function($scope, userId, selectors) {
+      return function($scope, userId, roomId, selectors) {
         return NetCommonsModal.show(
             $scope, 'Group.select',
             $scope.baseUrl + '/groups/groups/select/' +
@@ -160,6 +173,7 @@ NetCommonsApp.factory('SelectGroup',
               resolve: {
                 options: {
                   userId: userId,
+                  roomId: roomId,
                   selectors: selectors
                 }
               }
@@ -224,7 +238,7 @@ NetCommonsApp.controller('GroupsSelect',
        * @return {array}
        */
       $scope.$watch('users', function() {
-        SelectGroupUsers.selectUsers = $scope.users;
+        $scope.setKeepUsers();
         return $scope.users;
       }, true);
 
@@ -251,7 +265,7 @@ NetCommonsApp.controller('GroupsSelect',
             $scope.users.push(user);
           }
         });
-        SelectGroupUsers.selectUsers = $scope.users;
+        $scope.setKeepUsers();
       };
 
       $scope.deleteUser = function(targetUserId) {
@@ -262,6 +276,10 @@ NetCommonsApp.controller('GroupsSelect',
             break;
           }
         }
+      };
+
+      $scope.setKeepUsers = function() {
+        SelectGroupUsers.selectUsers = $scope.users;
       };
     });
 
@@ -297,15 +315,13 @@ NetCommonsApp.controller('GroupsSelectUser',
 NetCommonsApp.controller('GroupsSelectGroup',
     function($scope, SelectGroup, SelectGroupUsers) {
 
-      $scope.showGroupSelectionDialog = function(userId) {
-        SelectGroup($scope, userId).result.then(
+      $scope.showGroupSelectionDialog = function(userId, roomId) {
+        SelectGroup($scope, userId, roomId).result.then(
             function(result) {
             },
             function() {
               // ポップアップを閉じたあとも、ユーザ選択情報を保持
-              var groupSelectScope =
-                  angular.element('#group-user-select').scope();
-              SelectGroupUsers.selectUsers = groupSelectScope.users;
+              $scope.$parent.setKeepUsers();
             }
         );
       };
@@ -320,6 +336,11 @@ NetCommonsApp.controller('Group.select',
        * ユーザIDを保持する変数
        */
       $scope.userId = options['userId'];
+
+      /**
+       * ルームIDを保持する変数
+       */
+      $scope.roomId = options['roomId'];
 
       /**
        * グループを保持する配列
@@ -438,7 +459,8 @@ NetCommonsApp.controller('Group.select',
         // GETリクエスト
         var config = {
           params: {
-            group_id: $scope.data.GroupSelect.group_id.join(',')
+            group_id: $scope.data.GroupSelect.group_id.join(','),
+            room_id: $scope.roomId
           }
         };
         $http.get(

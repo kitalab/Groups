@@ -41,14 +41,14 @@ if (! isset($roomId)) {
 				'usersJson' => $usersJson,
 				'roomId' => $roomId,
 			)); ?>
-		<div class="text-right" ng-controller="GroupsAddGroup">
+		<div class="text-right" ng-controller="GroupsAddGroup" ng-init="initialize()">
 			<?php
 				echo $this->Button->addLink(__d('groups', 'Create a new group in the above-described member'),
 					'#',
 					array(
 						'tooltip' => __d('net_commons', 'Add'),
 						'ng-click' => 'showGroupAddDialog(' . Current::read('User.id') . ')',
-						'style' => 'font-size: 10px;',
+						'class' => 'btn btn-success nc-groups-show-add-btn'
 					)
 				);
 			?>
