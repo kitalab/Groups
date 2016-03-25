@@ -59,6 +59,12 @@ class RolesRoomsUser4GroupsTestFixture extends RolesRoomsUserFixture {
 			'user_id' => '2',
 			'room_id' => '4',
 		),
+		array(
+			'id' => '5',
+			'roles_room_id' => '1',
+			'user_id' => '3',
+			'room_id' => '1',
+		),
 	);
 
 }
