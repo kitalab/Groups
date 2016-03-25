@@ -91,8 +91,10 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 		CakeSession::write('Auth.User.UserRoleSetting.use_private_room', true);
 		Current::initialize($this->controller->request);
 
+		//コントローラ内モデル
 		$this->_group = $this->controller->Group;
 		$this->_groupsUser = $this->controller->GroupsUser;
+		//テスト用モデルclass
 		$this->_classGroup = ClassRegistry::init(Inflector::camelize($this->plugin) . '.Group');
 		$this->_classGroupsUser = ClassRegistry::init(Inflector::camelize($this->plugin) . '.GroupsUser');
 	}
@@ -334,11 +336,24 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
  * @return string 表示文字列
  */
 	protected function _makeElementView($path, $data = [], $requestData = []) {
-			$this->controller->set('userAttributes', []);
-			$this->controller->request->data = $requestData;
-			$View = new View($this->controller);
-			$View->Room = new Room();
+			$view = $this->_createViewClass($requestData);
+			return $view->element($path, $data);
+	}
 
-			return $View->element($path, $data);
+/**
+ * テストに使うViewクラスを作成
+ * 
+ * @param array $requestData リクエストdata
+ * @return object Viewクラス
+ */
+	protected function _createViewClass($requestData = []) {
+		$this->controller->set('userAttributes', []);
+		$this->controller->request->data = $requestData;
+		$View = new View($this->controller);
+		$View->Room = new Room();
+		$View->plugin = Inflector::camelize($this->plugin);
+		$View->helpers = $this->controller->helpers;
+		$View->loadHelpers();
+		return $View;
 	}
 }
