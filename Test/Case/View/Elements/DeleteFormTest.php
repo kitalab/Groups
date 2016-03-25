@@ -10,7 +10,6 @@
  */
 
 App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
-App::uses('View', 'View');
 
 /**
  * View/Elements/delete_formのテスト
