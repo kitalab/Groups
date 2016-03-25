@@ -55,6 +55,7 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 							),
 							array()
 						);?>
+						<?php echo sprintf(__d('groups', 'Group users count'), count($group['GroupsUser']));?>
 					</span>
 					<span class="nc-groups-avatar-list">
 						<?php foreach ($group['GroupsUser'] as $groupsUser): ?>
