@@ -30,6 +30,13 @@ class GroupsUser extends GroupsAppModel {
 	public $useTable = 'groups_users';
 
 /**
+ * 一覧表示するユーザアイコン数の定数
+ *
+ * @var const
+ */
+	const LIST_DISPLAY_NUM = 5;
+
+/**
  * 1グループに登録可能な人数の定数
  *
  * @var const
