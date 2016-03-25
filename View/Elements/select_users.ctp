@@ -30,7 +30,7 @@ $this->NetCommonsForm->unlockField($pluginModel . '.user_id');
 
 <div id="group-user-select" class="text-right clearfix"
 		ng-controller="GroupsSelect" ng-init="initialize(<?php echo h(json_encode(array('users' => $usersJson))); ?>,
-			'<?php echo h($pluginModel); ?>')" style="margin: 8px 0;">
+			'<?php echo h($pluginModel); ?>')" class="nc-groups-user-select">
 	<!-- 会員検索 -->
 	<div class="pull-right" ng-controller="GroupsSelectUser" >
 		<a href="" ng-click="showUserSelectionDialog(
@@ -41,7 +41,9 @@ $this->NetCommonsForm->unlockField($pluginModel . '.user_id');
 			<?php echo __d('groups', 'User search'); ?>
 		</a>
 	</div>
-	<div class="pull-right" style="margin: 0 8px;">|</div>
+	<div class="pull-right nc-groups-search-separator">
+		<?php echo __d('groups', 'Search separator'); ?>
+	</div>
 	<!-- グループ選択 -->
 	<div class="pull-right" ng-controller="GroupsSelectGroup">
 		<a href="" ng-click="showGroupSelectionDialog(

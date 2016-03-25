@@ -48,7 +48,7 @@ if (! isset($roomId)) {
 					array(
 						'tooltip' => __d('net_commons', 'Add'),
 						'ng-click' => 'showGroupAddDialog(' . Current::read('User.id') . ')',
-						'style' => 'font-size: 10px;',
+						'class' => 'btn btn-success nc-groups-show-add-btn'
 					)
 				);
 			?>

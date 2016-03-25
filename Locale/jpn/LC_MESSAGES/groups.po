@@ -52,3 +52,6 @@ msgstr "ユーザ検索"
 
 msgid "Group search"
 msgstr "グループ検索"
+
+msgid "Search separator"
+msgstr "|"
