@@ -28,7 +28,6 @@ class GroupsUserSaveGroupUserExceptionTest extends GroupsControllerTestCase {
  * @var array
  */
 	public function __construct($name = null, array $data = array(), $dataName = '') {
-		unset($this->fixtures['GroupsUser']);
 		$this->fixtures[] = 'plugin.groups.groups_user_exception';
 
 		parent::__construct($name, $data, $dataName);
@@ -60,6 +59,7 @@ class GroupsUserSaveGroupUserExceptionTest extends GroupsControllerTestCase {
 		parent::tearDown();
 
 		array_pop($this->fixtures);
+		$this->fixtureManager->shutdown();
 	}
 
 }

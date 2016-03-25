@@ -20,6 +20,20 @@ App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
 class GroupSaveGroupExceptionGroupsUserTest extends GroupsControllerTestCase {
 
 /**
+ * Fixtures Setting
+ *
+ * @param string $name
+ * @param array $data
+ * @param string $dataName
+ * @var array
+ */
+	public function __construct($name = null, array $data = array(), $dataName = '') {
+		$this->fixtures[] = 'plugin.groups.groups_user_exception';
+
+		parent::__construct($name, $data, $dataName);
+	}
+
+/**
  * saveGroup()のExceptionテスト
  *
  * @dataProvider dataProviderSaveGroup
@@ -27,17 +41,8 @@ class GroupSaveGroupExceptionGroupsUserTest extends GroupsControllerTestCase {
  * @return void
  */
 	public function testSaveGroup($inputData = []) {
-		//$this->setExpectedException('InternalErrorException');
+		$this->setExpectedException('InternalErrorException');
 		$this->_classGroup->saveGroup($inputData);
-
-		//$this->assertCount(
-		//	1,
-		//	$this->_groups->find()
-		//);
-		//$this->assertCount(
-		//	1,
-		//	$this->_groupsUser->find()
-		//);
 	}
 
 /**
@@ -70,5 +75,17 @@ class GroupSaveGroupExceptionGroupsUserTest extends GroupsControllerTestCase {
 				],
 			),
 		);
+	}
+
+/**
+ * tearDown method
+ *
+ * @return void
+ */
+	public function tearDown() {
+		parent::tearDown();
+
+		array_pop($this->fixtures);
+		$this->fixtureManager->shutdown();
 	}
 }
