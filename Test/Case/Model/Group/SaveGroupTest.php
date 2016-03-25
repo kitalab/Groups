@@ -131,7 +131,7 @@ class GroupSaveGroupUserTest extends GroupsControllerTestCase {
 					],
 					'GroupsUser' => [ ['user_id' => '2'], ['user_id' => '3'] ]
 				],
-				!false
+				false
 			),
 			//存在しないgroupIdで更新
 			array(
@@ -142,7 +142,7 @@ class GroupSaveGroupUserTest extends GroupsControllerTestCase {
 					],
 					'GroupsUser' => [ ['user_id' => '2'], ['user_id' => '3'] ]
 				],
-				!false
+				false
 			),
 		);
 	}

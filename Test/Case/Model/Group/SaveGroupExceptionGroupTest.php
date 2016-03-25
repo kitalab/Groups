@@ -29,7 +29,7 @@ class GroupSaveGroupExceptionGroupTest extends GroupsControllerTestCase {
  */
 	public function __construct($name = null, array $data = array(), $dataName = '') {
 		unset($this->fixtures['Group']);
-		$this->fixtures[] = 'plugin.groups.group_exception';
+		//$this->fixtures[] = 'plugin.groups.group_exception';
 
 		parent::__construct($name, $data, $dataName);
 	}
