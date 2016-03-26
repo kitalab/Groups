@@ -48,9 +48,16 @@ class GroupsControllerUsersTest extends GroupsControllerTestCase {
  * @return void
  */
 	public function testUsersGet($paramGroupId, $existUserData) {
+		$paramArray = null;
+		if (is_array($paramGroupId)) {
+			$paramArray = array_merge(
+				$paramGroupId,
+				['room_id' => 1]
+			);
+		}
 		//テスト実行
 		$this->_testGetAction(
-			array('action' => 'users', '?' => $paramGroupId ),
+			array('action' => 'users', '?' => $paramArray ),
 			array('method' => 'assertNotEmpty'),
 			null,
 			'view'

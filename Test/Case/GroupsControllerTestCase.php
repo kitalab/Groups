@@ -11,6 +11,7 @@
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 App::uses('GroupsUser4UsersTestFixture', 'Groups.Test/Fixture');
 App::uses('GroupsUser', 'Groups.Model');
+App::uses('Room', 'Rooms.Model');
 
 
 /**
@@ -50,11 +51,18 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 	protected $_controller = 'groups';
 
 /**
- * コントローラのグループモデル
+ * コントローラのGroupモデル
  * 
  * @var object
  */
 	protected $_group;
+
+/**
+ * コントローラのGroupsUserモデル
+ * 
+ * @var object
+ */
+	protected $_groupsUser;
 
 /**
  * GroupモデルClass
@@ -81,8 +89,12 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 		//ログイン
 		TestAuthGeneral::login($this);
 		CakeSession::write('Auth.User.UserRoleSetting.use_private_room', true);
+		Current::initialize($this->controller->request);
 
+		//コントローラ内モデル
 		$this->_group = $this->controller->Group;
+		$this->_groupsUser = $this->controller->GroupsUser;
+		//テスト用モデルclass
 		$this->_classGroup = ClassRegistry::init(Inflector::camelize($this->plugin) . '.Group');
 		$this->_classGroupsUser = ClassRegistry::init(Inflector::camelize($this->plugin) . '.GroupsUser');
 	}
@@ -290,5 +302,58 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 			$checkClass->validationErrors,
 			"バリデーション結果が違います"
 		);
+	}
+
+/**
+ * GroupsUsersDetailの値を確認する
+ * 
+ * @param int $groupId
+ * @param array $detailGroupUsers
+ * @return void
+ */
+	protected function _assertGroupsUsersDetail($groupId, $detailGroupUsers) {
+		$expectedUserIds = $this->_getExpectedUserIds([$groupId]);
+		$this->assertCount(
+			count($expectedUserIds),
+			$detailGroupUsers,
+			'想定と違う値が返っています'
+		);
+		foreach ($expectedUserIds as $index => $userId) {
+			$this->assertEquals(
+				$this->controller->User->findById($userId)['User'],
+				$detailGroupUsers[$index]['User'],
+				'想定と違う値が返っています'
+			);
+		}
+	}
+
+/**
+ * elementの表示を取得
+ *
+ * @param string $path elementのパス
+ * @param array $data Elementの変数
+ * @param array $requestData リクエストdata
+ * @return string 表示文字列
+ */
+	protected function _makeElementView($path, $data = [], $requestData = []) {
+			$view = $this->_createViewClass($requestData);
+			return $view->element($path, $data);
+	}
+
+/**
+ * テストに使うViewクラスを作成
+ * 
+ * @param array $requestData リクエストdata
+ * @return object Viewクラス
+ */
+	protected function _createViewClass($requestData = []) {
+		$this->controller->set('userAttributes', []);
+		$this->controller->request->data = $requestData;
+		$View = new View($this->controller);
+		$View->Room = new Room();
+		$View->plugin = Inflector::camelize($this->plugin);
+		$View->helpers = $this->controller->helpers;
+		$View->loadHelpers();
+		return $View;
 	}
 }

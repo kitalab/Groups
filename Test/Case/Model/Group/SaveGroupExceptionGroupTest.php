@@ -1,6 +1,6 @@
 <?php
 /**
- * GroupsUser::saveGroupUser()のテスト
+ * Group::saveGroup()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Yuna Miyashita <butackle@gmail.com>
@@ -12,12 +12,12 @@
 App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
 
 /**
- * GroupsUser::saveGroupUser()のテスト
+ * Group::saveGroup()のテスト
  *
  * @author Yuna Miyashita <butackle@gmail.com>
- * @package NetCommons\Groups\Test\Case\Model\GroupsUser
+ * @package NetCommons\Groups\Test\Case\Model\Group
  */
-class GroupsUserSaveGroupUserExceptionTest extends GroupsControllerTestCase {
+class GroupSaveGroupExceptionGroupTest extends GroupsControllerTestCase {
 
 /**
  * Fixtures Setting
@@ -28,26 +28,26 @@ class GroupsUserSaveGroupUserExceptionTest extends GroupsControllerTestCase {
  * @var array
  */
 	public function __construct($name = null, array $data = array(), $dataName = '') {
-		$this->fixtures[] = 'plugin.groups.groups_user_exception';
+		$this->fixtures[] = 'plugin.groups.group_exception';
 
 		parent::__construct($name, $data, $dataName);
 	}
 
 /**
- * saveGroupUser()のExceptionテスト
+ * saveGroup()のExceptionテスト
  *
  * @return void
  */
-	public function testSaveGroupUserException() {
-		$inputData = [ 'user_id' => '3', 'group_id' => '1'];
-
+	public function testSaveGroup() {
 		$this->setExpectedException('InternalErrorException');
-		$this->_classGroupsUser->saveGroupUser($inputData);
-
-		$this->assertCount(
-			1,
-			$this->_groupsUser->find()
-		);
+		$this->_classGroup->saveGroup(array(
+			'Group' => [
+				'name' => 'TestInsert',
+			],
+			'GroupsUser' => [
+				['user_id' => '1'], ['user_id' => '3']
+			]
+		));
 	}
 
 /**
@@ -61,5 +61,4 @@ class GroupsUserSaveGroupUserExceptionTest extends GroupsControllerTestCase {
 		array_pop($this->fixtures);
 		$this->fixtureManager->shutdown();
 	}
-
 }
