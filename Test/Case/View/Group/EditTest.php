@@ -21,6 +21,7 @@ class GroupsViewGroupEditTest extends GroupsViewTestBase {
 /**
  * View/Group/editのテスト
  *
+ * @param array $data
  * @return void
  */
 	public function testEdit($data = []) {
