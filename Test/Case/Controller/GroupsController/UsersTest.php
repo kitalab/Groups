@@ -60,7 +60,7 @@ class GroupsControllerUsersTest extends GroupsTestBase {
 			array('action' => 'users', '?' => $paramArray ),
 			array('method' => 'assertNotEmpty'),
 			null,
-			'view'
+			'json'
 		);
 		$actualJson = json_decode($this->view);
 

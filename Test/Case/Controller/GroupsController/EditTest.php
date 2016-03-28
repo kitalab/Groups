@@ -40,15 +40,25 @@ class GroupsControllerEditTest extends GroupsTestBase {
 	}
 
 /**
+ * edit()アクションのGetリクエストテスト(ログインなし)
+ *
+ * @return void
+ */
+	public function testEditGetNotLogin() {
+		$this->_assertNotLogin('edit');
+	}
+
+/**
  * edit()アクションのPostリクエストテスト
  *
  * @dataProvider dataProviderEditPost
  * @param $rest REST
  * @param $inputData	入力するデータ
  * @param $expectedSaveResult	セーブ結果(想定)
+ * @param $errMessage　画面に表示されるエラーメッセージ
  * @return void
  */
-	public function testEditPost($rest = 'post', $inputData = [], $expectedSaveResult = 1) {
+	public function testEditPost($rest = 'post', $inputData = [], $expectedSaveResult = 1, $errMessage = '') {
 		//データ編集
 		try {
 			$this->_testPostAction(
@@ -65,6 +75,8 @@ class GroupsControllerEditTest extends GroupsTestBase {
 
 		//登録データ数を確認
 		$this->assertCount(1, $dbData);
+		//表示ページ確認
+		$this->_assertRedirect($expectedSaveResult, $errMessage);
 		//データが編集されている場合には変わっているかどうか。編集エラーの場合は変わっていないかどうか
 		if ($expectedSaveResult) {
 			$this->_assertGroupData($dbData, $inputData, $expectedSaveResult);
@@ -114,6 +126,7 @@ class GroupsControllerEditTest extends GroupsTestBase {
 					],
 				],
 				'expectedSaveResult' => false,
+				'errMessage' => 'ユーザを選択してください。',
 			),
 			array(
 				'rest' => 'post',
@@ -124,6 +137,7 @@ class GroupsControllerEditTest extends GroupsTestBase {
 					'GroupsUser' => [['user_id' => '1']]
 				],
 				'expectedSaveResult' => false,
+				'errMessage' => 'グループ名を入力してください。',
 			),
 			array(
 				'rest' => 'post',
@@ -135,6 +149,7 @@ class GroupsControllerEditTest extends GroupsTestBase {
 					'GroupsUser' => [['user_id' => '1'], ['user_id' => '3'], ['user_id' => '4'], ['user_id' => '2'], ['user_id' => '5']]
 				],
 				'expectedSaveResult' => false,
+				'errMessage' => 'グループ名を入力してください。',
 			),
 			array(
 				'rest' => 'post',

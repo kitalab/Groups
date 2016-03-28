@@ -68,6 +68,15 @@ class GroupsControllerDeleteTest extends GroupsTestBase {
 	}
 
 /**
+ * delete()アクションのGetリクエストテスト(ログインなし)
+ *
+ * @return void
+ */
+	public function testDeleteGetNotLogin() {
+		$this->_assertNotLogin('delete');
+	}
+
+/**
  * delete()アクションの許可されているRESTのテスト
  * 
  * @param $rest REST
@@ -77,6 +86,7 @@ class GroupsControllerDeleteTest extends GroupsTestBase {
  */
 	private function __testAllowDelete($rest, $id, $exception) {
 		$this->__testDeleteAction($rest, $id, $exception);
+		$this->_assertRedirect(true);
 		//データが削除されているかを確認
 		$this->assertCount(0, $this->_group->find('all'));
 		$this->assertCount(0, $this->controller->GroupsUser->find('all'));
@@ -97,6 +107,7 @@ class GroupsControllerDeleteTest extends GroupsTestBase {
 		}
 
 		$this->__testDeleteAction($rest, $id, $exception);
+		$this->_assertRedirect(false);
 	}
 
 /**

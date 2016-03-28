@@ -328,32 +328,52 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 	}
 
 /**
- * elementの表示を取得
- *
- * @param string $path elementのパス
- * @param array $data Elementの変数
- * @param array $requestData リクエストdata
- * @return string 表示文字列
+ * リダイレクト処理確認
+ * 
+ * @param bool $isRedirect
+ * @param string $errMessage
+ * @return void
  */
-	protected function _makeElementView($path, $data = [], $requestData = []) {
-			$view = $this->_createViewClass($requestData);
-			return $view->element($path, $data);
+	protected function _assertRedirect($isRedirect = 1, $errMessage = '') {
+		if ($isRedirect) {
+			$this->assertTextContains(
+				'Console/users/users/view/1#/user-groups',
+				$this->headers['Location'],
+				'リダイレクトがされていません。'
+			);
+		} else {
+			$this->assertFalse(isset($this->headers['Location']), '表示されているページが違います');
+			if (!empty($errMessage)) {
+				$this->assertTextContains($errMessage, $this->view, 'エラーメッセージが表示されていません');
+			}
+		}
 	}
 
 /**
- * テストに使うViewクラスを作成
+ * ログインしていない時の表示テスト
  * 
- * @param array $requestData リクエストdata
- * @return object Viewクラス
+ * @param string $methodName
+ * @return void
  */
-	protected function _createViewClass($requestData = []) {
-		$this->controller->set('userAttributes', []);
-		$this->controller->request->data = $requestData;
-		$View = new View($this->controller);
-		$View->Room = new Room();
-		$View->plugin = Inflector::camelize($this->plugin);
-		$View->helpers = $this->controller->helpers;
-		$View->loadHelpers();
-		return $View;
+	protected function _assertNotLogin($methodName = '') {
+		TestAuthGeneral::logout($this);
+
+		$isLoginError = false;
+		try {
+			$this->_testGetAction(
+				array('action' => $methodName, 1),
+				array('method' => 'assertNotEmpty'),
+				null,
+				'view'
+			);
+		} catch(exception $e){
+			if ($e->getMessage() === 'Undefined index: Room') {
+				$isLoginError = true;
+			} else {
+				$this->_assertException($e);
+			}
+		}
+
+		$this->assertTrue($isLoginError, 'ログインしていないのにページが表示されています');
 	}
 }
