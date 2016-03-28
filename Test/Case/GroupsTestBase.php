@@ -20,7 +20,7 @@ App::uses('Room', 'Rooms.Model');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller
  */
-class GroupsControllerTestCase extends NetCommonsControllerTestCase {
+class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * Fixtures

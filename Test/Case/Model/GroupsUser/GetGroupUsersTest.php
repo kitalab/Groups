@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsModelTestBase', 'Groups.Test/Case');
 
 /**
  * GroupsUser::getGroupUsers()のテスト
@@ -17,7 +17,7 @@ App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Model\GroupsUser
  */
-class GroupsUsergetGroupUsersTest extends GroupsControllerTestCase {
+class GroupsUsergetGroupUsersTest extends GroupsModelTestBase {
 
 /**
  * getGroupUsers()のテスト

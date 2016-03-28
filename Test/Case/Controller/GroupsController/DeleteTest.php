@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsTestBase', 'Groups.Test/Case');
 
 /**
  * GroupsController::delete()のテスト
@@ -17,7 +17,7 @@ App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller\GroupsController
  */
-class GroupsControllerDeleteTest extends GroupsControllerTestCase {
+class GroupsControllerDeleteTest extends GroupsTestBase {
 
 /**
  * delete()アクションのGetリクエストテスト

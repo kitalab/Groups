@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsModelTestBase', 'Groups.Test/Case');
 
 /**
  * Group::validate()のテスト
@@ -17,7 +17,7 @@ App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Model\Group
  */
-class GroupValidateTest extends GroupsControllerTestCase {
+class GroupValidateTest extends GroupsModelTestBase {
 
 /**
  * validates()のテスト

@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsViewTestBase', 'Groups.Test/Case');
 
 /**
  * GroupUserListHelper::convertGroupUserListForDisplay()のテスト
@@ -17,7 +17,7 @@ App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\View\Helper\GroupUserListHelper
  */
-class GroupUserListHelperConvertGroupUserListForDisplayTest extends GroupsControllerTestCase {
+class GroupUserListHelperConvertGroupUserListForDisplayTest extends GroupsViewTestBase {
 
 /**
  * convertGroupUserListForDisplay()のテスト

@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsTestBase', 'Groups.Test/Case');
 App::uses('GroupFixture', 'Groups.Test/Fixture');
 App::uses('GroupsUserFixture', 'Groups.Test/Fixture');
 
@@ -19,7 +19,7 @@ App::uses('GroupsUserFixture', 'Groups.Test/Fixture');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller\GroupsController
  */
-class GroupsControllerEditTest extends GroupsControllerTestCase {
+class GroupsControllerEditTest extends GroupsTestBase {
 
 /**
  * edit()アクションのGetリクエストテスト
