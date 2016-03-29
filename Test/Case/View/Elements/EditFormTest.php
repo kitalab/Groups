@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsTestBase', 'Groups.Test/Case');
+App::uses('GroupsViewTestBase', 'Groups.Test/Case');
 
 /**
  * View/Elements/edit_formのテスト
@@ -17,7 +17,7 @@ App::uses('GroupsTestBase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\View\Elements\EditForm
  */
-class GroupsViewElementsEditFormTest extends GroupsTestBase {
+class GroupsViewElementsEditFormTest extends GroupsViewTestBase {
 
 /**
  * View/Elements/edit_formのテスト

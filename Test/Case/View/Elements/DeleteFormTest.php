@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsTestBase', 'Groups.Test/Case');
+App::uses('GroupsViewTestBase', 'Groups.Test/Case');
 
 /**
  * View/Elements/delete_formのテスト
@@ -17,7 +17,7 @@ App::uses('GroupsTestBase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\View\Elements\DeleteForm
  */
-class GroupsViewElementsDeleteFormTest extends GroupsTestBase {
+class GroupsViewElementsDeleteFormTest extends GroupsViewTestBase {
 
 /**
  * View/Elements/delete_formのテスト
