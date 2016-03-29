@@ -80,7 +80,7 @@ class GroupsModelTestBase extends GroupsTestBase {
 				],
 				[
 					'user_id' => [
-						sprintf(__d('groups', 'Can be registered upper limit is %s'), $limitUserEntryNum)
+						__d('net_commons', 'Failed on validation errors. Please check the input data.')
 					]
 				]
 			),

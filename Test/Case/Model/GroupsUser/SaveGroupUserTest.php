@@ -28,13 +28,15 @@ class GroupsUserSaveGroupUserTest extends GroupsModelTestBase {
  * @return void
  */
 	public function testSaveGroupUser($inputData = [], $saveResult = 1) {
+		if (!$saveResult) {
+			$this->setExpectedException('InternalErrorException');
+		}
 		$this->assertTrue(
 			$this->_classGroupsUser->saveGroupUser($inputData) === $saveResult, 'セーブ結果が想定と異なります。'
 		);
 
-		$expectedCount = $saveResult ? 2 : 1;
 		$this->assertEqual(
-			$expectedCount,
+			2,
 			$this->_groupsUser->find('count'),
 			'データ登録数が想定と異なります。'
 		);
@@ -52,16 +54,22 @@ class GroupsUserSaveGroupUserTest extends GroupsModelTestBase {
 			//登録可能
 			array(
 				[
-						'user_id' => '3',
-						'group_id' => '1'
+					'Group' => [ 'id' => 1 ],
+					'GroupsUser' => [
+						'group_id' => '1',
+						['user_id' => '3'], ['user_id' => '4']
+					]
 				],
 				true
 			),
 			//登録可能
 			array(
 				[
-					'user_id' => '4',
-					'group_id' => '1'
+					'Group' => [ 'id' => 1 ],
+					'GroupsUser' => [
+						['user_id' => '1'],
+						'group_id' => '1'
+					]
 				],
 				true
 			),
@@ -73,30 +81,41 @@ class GroupsUserSaveGroupUserTest extends GroupsModelTestBase {
 			//グループIDなし
 			array(
 				[
-					'user_id' => '4',
+					'GroupsUser' => [
+						['user_id' => '4'],
+					]
 				],
 				false
 			),
 			//ユーザIDなし
 			array(
 				[
-					'group_id' => '1'
+					'Group' => [ 'id' => 1 ],
+					'GroupsUser' => [
+						'group_id' => '1'
+					]
 				],
 				false
 			),
 			//存在しないグループID
 			array(
 				[
-					'user_id' => '1',
-					'group_id' => '2'
+					'Group' => [ 'id' => 1 ],
+					'GroupsUser' => [
+						['user_id' => '3'],
+						'group_id' => '2'
+					]
 				],
 				false
 			),
 			//存在しないユーザID
 			array(
 				[
-					'user_id' => '999999999',
-					'group_id' => '2'
+					'Group' => [ 'id' => 1 ],
+					'GroupsUser' => [
+						['user_id' => '99999999999'],
+						'group_id' => '2'
+					]
 				],
 				false
 			),
