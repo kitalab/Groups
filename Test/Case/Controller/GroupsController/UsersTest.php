@@ -108,6 +108,15 @@ class GroupsControllerUsersTest extends GroupsTestBase {
 	}
 
 /**
+ * users()アクションのGetリクエストテスト(ログインなし)
+ *
+ * @return void
+ */
+	public function testUsersGetNotLogin() {
+		$this->_assertNotLogin('users');
+	}
+
+/**
  * testUsersGet用dataProvider
  * 
  * ### 戻り値

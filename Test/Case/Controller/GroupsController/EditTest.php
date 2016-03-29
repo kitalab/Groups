@@ -37,6 +37,10 @@ class GroupsControllerEditTest extends GroupsTestBase {
 			$exception,
 			'view'
 		);
+
+		if (empty($exception)) {
+			$this->_assertContainDeleteButton(true);
+		}
 	}
 
 /**

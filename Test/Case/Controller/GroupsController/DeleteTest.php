@@ -77,6 +77,31 @@ class GroupsControllerDeleteTest extends GroupsTestBase {
 	}
 
 /**
+ *　データ削除テスト(ログインなし)
+ * 
+ * @dataProvider dataProviderDeleteNotLogin 
+ * @param $rest REST
+ * @return void
+ */
+	public function testDeleteNotLogin($rest = 'get') {
+		TestAuthGeneral::logout($this);
+
+		$this->__testNotAllowDelete($rest, 1, 'Exception');
+	}
+
+/**
+ * testDeleteNotLogin用dataProvider
+ * 
+ * ### 戻り値
+ *  - rest REST
+ */
+	public function dataProviderDeleteNotLogin() {
+		return array(
+			['get'], ['post'], ['put'], ['delete'],
+		);
+	}
+
+/**
  * delete()アクションの許可されているRESTのテスト
  * 
  * @param $rest REST
@@ -105,9 +130,7 @@ class GroupsControllerDeleteTest extends GroupsTestBase {
 		if (is_null($exception)) {
 			$exception = "MethodNotAllowedException";
 		}
-
 		$this->__testDeleteAction($rest, $id, $exception);
-		$this->_assertRedirect(false);
 	}
 
 /**

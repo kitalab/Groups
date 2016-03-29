@@ -41,6 +41,15 @@ class GroupsControllerSelectTest extends GroupsTestBase {
 	}
 
 /**
+ * select()アクションのGetリクエストテスト(ログインなし)
+ *
+ * @return void
+ */
+	public function testSelectGetNotLogin() {
+		$this->_assertNotLogin('select');
+	}
+
+/**
  * testSelectGet用dataProvider
  * 
  * ### 戻り値

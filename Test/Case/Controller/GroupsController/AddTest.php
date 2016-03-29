@@ -61,6 +61,22 @@ class GroupsControllerAddTest extends GroupsTestBase {
 			$this->_assertGroupData($dbData, $inputData, $expectedSaveResult);
 		}
 	}
+
+/**
+ * add()アクションのGetリクエストテスト
+ *
+ * @return void
+ */
+	public function testAddGet() {
+		$this->_testGetAction(
+			array('action' => 'add'),
+			array('method' => 'assertNotEmpty'),
+			null,
+			'view'
+		);
+		$this->_assertContainDeleteButton(false);
+	}
+
 /**
  * add()アクションのGetリクエストテスト(ログインなし)
  *
