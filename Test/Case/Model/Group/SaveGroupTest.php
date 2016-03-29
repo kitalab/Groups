@@ -133,17 +133,6 @@ class GroupSaveGroupUserTest extends GroupsModelTestBase {
 				],
 				false
 			),
-			//存在しないgroupIdで更新
-			array(
-				[
-					'Group' => [
-						'id' => 9999,
-						'name' => 'テストInsert',
-					],
-					'GroupsUser' => [ ['user_id' => '2'], ['user_id' => '3'] ]
-				],
-				false
-			),
 		);
 	}
 
