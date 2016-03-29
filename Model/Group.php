@@ -36,6 +36,13 @@ class Group extends GroupsAppModel {
 	public $validate = array();
 
 /**
+ * グループ名の入力上限文字数の定数
+ *
+ * @var const
+ */
+	const GROUP_NAME_MAX_LENGTH = 100;
+
+/**
  * hasMany associations
  *
  * @var array
@@ -74,7 +81,11 @@ class Group extends GroupsAppModel {
 					'required' => true,
 					'allowEmpty' => false,
 					'message' => __d('groups', 'Please enter group name'),
-				)
+				),
+				'maxLength' => array(
+					'rule' => array('maxLength', Group::GROUP_NAME_MAX_LENGTH),
+					'message' => sprintf(__d('groups', 'Please enter group name no more than %s characters'), Group::GROUP_NAME_MAX_LENGTH),
+				),
 			)
 		);
 
@@ -143,6 +154,33 @@ class Group extends GroupsAppModel {
 	}
 
 /**
+ * Called before each save operation, after validation. Return a non-true result
+ * to halt the save.
+ *
+ * @param array $options Options passed from Model::save().
+ * @return bool True if the operation should continue, false if it should abort
+ * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforesave
+ * @see Model::save()
+ */
+	public function beforeSave($options = array()) {
+		// 更新の場合はグループの存在チェック
+		if (isset($this->data['Group']['id']) && !empty($this->data['Group']['id'])) {
+			$params = array(
+				'conditions' => array(
+					'Group.id' => $this->data['Group']['id'],
+				),
+				'fields' => 'Group.id',
+				'recursive' => -1,
+			);
+			if ($this->find('count', $params) !== 1) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+/**
  * グループの登録処理
  *
  * @param array $data data
@@ -178,18 +216,21 @@ class Group extends GroupsAppModel {
 				$conditions = array(
 					'GroupsUser.group_id' => $data['Group']['id']
 				);
-				if (!$this->GroupsUser->deleteAll($conditions, false)) {
-					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-				}
+//				if (!$this->GroupsUser->deleteAll($conditions, false)) {
+//					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+//				}
+				$this->GroupsUser->deleteAll($conditions, false);
 			}
 
 			// GroupsUserデータの登録
 			foreach ($data['GroupsUser'] as $groupUser) {
 				$groupUser['group_id'] = $groupId;
+				$groupUser = array('GroupsUser' => $groupUser);
 				$this->GroupsUser->create(false);
-				if (!$this->GroupsUser->saveGroupUser($groupUser)) {
-					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-				}
+//				if (!$this->GroupsUser->saveGroupUser($groupUser)) {
+//					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+//				}
+				$this->GroupsUser->saveGroupUser(Hash::merge($group, $groupUser));
 			}
 
 			//トランザクションCommit

@@ -75,11 +75,25 @@ class GroupsUser extends GroupsAppModel {
  * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
+		$this->loadModels([
+			'User' => 'Users.User',
+		]);
+
 		// ユーザ選択チェック
 		if (! isset($this->data['GroupsUser']) || count($this->data['GroupsUser']) === 0) {
 			$this->validationErrors['user_id'][] = __d('groups', 'Select user');
 			return false;
 		}
+
+		// ユーザ存在チェック
+		$userIdArr = Hash::extract($this->data['GroupsUser'], '{n}.user_id');
+		if (! $this->User->existsUser($userIdArr)) {
+			$this->validationErrors['user_id'][] =
+				sprintf(__d('net_commons', 'Failed on validation errors. Please check the input data.'));
+			return false;
+		}
+
+		// ユーザ選択上限チェック
 		if (count($this->data['GroupsUser']) > GroupsUser::LIMIT_ENTRY_NUM) {
 			$this->validationErrors['user_id'][] =
 				sprintf(__d('groups', 'Can be registered upper limit is %s'), GroupsUser::LIMIT_ENTRY_NUM);
@@ -87,6 +101,35 @@ class GroupsUser extends GroupsAppModel {
 		}
 
 		return parent::beforeValidate($options);
+	}
+
+/**
+ * Called before each save operation, after validation. Return a non-true result
+ * to halt the save.
+ *
+ * @param array $options Options passed from Model::save().
+ * @return bool True if the operation should continue, false if it should abort
+ * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforesave
+ * @see Model::save()
+ */
+	public function beforeSave($options = array()) {
+		// グループIDの妥当性チェック
+		$groupId = Hash::get($this->data, 'Group.id');
+		$groupsUserGroupId = Hash::get($this->data, 'GroupsUser.group_id');
+		if ((int)$groupId !== (int)$groupsUserGroupId) {
+			return false;
+		}
+
+		// グループユーザの妥当性チェック
+		$this->loadModels([
+			'User' => 'Users.User',
+		]);
+		$groupsUserIdArr = Hash::extract($this->data, 'GroupsUser.{n}.user_id');
+		if (! $this->User->existsUser($groupsUserIdArr)) {
+			return false;
+		}
+
+		return true;
 	}
 
 /**
@@ -99,14 +142,8 @@ class GroupsUser extends GroupsAppModel {
 	public function saveGroupUser($data) {
 		$this->begin();
 
-		$this->set($data);
-		if (!$this->validates()) {
-			$this->rollback();
-			return false;
-		}
-
 		try {
-			if (!$this->save(null, false)) {
+			if (! $this->save($data, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 		} catch (Exception $ex) {

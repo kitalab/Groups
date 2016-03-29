@@ -26,6 +26,9 @@ msgstr "グループ名"
 msgid "Please enter group name"
 msgstr "グループ名を入力してください。"
 
+msgid "Please enter group name no more than %s characters"
+msgstr "グループ名は%s文字以内で入力してください。"
+
 msgid "Select user"
 msgstr "ユーザを選択してください。"
 
