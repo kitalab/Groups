@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsViewTestBase', 'Groups.Test/Case');
+App::uses('GroupsTestBase', 'Groups.Test/Case');
 
 /**
  * View/Elements/listのテスト
@@ -17,7 +17,7 @@ App::uses('GroupsViewTestBase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\View\Elements\List
  */
-class GroupsViewElementsListTest extends GroupsViewTestBase {
+class GroupsViewElementsListTest extends GroupsTestBase {
 
 /**
  * View/Elements/listのテスト
