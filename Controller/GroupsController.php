@@ -190,7 +190,7 @@ class GroupsController extends GroupsAppController {
 			throw new NotFoundException(__('Invalid group'));
 		}
 		$this->request->onlyAllow('post', 'delete');
-		if ($this->Group->delete()) {
+		if ($this->Group->deleteGroup($id)) {
 			// 正常の場合
 			$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 		}

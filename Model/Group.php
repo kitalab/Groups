@@ -202,4 +202,41 @@ class Group extends GroupsAppModel {
 
 		return true;
 	}
+
+/**
+ * グループ削除処理
+ *
+ * @param int $groupId グループID
+ * @return bool True if delete operation should continue, false to abort
+ * @throws InternalErrorException
+ */
+	public function deleteGroup($groupId) {
+		$this->loadModels([
+			'GroupsUser' => 'Groups.GroupsUser',
+		]);
+
+		//トランザクションBegin
+		$this->begin();
+
+		try {
+			// グループを削除
+			if (! $this->delete($groupId)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+
+			// グループユーザを削除
+			$conditions = array('group_id' => $groupId);
+			if (! $this->GroupsUser->deleteAll($conditions)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+
+			$this->commit();
+
+		} catch (Exception $ex) {
+			//トランザクションRollback
+			$this->rollback($ex);
+		}
+
+		return true;
+	}
 }
