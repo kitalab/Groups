@@ -31,7 +31,7 @@ class GroupsModelTestBase extends GroupsTestBase {
 		//ユーザ登録限界を作成
 		$limitUserEntryArray = array();
 		$limitUserEntryNum = GroupsUser::LIMIT_ENTRY_NUM;
-		for ($i = 0; $i < $limitUserEntryNum + 2; ++$i) {
+		for ($i = 1; $i < $limitUserEntryNum + 2; ++$i) {
 			$limitUserEntryArray[] = array(
 				'user_id' => $i
 			);
@@ -80,7 +80,7 @@ class GroupsModelTestBase extends GroupsTestBase {
 				],
 				[
 					'user_id' => [
-						__d('net_commons', 'Failed on validation errors. Please check the input data.')
+						sprintf(__d('groups', 'Can be registered upper limit is %s'), $limitUserEntryNum)
 					]
 				]
 			),
@@ -110,6 +110,25 @@ class GroupsModelTestBase extends GroupsTestBase {
 		$this->assertEquals(
 			$validationErrors,
 			$checkClass->validationErrors,
+			"バリデーション結果が違います"
+		);
+	}
+
+/**
+ * バリデーションテストの際の処理
+ *
+ * @param array $inputData 入力データ
+ * @param array $validationErrors バリデーション結果 
+ * @param object $checkClass 確認するModelクラス
+ * @param array $option
+ * @return void
+ */
+	protected function _templateTestBeforeSave($inputData, $validationErrors, $checkClass, $option = []) {
+		$checkClass->set($inputData);
+
+		$this->assertEquals(
+			$validationErrors,
+			$checkClass->beforeSave(),
 			"バリデーション結果が違います"
 		);
 	}

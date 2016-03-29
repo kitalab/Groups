@@ -34,6 +34,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 		'plugin.groups.roles_rooms_user4_groups_test',
 		'plugin.groups.room4_groups_test',
 		'plugin.groups.user_attribute_layout4_groups_test',
+		'plugin.groups.user4_validation_test'
 	);
 
 /**
