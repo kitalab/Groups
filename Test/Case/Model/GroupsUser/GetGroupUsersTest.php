@@ -85,6 +85,32 @@ class GroupsUsergetGroupUsersTest extends GroupsModelTestBase {
 	}
 
 /**
+ * getGroupUsers()のテスト（異なるRoomId）
+ *
+ * @dataProvider dataProvidergetGroupUsers
+ * @param array $inputData 入力データ
+ * @return void
+ */
+	public function testGetGroupUsersDifferentRoomId($inputData = []) {
+		$this->assertEmpty(
+			$this->_classGroupsUser->getGroupUsers($inputData, 1236516)
+		);
+	}
+
+/**
+ * getGroupUsers()のテスト（RoomIdなし）
+ *
+ * @dataProvider dataProvidergetGroupUsers
+ * @param array $inputData 入力データ
+ * @return void
+ */
+	public function testGetGroupUsersNoRoomId($inputData = []) {
+		$this->assertEmpty(
+			$this->_classGroupsUser->getGroupUsers($inputData, null)
+		);
+	}
+
+/**
  * testGetGroupUsers用dataProvider
  * 
  * ### 戻り値

@@ -62,23 +62,11 @@ class GroupsControllerUsersTest extends GroupsTestBase {
 			null,
 			'json'
 		);
-		$actualJson = json_decode($this->view);
-
-		//Jsonの値を確認
-		$this->assertEquals(
-			'OK', $actualJson->name
-		);
-		$this->assertEquals(
-			200, $actualJson->code
-		);
-		$actualUsers = $actualJson->users;
-		//Userデータを取得しない場合には空データ確認をした後、処理終了
+		$this->__assertJson($existUserData);
 		if (!$existUserData) {
-			$this->assertEquals(
-				[], $actualUsers
-			);
 			return;
 		}
+		$actualUsers = json_decode($this->view)->users;
 		//取得予定のユーザ情報をフィクスチャから取得し、データ数を比較
 		$expectedUserIds = $this->_getExpectedUserIds($paramGroupId);
 		$this->assertCount(
@@ -105,6 +93,38 @@ class GroupsControllerUsersTest extends GroupsTestBase {
 				);
 			}
 		}
+	}
+
+/**
+ * users()アクションのGetリクエストテスト(RoomIdなし)
+ * 
+ * @return void
+ */
+	public function testUsersGetNoRoomId() {
+		//テスト実行
+		$this->_testGetAction(
+			array('action' => 'users', '?' => [ 'group_id' => '1,2'] ),
+			array('method' => 'assertNotEmpty'),
+			null,
+			'json'
+		);
+		$this->__assertJson(false);
+	}
+
+/**
+ * users()アクションのGetリクエストテスト(異なるRoomId)
+ * 
+ * @return void
+ */
+	public function testUsersGetDifferentRoomId() {
+		//テスト実行
+		$this->_testGetAction(
+			array('action' => 'users', '?' => [ 'group_id' => '1,2', 'room_id' => 999999998] ),
+			array('method' => 'assertNotEmpty'),
+			null,
+			'json'
+		);
+		$this->__assertJson(false);
 	}
 
 /**
@@ -137,5 +157,29 @@ class GroupsControllerUsersTest extends GroupsTestBase {
 			[ [ 'group_id' => 'ああああ'], false ],
 			[ [ 'errorKey' => 2 ], false ],
 		);
+	}
+
+/**
+ * 返ってきたjsonの確認
+ * 
+ * @param bool $existUserData ユーザ情報が存在するか否か
+ * @return void
+ */
+	private function __assertJson($existUserData = 1) {
+		$actualJson = json_decode($this->view);
+
+		//Jsonの値を確認
+		$this->assertEquals(
+			'OK', $actualJson->name
+		);
+		$this->assertEquals(
+			200, $actualJson->code
+		);
+		//Userデータを取得しない場合には空データ確認
+		if (!$existUserData) {
+			$this->assertEquals(
+				[], $actualJson->users, 'データが空ではありません'
+			);
+		}
 	}
 }
