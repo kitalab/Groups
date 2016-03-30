@@ -116,7 +116,7 @@ class GroupsUser extends GroupsAppModel {
 		// グループIDの妥当性チェック
 		$groupId = Hash::get($this->data, 'Group.id');
 		$groupsUserGroupId = Hash::get($this->data, 'GroupsUser.group_id');
-		if (empty((int)$groupsUserGroupId) || $groupId != $groupsUserGroupId) {
+		if (empty($groupsUserGroupId) || $groupId != $groupsUserGroupId) {
 			return false;
 		}
 
