@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsModelTestBase', 'Groups.Test/Case');
 
 /**
  * Group::saveGroup()のテスト
@@ -17,7 +17,7 @@ App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Model\Group
  */
-class GroupSaveGroupUserTest extends GroupsControllerTestCase {
+class GroupSaveGroupUserTest extends GroupsModelTestBase {
 
 /**
  * saveGroup()のテスト
@@ -128,17 +128,6 @@ class GroupSaveGroupUserTest extends GroupsControllerTestCase {
 					'Group' => [
 						'id' => 1,
 						'name' => $longName,
-					],
-					'GroupsUser' => [ ['user_id' => '2'], ['user_id' => '3'] ]
-				],
-				false
-			),
-			//存在しないgroupIdで更新
-			array(
-				[
-					'Group' => [
-						'id' => 9999,
-						'name' => 'テストInsert',
 					],
 					'GroupsUser' => [ ['user_id' => '2'], ['user_id' => '3'] ]
 				],

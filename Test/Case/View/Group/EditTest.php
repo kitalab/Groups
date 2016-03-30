@@ -8,7 +8,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsViewTestBase', 'Groups.Test/Case');
 
 /**
  * View/Group/editのテスト
@@ -16,11 +16,12 @@ App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\View\Group\Edit
  */
-class GroupsViewGroupEditTest extends GroupsControllerTestCase {
+class GroupsViewGroupEditTest extends GroupsViewTestBase {
 
 /**
  * View/Group/editのテスト
  *
+ * @param array $data
  * @return void
  */
 	public function testEdit($data = []) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Group::validate()のテスト
+ * Group::beforeSave()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Yuna Miyashita <butackle@gmail.com>
@@ -12,23 +12,23 @@
 App::uses('GroupsModelTestBase', 'Groups.Test/Case');
 
 /**
- * Group::validate()のテスト
+ * Group::beforeSave()のテスト
  *
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Model\Group
  */
-class GroupValidateTest extends GroupsModelTestBase {
+class GroupBeforeSaveTest extends GroupsModelTestBase {
 
 /**
  * validates()のテスト
  *
- * @dataProvider dataProviderGroupValidates
+ * @dataProvider dataProviderBeforeSave
  * @param array $inputData 入力データ
  * @param array $validationErrors バリデーション結果
  * @return void
  */
-	public function testValidates($inputData = [], $validationErrors = []) {
-		$this->_templateTestBeforeValidation(
+	public function testBeforeSave($inputData = [], $validationErrors = []) {
+		$this->_templateTestBeforeSave(
 			$inputData,
 			$validationErrors,
 			$this->_classGroup
@@ -36,13 +36,38 @@ class GroupValidateTest extends GroupsModelTestBase {
 	}
 
 /**
- * testValidates用dataProvider
+ * testBeforeSave用dataProvider
  * 
  * ### 戻り値
  *  - inputData:	入力データ
- *  - expectedValidationErrors:	バリデーション結果
+ *  - expectedValidationError:	バリデーション結果
  */
-	public function dataProviderGroupValidates() {
-		return $this->dataProviderValidates(true);
+	public function dataProviderBeforeSave() {
+		return array(
+			array(
+				[
+					'Group' => [
+						'id' => 1,
+						'name' => 'test1'
+					],
+				],
+				true
+			),
+			array(
+				[
+					'Group' => ['name' => 'test1'],
+				],
+				true
+			),
+			array(
+				[
+					'Group' => [
+						'id' => 9999,
+						'name' => 'test1'
+					],
+				],
+				false
+			),
+		);
 	}
 }

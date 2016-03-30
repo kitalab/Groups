@@ -20,7 +20,7 @@ App::uses('Room', 'Rooms.Model');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller
  */
-class GroupsControllerTestCase extends NetCommonsControllerTestCase {
+class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * Fixtures
@@ -34,6 +34,7 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 		'plugin.groups.roles_rooms_user4_groups_test',
 		'plugin.groups.room4_groups_test',
 		'plugin.groups.user_attribute_layout4_groups_test',
+		'plugin.groups.user4_validation_test'
 	);
 
 /**
@@ -210,119 +211,75 @@ class GroupsControllerTestCase extends NetCommonsControllerTestCase {
 	}
 
 /**
- * testValidates用dataProvider
+ * リダイレクト処理確認
  * 
- * @param bool $errorNameEmpty グループ名NULLの際のバリデーション結果
- * ### 戻り値
- *  - inputData:	入力データ
- *  - expectedValidationErrors:	バリデーション結果
+ * @param bool $isRedirect
+ * @param string $errMessage
+ * @return void
  */
-	public function dataProviderValidates($errorNameEmpty = 0) {
-		//ユーザ登録限界を作成
-		$limitUserEntryArray = array();
-		$limitUserEntryNum = GroupsUser::LIMIT_ENTRY_NUM;
-		for ($i = 0; $i < $limitUserEntryNum + 2; ++$i) {
-			$limitUserEntryArray[] = array(
-				'user_id' => $i
+	protected function _assertRedirect($isRedirect = 1, $errMessage = '') {
+		if ($isRedirect) {
+			$this->assertTextContains(
+				'users/users/view/1#/user-groups',
+				$this->headers['Location'],
+				'リダイレクトがされていません。'
 			);
+		} else {
+			$this->assertFalse(isset($this->headers['Location']), '表示されているページが違います');
+			if (!empty($errMessage)) {
+				$this->assertTextContains($errMessage, $this->view, 'エラーメッセージが表示されていません');
+			}
 		}
-		//グループ名NULLの際のバリデーション結果
-		$resultNameEmpty = [];
-		if ($errorNameEmpty === true) {
-			$resultNameEmpty = [
-				"name" => [ __d('groups', 'Please enter group name') ]
-			];
-		}
-
-		return array(
-			array(
-				[
-					'Group' => [ 'name' => 'test1' ],
-					'GroupsUser' => [['user_id' => '1'], ['user_id' => '2']]
-				],
-				array()
-			),
-			array(
-				[
-					'Group' => [ 'name' => 'test1' ],
-				],
-				[
-					'user_id' => [
-						__d('groups', 'Select user')
-					]
-				]
-			),
-			array(
-				[
-					'Group' => [ 'name' => 'test1' ],
-					'GroupsUser' => [['user_id' => '99999999']]
-				],
-				[
-					'user_id' => [
-						__d('net_commons', 'Failed on validation errors. Please check the input data.')
-					]
-				]
-			),
-			array(
-				[
-					'Group' => [ 'name' => 'test1' ],
-					'GroupsUser' => $limitUserEntryArray
-				],
-				[
-					'user_id' => [
-						sprintf(__d('groups', 'Can be registered upper limit is %s'), $limitUserEntryNum)
-					]
-				]
-			),
-			array(
-				[
-					'Group' => [ 'name' => '' ],
-					'GroupsUser' => [['user_id' => '4'], ['user_id' => '2']]
-				],
-				$resultNameEmpty
-			),
-		);
 	}
 
 /**
- * バリデーションテストの際の処理
- *
- * @param array $inputData 入力データ
- * @param array $validationErrors バリデーション結果 
- * @param object $checkClass 確認するModelクラス
- * @param array $option
- * @return void
- */
-	protected function _templateTestBeforeValidation($inputData, $validationErrors, $checkClass, $option = []) {
-		$checkClass->set($inputData);
-		$checkClass->validates();
-
-		$this->assertEquals(
-			$validationErrors,
-			$checkClass->validationErrors,
-			"バリデーション結果が違います"
-		);
-	}
-
-/**
- * GroupsUsersDetailの値を確認する
+ * ログインしていない時の表示テスト
  * 
- * @param int $groupId
- * @param array $detailGroupUsers
+ * @param string $methodName
  * @return void
  */
-	protected function _assertGroupsUsersDetail($groupId, $detailGroupUsers) {
-		$expectedUserIds = $this->_getExpectedUserIds([$groupId]);
-		$this->assertCount(
-			count($expectedUserIds),
-			$detailGroupUsers,
-			'想定と違う値が返っています'
-		);
-		foreach ($expectedUserIds as $index => $userId) {
-			$this->assertEquals(
-				$this->controller->User->findById($userId)['User'],
-				$detailGroupUsers[$index]['User'],
-				'想定と違う値が返っています'
+	protected function _assertNotLogin($methodName = '') {
+		TestAuthGeneral::logout($this);
+
+		$isLoginError = false;
+		try {
+			$this->_testGetAction(
+				array('action' => $methodName, 1),
+				array('method' => 'assertNotEmpty'),
+				null,
+				'view'
+			);
+		} catch(exception $e){
+			if ($e->getMessage() === 'Undefined index: Room') {
+				$isLoginError = true;
+			} else {
+				$this->_assertException($e);
+			}
+		}
+
+		$this->assertTrue($isLoginError, 'ログインしていないのにページが表示されています');
+	}
+
+/**
+ * 削除処理のリンクが表示されているか否かを検証
+ * 
+ * @param bool 削除処理のリンクが表示されるべきか否か
+ * @return void
+ */
+	protected function _assertContainDeleteButton($isView = 1) {
+		$deleteHTML = "削除処理";
+
+		if ($isView) {
+			$this->assertTextContains(
+				$deleteHTML,
+				$this->view,
+				'削除処理が表示されていません'
+			);
+		} else {
+			$this->assertTextNotContains(
+				$deleteHTML,
+				$this->view,
+				'削除処理が表示されています'
 			);
 		}
 	}

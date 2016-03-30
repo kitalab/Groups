@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsModelTestBase', 'Groups.Test/Case');
 
 /**
  * GroupsUser::getGroupUsers()のテスト
@@ -17,7 +17,7 @@ App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Model\GroupsUser
  */
-class GroupsUsergetGroupUsersTest extends GroupsControllerTestCase {
+class GroupsUsergetGroupUsersTest extends GroupsModelTestBase {
 
 /**
  * getGroupUsers()のテスト
@@ -81,6 +81,32 @@ class GroupsUsergetGroupUsersTest extends GroupsControllerTestCase {
 			$expectedCount,
 			$getUsers,
 			'データ数が違います。'
+		);
+	}
+
+/**
+ * getGroupUsers()のテスト（異なるRoomId）
+ *
+ * @dataProvider dataProvidergetGroupUsers
+ * @param array $inputData 入力データ
+ * @return void
+ */
+	public function testGetGroupUsersDifferentRoomId($inputData = []) {
+		$this->assertEmpty(
+			$this->_classGroupsUser->getGroupUsers($inputData, 1236516)
+		);
+	}
+
+/**
+ * getGroupUsers()のテスト（RoomIdなし）
+ *
+ * @dataProvider dataProvidergetGroupUsers
+ * @param array $inputData 入力データ
+ * @return void
+ */
+	public function testGetGroupUsersNoRoomId($inputData = []) {
+		$this->assertEmpty(
+			$this->_classGroupsUser->getGroupUsers($inputData, null)
 		);
 	}
 

@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsTestBase', 'Groups.Test/Case');
 
 /**
  * GroupsController::select()のテスト
@@ -17,7 +17,7 @@ App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller\GroupsController
  */
-class GroupsControllerSelectTest extends GroupsControllerTestCase {
+class GroupsControllerSelectTest extends GroupsTestBase {
 
 /**
  * select()アクションのGetリクエストテスト
@@ -38,6 +38,15 @@ class GroupsControllerSelectTest extends GroupsControllerTestCase {
 			null,
 			'view'
 		);
+	}
+
+/**
+ * select()アクションのGetリクエストテスト(ログインなし)
+ *
+ * @return void
+ */
+	public function testSelectGetNotLogin() {
+		$this->_assertNotLogin('select');
 	}
 
 /**

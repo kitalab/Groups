@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsTestBase', 'Groups.Test/Case');
 
 /**
  * GroupsController::delete()のテスト
@@ -17,7 +17,7 @@ App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller\GroupsController
  */
-class GroupsControllerDeleteTest extends GroupsControllerTestCase {
+class GroupsControllerDeleteTest extends GroupsTestBase {
 
 /**
  * delete()アクションのGetリクエストテスト
@@ -68,6 +68,40 @@ class GroupsControllerDeleteTest extends GroupsControllerTestCase {
 	}
 
 /**
+ * delete()アクションのGetリクエストテスト(ログインなし)
+ *
+ * @return void
+ */
+	public function testDeleteGetNotLogin() {
+		$this->_assertNotLogin('delete');
+	}
+
+/**
+ *　データ削除テスト(ログインなし)
+ * 
+ * @dataProvider dataProviderDeleteNotLogin 
+ * @param $rest REST
+ * @return void
+ */
+	public function testDeleteNotLogin($rest = 'get') {
+		TestAuthGeneral::logout($this);
+
+		$this->__testNotAllowDelete($rest, 1, 'Exception');
+	}
+
+/**
+ * testDeleteNotLogin用dataProvider
+ * 
+ * ### 戻り値
+ *  - rest REST
+ */
+	public function dataProviderDeleteNotLogin() {
+		return array(
+			['get'], ['post'], ['put'], ['delete'],
+		);
+	}
+
+/**
  * delete()アクションの許可されているRESTのテスト
  * 
  * @param $rest REST
@@ -77,6 +111,7 @@ class GroupsControllerDeleteTest extends GroupsControllerTestCase {
  */
 	private function __testAllowDelete($rest, $id, $exception) {
 		$this->__testDeleteAction($rest, $id, $exception);
+		$this->_assertRedirect(true);
 		//データが削除されているかを確認
 		$this->assertCount(0, $this->_group->find('all'));
 		$this->assertCount(0, $this->controller->GroupsUser->find('all'));
@@ -95,7 +130,6 @@ class GroupsControllerDeleteTest extends GroupsControllerTestCase {
 		if (is_null($exception)) {
 			$exception = "MethodNotAllowedException";
 		}
-
 		$this->__testDeleteAction($rest, $id, $exception);
 	}
 

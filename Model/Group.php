@@ -216,9 +216,6 @@ class Group extends GroupsAppModel {
 				$conditions = array(
 					'GroupsUser.group_id' => $data['Group']['id']
 				);
-//				if (!$this->GroupsUser->deleteAll($conditions, false)) {
-//					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-//				}
 				$this->GroupsUser->deleteAll($conditions, false);
 			}
 
@@ -227,9 +224,6 @@ class Group extends GroupsAppModel {
 				$groupUser['group_id'] = $groupId;
 				$groupUser = array('GroupsUser' => $groupUser);
 				$this->GroupsUser->create(false);
-//				if (!$this->GroupsUser->saveGroupUser($groupUser)) {
-//					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-//				}
 				$this->GroupsUser->saveGroupUser(Hash::merge($group, $groupUser));
 			}
 
@@ -260,14 +254,9 @@ class Group extends GroupsAppModel {
 		$this->begin();
 
 		try {
-			// グループを削除
-			if (! $this->delete($groupId)) {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-			}
-
-			// グループユーザを削除
+			// グループ情報を削除
 			$conditions = array('group_id' => $groupId);
-			if (! $this->GroupsUser->deleteAll($conditions)) {
+			if (!$this->delete($groupId) || !$this->GroupsUser->deleteAll($conditions)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 

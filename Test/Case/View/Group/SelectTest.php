@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsViewTestBase', 'Groups.Test/Case');
 
 /**
  * View/Group/selectのテスト
@@ -17,7 +17,7 @@ App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\View\Group\Select
  */
-class GroupsViewGroupSelectTest extends GroupsControllerTestCase {
+class GroupsViewGroupSelectTest extends GroupsViewTestBase {
 
 /**
  * View/Group/selectのテスト

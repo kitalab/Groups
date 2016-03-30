@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
+App::uses('GroupsTestBase', 'Groups.Test/Case');
 
 /**
  * GroupsController::add()のテスト
@@ -17,7 +17,7 @@ App::uses('GroupsControllerTestCase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller\GroupsController
  */
-class GroupsControllerAddTest extends GroupsControllerTestCase {
+class GroupsControllerAddTest extends GroupsTestBase {
 
 /**
  * add()アクションのPostリクエストテスト
@@ -26,9 +26,10 @@ class GroupsControllerAddTest extends GroupsControllerTestCase {
  * @param $isModal	モーダル表示の有無
  * @param $inputData	入力するデータ
  * @param $expectedSaveResult	セーブ結果(想定)
+ * @param $errMessage　画面に表示されるエラーメッセージ
  * @return void
  */
-	public function testAddPost($isModal = null, $inputData = [], $expectedSaveResult = 1) {
+	public function testAddPost($isModal = null, $inputData = [], $expectedSaveResult = 1, $errMessage = '') {
 		//データを全削除
 		$this->_group->deleteAll(true);
 		//モーダルウィンドウで登録に成功する場合はモーダルが閉じるので設定する必要はないのだが、テストでエラーが出るため対処
@@ -48,17 +49,41 @@ class GroupsControllerAddTest extends GroupsControllerTestCase {
 		} catch(exception $e){
 			$this->_assertException($e);
 		}
-		$dbData = $this->_group->find('all');
 
+		$dbData = $this->_group->find('all');
 		//登録データ数を確認
 		$expectedCount = $expectedSaveResult ? 1 : 0;
 		$this->assertCount($expectedCount, $dbData);
-		//登録データが無い場合にはテスト終了
-		if (!$expectedSaveResult) {
-			return;
-		}
+		//表示ページ確認
+		$this->_assertRedirect($expectedSaveResult && !$isModal, $errMessage);
 		//登録データ内容の確認
-		$this->_assertGroupData($dbData, $inputData, $expectedSaveResult);
+		if ($expectedSaveResult) {
+			$this->_assertGroupData($dbData, $inputData, $expectedSaveResult);
+		}
+	}
+
+/**
+ * add()アクションのGetリクエストテスト
+ *
+ * @return void
+ */
+	public function testAddGet() {
+		$this->_testGetAction(
+			array('action' => 'add'),
+			array('method' => 'assertNotEmpty'),
+			null,
+			'view'
+		);
+		$this->_assertContainDeleteButton(false);
+	}
+
+/**
+ * add()アクションのGetリクエストテスト(ログインなし)
+ *
+ * @return void
+ */
+	public function testAddGetNotLogin() {
+		$this->_assertNotLogin('add');
 	}
 
 /**
@@ -93,6 +118,7 @@ class GroupsControllerAddTest extends GroupsControllerTestCase {
 					'name' => 'test3',
 				],
 				'expectedSaveResult' => false,
+				'errMessage' => 'ユーザを選択してください。',
 			),
 			array(
 				'isModal' => false,
@@ -100,6 +126,7 @@ class GroupsControllerAddTest extends GroupsControllerTestCase {
 					'GroupsUser' => [['user_id' => '1']]
 				],
 				'expectedSaveResult' => false,
+				'errMessage' => 'グループ名を入力してください。',
 			),
 			array(
 				'isModal' => true,
@@ -108,6 +135,7 @@ class GroupsControllerAddTest extends GroupsControllerTestCase {
 					'GroupsUser' => [['user_id' => '1'], ['user_id' => '3'], ['user_id' => '4'], ['user_id' => '2'], ['user_id' => '5']]
 				],
 				'expectedSaveResult' => false,
+				'errMessage' => 'グループ名を入力してください。',
 			),
 			array(
 				'isModal' => true,
@@ -124,6 +152,7 @@ class GroupsControllerAddTest extends GroupsControllerTestCase {
 					'GroupsUser' => [['user_id' => '3'], ['user_id' => '99999']]
 				],
 				'expectedSaveResult' => false,
+				'errMessage' => 'ユーザを選択してください。',
 			),
 		);
 	}
