@@ -84,10 +84,11 @@ class GroupsController extends GroupsAppController {
 		$this->viewClass = 'View';
 
 		$groupIds = Hash::get($this->request->query, 'group_id');
+		$roomId = Hash::get($this->request->query, 'room_id');
 		$groupIdArr = explode(',', $groupIds);
 		$groupUsers = array();
 		if (!empty($groupIdArr)) {
-			$groupUsers = $this->Group->getGroupUser($groupIdArr);
+			$groupUsers = $this->Group->getGroupUser($groupIdArr, $roomId);
 		}
 		$this->set('users', $groupUsers);
 		$this->view = 'Groups.Groups/json/select';
@@ -189,7 +190,7 @@ class GroupsController extends GroupsAppController {
 			throw new NotFoundException(__('Invalid group'));
 		}
 		$this->request->onlyAllow('post', 'delete');
-		if ($this->Group->delete()) {
+		if ($this->Group->deleteGroup($id)) {
 			// 正常の場合
 			$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 		}

@@ -48,13 +48,6 @@ class GroupsUserBehavior extends ModelBehavior {
 				$model->validationErrors = Hash::merge($model->validationErrors, $model->GroupsUser->validationErrors);
 				return false;
 		}
-		$userIdArr = Hash::extract($model->data['GroupsUser'], '{n}.user_id');
-		if (! $model->User->existsUser($userIdArr)) {
-			$model->GroupsUser->validationErrors['user_id'][] =
-				sprintf(__d('net_commons', 'Failed on validation errors. Please check the input data.'));
-			$model->validationErrors = Hash::merge($model->validationErrors, $model->GroupsUser->validationErrors);
-			return false;
-		}
 
 		return true;
 	}

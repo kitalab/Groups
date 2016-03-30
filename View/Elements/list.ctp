@@ -55,10 +55,13 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 							),
 							array()
 						);?>
+						<?php echo sprintf(__d('groups', 'Group users count'), count($group['GroupsUser']));?>
 					</span>
 					<span class="nc-groups-avatar-list">
+						<?php $count = 0; ?>
 						<?php foreach ($group['GroupsUser'] as $groupsUser): ?>
 							<?php
+								$count++;
 								if (! isset($groupUsersList[$groupsUser['user_id']])):
 									continue;
 								endif;
@@ -68,6 +71,12 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 								 src="<?php echo $displayUser['avatar']; ?>"
 								 alt="<?php echo $displayUser['handlename']; ?>"
 								 title="<?php echo $displayUser['handlename']; ?>" />
+							<?php
+								if ($count >= GroupsUser::LIST_DISPLAY_NUM):
+									echo __d('groups', 'Group users truncate str');
+									break;
+								endif;
+							?>
 						<?php endforeach; ?>
 					</span>
 				</td>

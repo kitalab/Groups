@@ -36,6 +36,13 @@ class Group extends GroupsAppModel {
 	public $validate = array();
 
 /**
+ * グループ名の入力上限文字数の定数
+ *
+ * @var const
+ */
+	const GROUP_NAME_MAX_LENGTH = 100;
+
+/**
  * hasMany associations
  *
  * @var array
@@ -74,7 +81,11 @@ class Group extends GroupsAppModel {
 					'required' => true,
 					'allowEmpty' => false,
 					'message' => __d('groups', 'Please enter group name'),
-				)
+				),
+				'maxLength' => array(
+					'rule' => array('maxLength', Group::GROUP_NAME_MAX_LENGTH),
+					'message' => sprintf(__d('groups', 'Please enter group name no more than %s characters'), Group::GROUP_NAME_MAX_LENGTH),
+				),
 			)
 		);
 
@@ -122,10 +133,11 @@ class Group extends GroupsAppModel {
  * グループ取得処理
  *
  * @param int|array $groupId グループID
+ * @param int $roomId ルームID
  * @return mixed On success Model::$groupUsers
  * @throws InternalErrorException
  */
-	public function getGroupUser($groupId) {
+	public function getGroupUser($groupId, $roomId = Room::PUBLIC_PARENT_ID) {
 		$groups = $this->find('all', array(
 			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
 			'conditions' => array(
@@ -136,9 +148,36 @@ class Group extends GroupsAppModel {
 			'recursive' => 1,
 		));
 		$userIdArr = Hash::extract($groups, '{n}.GroupsUser.{n}.user_id');
-		$groupUsers = $this->GroupsUser->getGroupUsers($userIdArr);
+		$groupUsers = $this->GroupsUser->getGroupUsers($userIdArr, $roomId);
 
 		return $groupUsers;
+	}
+
+/**
+ * Called before each save operation, after validation. Return a non-true result
+ * to halt the save.
+ *
+ * @param array $options Options passed from Model::save().
+ * @return bool True if the operation should continue, false if it should abort
+ * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforesave
+ * @see Model::save()
+ */
+	public function beforeSave($options = array()) {
+		// 更新の場合はグループの存在チェック
+		if (isset($this->data['Group']['id']) && !empty($this->data['Group']['id'])) {
+			$params = array(
+				'conditions' => array(
+					'Group.id' => $this->data['Group']['id'],
+				),
+				'fields' => 'Group.id',
+				'recursive' => -1,
+			);
+			if ($this->find('count', $params) !== 1) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 /**
@@ -177,21 +216,50 @@ class Group extends GroupsAppModel {
 				$conditions = array(
 					'GroupsUser.group_id' => $data['Group']['id']
 				);
-				if (!$this->GroupsUser->deleteAll($conditions, false)) {
-					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-				}
+				$this->GroupsUser->deleteAll($conditions, false);
 			}
 
 			// GroupsUserデータの登録
 			foreach ($data['GroupsUser'] as $groupUser) {
 				$groupUser['group_id'] = $groupId;
+				$groupUser = array('GroupsUser' => $groupUser);
 				$this->GroupsUser->create(false);
-				if (!$this->GroupsUser->saveGroupUser($groupUser)) {
-					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-				}
+				$this->GroupsUser->saveGroupUser(Hash::merge($group, $groupUser));
 			}
 
 			//トランザクションCommit
+			$this->commit();
+
+		} catch (Exception $ex) {
+			//トランザクションRollback
+			$this->rollback($ex);
+		}
+
+		return true;
+	}
+
+/**
+ * グループ削除処理
+ *
+ * @param int $groupId グループID
+ * @return bool True if delete operation should continue, false to abort
+ * @throws InternalErrorException
+ */
+	public function deleteGroup($groupId) {
+		$this->loadModels([
+			'GroupsUser' => 'Groups.GroupsUser',
+		]);
+
+		//トランザクションBegin
+		$this->begin();
+
+		try {
+			// グループ情報を削除
+			$conditions = array('group_id' => $groupId);
+			if (!$this->delete($groupId) || !$this->GroupsUser->deleteAll($conditions)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+
 			$this->commit();
 
 		} catch (Exception $ex) {
