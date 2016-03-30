@@ -220,7 +220,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 	protected function _assertRedirect($isRedirect = 1, $errMessage = '') {
 		if ($isRedirect) {
 			$this->assertTextContains(
-				'Console/users/users/view/1#/user-groups',
+				'users/users/view/1#/user-groups',
 				$this->headers['Location'],
 				'リダイレクトがされていません。'
 			);
