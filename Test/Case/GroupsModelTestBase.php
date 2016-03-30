@@ -8,6 +8,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+App::uses('AppModel', 'Model');
 App::uses('GroupsTestBase', 'Groups.Test/Case');
 
 
