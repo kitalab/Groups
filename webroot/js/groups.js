@@ -74,14 +74,14 @@ NetCommonsApp.controller('GroupsAddGroup',
 
 NetCommonsApp.controller('Group.add',
     function($scope, $controller, $http, $q, $location, $window,
-        $modalInstance, AddGroup, options, SelectGroupUsers) {
+        $uibModalInstance, AddGroup, options, SelectGroupUsers) {
 
       $scope.userId = null;
       $scope.data = null;
       $controller('GroupsSelect', {$scope: $scope});
 
       $scope.cancel = function() {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
       $scope.save = function() {
@@ -93,10 +93,10 @@ NetCommonsApp.controller('Group.add',
 
         saveGroup(data, options)
             .success(function(data) {
-              $modalInstance.close();
+              $uibModalInstance.close();
             })
             .error(function(data, status) {
-              $modalInstance.dismiss('error');
+              $uibModalInstance.dismiss('error');
             });
 
       };
@@ -329,7 +329,7 @@ NetCommonsApp.controller('GroupsSelectGroup',
 
 NetCommonsApp.controller('Group.select',
     function($scope, $controller, $http, $q,
-             $modalInstance, filterFilter, options) {
+             $uibModalInstance, filterFilter, options) {
       $controller('GroupsSelect', {$scope: $scope});
 
       /**
@@ -423,7 +423,7 @@ NetCommonsApp.controller('Group.select',
        * @return {void}
        */
       $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $uibModalInstance.dismiss('cancel');
       };
 
       /**
@@ -440,10 +440,10 @@ NetCommonsApp.controller('Group.select',
             .success(function(data) {
               // 選択したユーザを追加
               $scope.$parent.addUsers(data['users']);
-              $modalInstance.close($scope.selectors);
+              $uibModalInstance.close($scope.selectors);
             })
             .error(function(data, status) {
-              $modalInstance.dismiss('error');
+              $uibModalInstance.dismiss('error');
             });
       };
 
