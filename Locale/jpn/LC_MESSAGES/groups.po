@@ -59,8 +59,5 @@ msgstr "グループ検索"
 msgid "Search separator"
 msgstr "|"
 
-msgid "Group users count"
-msgstr "(%s)"
-
 msgid "Group users truncate str"
 msgstr "..."

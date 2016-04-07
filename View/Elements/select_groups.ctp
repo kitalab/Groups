@@ -22,7 +22,9 @@
 
 		<span class="nc-groups-select-group-name">
 			{{group.Group.name}}
-			<?php echo sprintf(__d('groups', 'Group users count'), '{{group.GroupsUser.length}}');?>
+			<span class="badge">
+				<?php echo '{{group.GroupsUser.length}}'; ?>
+			</span>
 		</span>
 		<span ng-repeat="groupsUser in group.GroupsUser | limitTo: <?php echo GroupsUser::LIST_DISPLAY_NUM; ?>">
 			<img class="user-avatar-xs" ng-src="{{groupUsersList[groupsUser.user_id].avatar}}" alt="{{groupUsersList[groupsUser.user_id].handlename}}" title="{{groupUsersList[groupsUser.user_id].handlename}}" />
