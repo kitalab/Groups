@@ -33,16 +33,12 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 	<table class="table table-condensed">
 		<thead>
 			<tr>
-				<th></th>
 				<th><?php echo __d('groups', 'Group name'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php foreach($groups as $index => $group): ?>
 			<tr>
-				<td>
-					<?php echo ($index + 1); ?>
-				</td>
 				<td class="nc-groups-group-name">
 					<span class="nc-groups-select-group-name">
 						<?php echo $this->NetCommonsHtml->link(
@@ -55,7 +51,9 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 							),
 							array()
 						);?>
-						<?php echo sprintf(__d('groups', 'Group users count'), count($group['GroupsUser']));?>
+						<span class="badge">
+							<?php echo count($group['GroupsUser']); ?>
+						</span>
 					</span>
 					<span class="nc-groups-avatar-list">
 						<?php $count = 0; ?>

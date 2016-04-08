@@ -238,7 +238,6 @@ NetCommonsApp.controller('GroupsSelect',
        * @return {array}
        */
       $scope.$watch('users', function() {
-        $scope.setKeepUsers();
         return $scope.users;
       }, true);
 
@@ -256,6 +255,7 @@ NetCommonsApp.controller('GroupsSelect',
         angular.forEach(SelectGroupUsers.selectUsers, function(value) {
           $scope.users.push(value);
         });
+        $scope.setKeepUsers();
       };
 
       $scope.addUsers = function(users) {
@@ -276,6 +276,7 @@ NetCommonsApp.controller('GroupsSelect',
             break;
           }
         }
+        $scope.setKeepUsers();
       };
 
       $scope.setKeepUsers = function() {
