@@ -64,15 +64,15 @@ class GroupUserListHelper extends AppHelper {
 		return $result;
 	}
 
-	/**
-	 * ユーザ・グループ検索機能を提供します
-	 *
-	 * @param string $title 項目名として表示させる文字列
-	 * @param string $pluginModel モデル名
-	 * @param int $roomId ルームID
-	 * @param array $selectUsers 選択済みユーザ配列
-	 * @return string HTML tags
-	 */
+/**
+ * ユーザ・グループ検索機能を提供します
+ *
+ * @param string $title 項目名として表示させる文字列
+ * @param string $pluginModel モデル名
+ * @param int $roomId ルームID
+ * @param array $selectUsers 選択済みユーザ配列
+ * @return string HTML tags
+ */
 	public function select($title = '', $pluginModel = 'GroupsUser', $roomId = PUBLIC_PARENT_ID, $selectUsers = array()) {
 		if ($title === '') {
 			$title = __d('groups', 'User select');
