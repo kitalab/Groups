@@ -84,14 +84,7 @@ $roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
 						'action' => 'view' . '/' . Current::read('User.id') . '#/user-groups',
 					)
 				),
-				array(),
-				$this->NetCommonsHtml->url(
-					array(
-						'plugin' => 'users',
-						'controller' => 'users',
-						'action' => 'view' . '/' . Current::read('User.id') . '#/user-groups',
-					)
-				)
+				array()
 			); ?>
 		<?php endif; ?>
 
