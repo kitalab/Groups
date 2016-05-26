@@ -43,8 +43,8 @@ class GroupsControllerUsersTest extends GroupsTestBase {
  * users()アクションのGetリクエストテスト
  * 
  * @dataProvider dataProviderUsersGet
- * @param $paramGroupId : 対象グループID
- * @param $existUserData:	ユーザ情報が返ってくるか否か
+ * @param $paramGroupId 対象グループID
+ * @param $existUserData ユーザ情報が返ってくるか否か
  * @return void
  */
 	public function testUsersGet($paramGroupId, $existUserData) {
