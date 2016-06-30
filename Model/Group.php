@@ -38,7 +38,6 @@ class Group extends GroupsAppModel {
 /**
  * グループ名の入力上限文字数の定数
  *
- * @var const
  */
 	const GROUP_NAME_MAX_LENGTH = 100;
 
