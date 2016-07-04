@@ -3,7 +3,6 @@
  * GroupsUser Model
  *
  * @property Group $Group
- * @property User $User
  *
  * @author Masaki Goto <go8ogle@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
@@ -32,14 +31,12 @@ class GroupsUser extends GroupsAppModel {
 /**
  * 一覧表示するユーザアイコン数の定数
  *
- * @var const
  */
-	const LIST_DISPLAY_NUM = 5;
+	const LIST_DISPLAY_NUM = 10;
 
 /**
  * 1グループに登録可能な人数の定数
  *
- * @var const
  */
 	const LIMIT_ENTRY_NUM = 100;
 
