@@ -33,7 +33,9 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 	<table class="table table-condensed">
 		<thead>
 			<tr>
-				<th><?php echo __d('groups', 'Group name'); ?></th>
+				<th class="nc-groups-group-name-header"><?php echo __d('groups', 'Group name'); ?></th>
+				<th></th>
+				<th><?php echo __d('groups', 'Group member'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,42 +43,49 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 			<tr>
 				<td class="nc-groups-group-name">
 					<span class="nc-groups-select-group-name">
-						<?php echo $this->NetCommonsHtml->link(
-							$group['Group']['name'],
-							array(
-								'plugin' => 'groups',
-								'controller' => 'groups',
-								'action' => 'edit',
-								$group['Group']['id']
-							),
-							array()
-						);?>
+						<?php echo $group['Group']['name']; ?>
 						<span class="badge">
 							<?php echo count($group['GroupsUser']); ?>
 						</span>
 					</span>
-					<span class="nc-groups-avatar-list">
+				</td>
+				<td>
+					<?php echo $this->Button->editLink('',
+						array(
+							'plugin' => 'groups',
+							'controller' => 'groups',
+							'action' => 'edit',
+							$group['Group']['id']
+						),
+						array(
+							'class' => 'btn btn-primary nc-btn-style btn-xs vertical-top',
+							'tooltip' => true,
+						)
+					); ?>
+				</td>
+				<td>
+					<div>
 						<?php $count = 0; ?>
 						<?php foreach ($group['GroupsUser'] as $groupsUser): ?>
 							<?php
-								$count++;
-								if (! isset($groupUsersList[$groupsUser['user_id']])):
-									continue;
-								endif;
-								$displayUser = $groupUsersList[$groupsUser['user_id']];
+							$count++;
+							if (! isset($groupUsersList[$groupsUser['user_id']])):
+								continue;
+							endif;
+							$displayUser = $groupUsersList[$groupsUser['user_id']];
 							?>
 							<img class="user-avatar-xs"
 								 src="<?php echo $displayUser['avatar']; ?>"
 								 alt="<?php echo $displayUser['handlename']; ?>"
 								 title="<?php echo $displayUser['handlename']; ?>" />
 							<?php
-								if ($count >= GroupsUser::LIST_DISPLAY_NUM):
-									echo __d('groups', 'Group users truncate str');
-									break;
-								endif;
+							if ($count >= GroupsUser::LIST_DISPLAY_NUM):
+								echo __d('groups', 'Group users truncate str');
+								break;
+							endif;
 							?>
 						<?php endforeach; ?>
-					</span>
+					</div>
 				</td>
 			</tr>
 		<?php endforeach; ?>

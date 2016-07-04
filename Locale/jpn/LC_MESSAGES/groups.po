@@ -23,6 +23,9 @@ msgstr "グループ管理"
 msgid "Group name"
 msgstr "グループ名"
 
+msgid "Group member"
+msgstr "メンバー"
+
 msgid "Please enter group name"
 msgstr "グループ名を入力してください。"
 
