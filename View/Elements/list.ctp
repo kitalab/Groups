@@ -33,7 +33,7 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 	<table class="table table-condensed">
 		<thead>
 			<tr>
-				<th class="nc-groups-group-name-header"><?php echo __d('groups', 'Group name'); ?></th>
+				<th><?php echo __d('groups', 'Group name'); ?></th>
 				<th></th>
 				<th><?php echo __d('groups', 'Group member'); ?></th>
 			</tr>
@@ -64,7 +64,7 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 					); ?>
 				</td>
 				<td>
-					<div>
+					<div class="nc-groups-members">
 						<?php $count = 0; ?>
 						<?php foreach ($group['GroupsUser'] as $groupsUser): ?>
 							<?php

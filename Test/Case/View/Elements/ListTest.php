@@ -39,6 +39,9 @@ class GroupsViewElementsListTest extends GroupsViewTestBase {
 							['user_id' => 5],
 							['user_id' => 6],
 							['user_id' => 7],
+							['user_id' => 8],
+							['user_id' => 9],
+							['user_id' => 10],
 						]
 					]
 				],
@@ -48,6 +51,12 @@ class GroupsViewElementsListTest extends GroupsViewTestBase {
 					['User' => ['id' => 3]],
 					['User' => ['id' => 4]],
 					['User' => ['id' => 6]],
+					['User' => ['id' => 7]],
+					['User' => ['id' => 8]],
+					['User' => ['id' => 9]],
+					['User' => ['id' => 10]],
+					['User' => ['id' => 11]],
+					['User' => ['id' => 12]],
 				],
 				'groupUsersList' => []
 			]
