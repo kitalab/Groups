@@ -109,7 +109,7 @@ class GroupsController extends GroupsAppController {
 			$this->PageLayout = $this->Components->load('Pages.PageLayout');
 		}
 
-		if ($this->request->isPost()) {
+		if ($this->request->is('post')) {
 			// 登録処理
 			$group = $this->Group->saveGroup($this->request->data);
 			if ($group) {
