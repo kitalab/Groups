@@ -15,9 +15,9 @@ NetCommonsApp.service('SelectGroupUsers',
  * Groups JavaScript
  */
 NetCommonsApp.factory('AddGroup',
-    ['NetCommonsModal', function(NetCommonsModal) {
+    ['NetCommonsModal', 'NC3_URL', function(NetCommonsModal, NC3_URL) {
       return function($scope, userId, selectors, SelectGroupUsers) {
-        var getUrl = $scope.baseUrl + '/groups/groups/add/' + userId +
+        var getUrl = NC3_URL + '/groups/groups/add/' + userId +
             '/' + Math.random() + '?isModal=1';
         return NetCommonsModal.show(
             $scope, 'Group.add',
@@ -74,9 +74,9 @@ NetCommonsApp.controller('GroupsAddGroup',
 
 NetCommonsApp.controller('Group.add',
     ['$scope', '$controller', '$http', '$q', '$location', '$window',
-      '$uibModalInstance', 'AddGroup', 'options', 'SelectGroupUsers',
+      '$uibModalInstance', 'AddGroup', 'options', 'SelectGroupUsers', 'NC3_URL',
       function($scope, $controller, $http, $q, $location, $window,
-          $uibModalInstance, AddGroup, options, SelectGroupUsers) {
+          $uibModalInstance, AddGroup, options, SelectGroupUsers, NC3_URL) {
 
         $scope.userId = null;
         $scope.data = null;
@@ -107,7 +107,7 @@ NetCommonsApp.controller('Group.add',
           var deferred = $q.defer();
           var promise = deferred.promise;
           $scope.data = data;
-          $http.get('/net_commons/net_commons/csrfToken.json')
+          $http.get(NC3_URL + '/net_commons/net_commons/csrfToken.json')
               .success(function(token) {
                 $scope.data['data[_Token][key]'] = token.data._Token.key;
 
@@ -333,9 +333,8 @@ NetCommonsApp.controller('GroupsSelectGroup',
     }]);
 
 NetCommonsApp.controller('Group.select',
-    ['$scope', '$controller', '$http', '$q', '$uibModalInstance', 'filterFilter', 'options',
-      function($scope, $controller, $http, $q,
-             $uibModalInstance, filterFilter, options) {
+    ['$scope', '$controller', '$http', '$q', '$uibModalInstance', 'options', 'NC3_URL',
+      function($scope, $controller, $http, $q, $uibModalInstance, options, NC3_URL) {
         $controller('GroupsSelect', {$scope: $scope});
 
         /**
@@ -470,7 +469,7 @@ NetCommonsApp.controller('Group.select',
             }
           };
           $http.get(
-              '/groups/groups/users/' + $scope.userId,
+              NC3_URL + '/groups/groups/users/' + $scope.userId,
               config
           )
           .success(function(data) {

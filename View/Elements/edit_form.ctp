@@ -77,7 +77,7 @@ $roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
 			<?php echo $this->Button->cancelAndSave(
 				__d('net_commons', 'Cancel'),
 				__d('net_commons', 'OK'),
-				$this->NetCommonsHtml->url(
+				NetCommonsUrl::actionUrlAsArray(
 					array(
 						'plugin' => 'users',
 						'controller' => 'users',

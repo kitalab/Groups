@@ -20,7 +20,7 @@
 		)); ?>
 
 		<uib-accordion close-others="false">
-			<uib-accordion-group is-open="dangerZone" class="panel-danger">
+			<div uib-accordion-group is-open="dangerZone" class="panel-danger">
 				<uib-accordion-heading class="clearfix">
 					<span>
 						<?php echo __d('net_commons', 'Danger Zone'); ?>
@@ -39,7 +39,7 @@
 						array('addClass' => 'pull-right')
 					); ?>
 
-			</uib-accordion-group>
+			</div>
 		</uib-accordion>
 	<?php echo $this->NetCommonsForm->end(); ?>
 </div>
