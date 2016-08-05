@@ -53,28 +53,28 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * コントローラのGroupモデル
- * 
+ *
  * @var object
  */
 	protected $_group;
 
 /**
  * コントローラのGroupsUserモデル
- * 
+ *
  * @var object
  */
 	protected $_groupsUser;
 
 /**
  * GroupモデルClass
- * 
+ *
  * @var object
  */
 	protected $_classGroup;
 
 /**
  * GroupsUserモデルClass
- * 
+ *
  * @var object
  */
 	protected $_classGroupsUser;
@@ -90,7 +90,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 		//ログイン
 		TestAuthGeneral::login($this);
 		CakeSession::write('Auth.User.UserRoleSetting.use_private_room', true);
-		Current::initialize($this->controller->request);
+		Current::initialize($this->controller);
 
 		//コントローラ内モデル
 		$this->_group = $this->controller->Group;
@@ -150,7 +150,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * exceptionのエラーを返す
- * 
+ *
  * @param $exception
  */
 	protected function _assertException($exception = null) {
@@ -167,7 +167,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * paramにIDを入れるテストのdataProvider
- * 
+ *
  * ### 戻り値
  *  - id : ID
  *  - exception:	想定されるエラー
@@ -191,7 +191,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * 取得予定のユーザ情報をフィクスチャから取得
- * 
+ *
  * @param $paramGroupId
  * @return array
  */
@@ -212,7 +212,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * リダイレクト処理確認
- * 
+ *
  * @param bool $isRedirect
  * @param string $errMessage
  * @return void
@@ -234,7 +234,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * ログインしていない時の表示テスト
- * 
+ *
  * @param string $methodName
  * @return void
  */
@@ -262,7 +262,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * 削除処理のリンクが表示されているか否かを検証
- * 
+ *
  * @param bool 削除処理のリンクが表示されるべきか否か
  * @return void
  */
@@ -299,7 +299,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * テストに使うViewクラスを作成
- * 
+ *
  * @param array $requestData リクエストdata
  * @return object Viewクラス
  */
