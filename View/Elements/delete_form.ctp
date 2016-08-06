@@ -16,7 +16,7 @@
 <div class="nc-danger-zone" ng-init="dangerZone=false;">
 	<?php echo $this->NetCommonsForm->create('Group', array(
 			'type' => 'delete',
-			'url' => $this->NetCommonsHtml->url(array('action' => 'delete/' . $this->data['Group']['id']))
+			'url' => NetCommonsUrl::actionUrlAsArray(array('action' => 'delete', 'key' => $this->data['Group']['id']))
 		)); ?>
 
 		<uib-accordion close-others="false">
