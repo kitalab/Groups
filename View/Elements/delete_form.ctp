@@ -11,6 +11,10 @@
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
  */
+
+if (! isset($redirectUrl)) {
+	$redirectUrl = null;
+}
 ?>
 
 <div class="nc-danger-zone" ng-init="dangerZone=false;">
@@ -32,6 +36,7 @@
 					<?php echo sprintf(__d('net_commons', 'Delete all data associated with the %s.'), __d('groups', 'Groups')); ?>
 				</div>
 				<?php echo $this->NetCommonsForm->hidden('User.id'); ?>
+				<?php echo $this->NetCommonsForm->hidden('_user.redirect', ['value' => $redirectUrl]); ?>
 
 				<?php echo $this->Button->delete(
 						__d('net_commons', 'Delete'),

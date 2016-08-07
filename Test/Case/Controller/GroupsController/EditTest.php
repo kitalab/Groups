@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsTestBase', 'Groups.Test/Case');
+App::uses('GroupsControllerTestBase', 'Groups.Test/Case');
 App::uses('GroupFixture', 'Groups.Test/Fixture');
 App::uses('GroupsUserFixture', 'Groups.Test/Fixture');
 
@@ -19,7 +19,7 @@ App::uses('GroupsUserFixture', 'Groups.Test/Fixture');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller\GroupsController
  */
-class GroupsControllerEditTest extends GroupsTestBase {
+class GroupsControllerEditTest extends GroupsControllerTestBase {
 
 /**
  * edit()アクションのGetリクエストテスト
@@ -30,6 +30,9 @@ class GroupsControllerEditTest extends GroupsTestBase {
  * @return void
  */
 	public function testEditGet($id, $exception) {
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		//テスト実行
 		$this->_testGetAction(
 			array('action' => 'edit', $id),
@@ -63,6 +66,9 @@ class GroupsControllerEditTest extends GroupsTestBase {
  * @return void
  */
 	public function testEditPost($rest = 'post', $inputData = [], $expectedSaveResult = 1, $errMessage = '') {
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		//データ編集
 		try {
 			$this->_testPostAction(
@@ -91,7 +97,7 @@ class GroupsControllerEditTest extends GroupsTestBase {
 
 /**
  * testEditPost用dataProvider
- * 
+ *
  * ### 戻り値
  *  - rest : REST
  *  - inputData:	入力データ
@@ -106,7 +112,8 @@ class GroupsControllerEditTest extends GroupsTestBase {
 						'id' => 1,
 						'name' => 'test1',
 					],
-					'GroupsUser' => [['user_id' => '1'], ['user_id' => '2']]
+					'GroupsUser' => [['user_id' => '1'], ['user_id' => '2']],
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups']
 				],
 				'expectedSaveResult' => true,
 			),
@@ -117,7 +124,8 @@ class GroupsControllerEditTest extends GroupsTestBase {
 						'id' => 1,
 						'name' => 'test2',
 					],
-					'GroupsUser' => [['user_id' => '3'], ['user_id' => '1']]
+					'GroupsUser' => [['user_id' => '3'], ['user_id' => '1']],
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups']
 				],
 				'expectedSaveResult' => true,
 			),
@@ -128,6 +136,7 @@ class GroupsControllerEditTest extends GroupsTestBase {
 						'id' => 1,
 						'name' => 'test3',
 					],
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups'],
 				],
 				'expectedSaveResult' => false,
 				'errMessage' => 'ユーザを選択してください。',
@@ -138,7 +147,8 @@ class GroupsControllerEditTest extends GroupsTestBase {
 					'Group' => [
 						'id' => 1,
 					],
-					'GroupsUser' => [['user_id' => '1']]
+					'GroupsUser' => [['user_id' => '1']],
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups']
 				],
 				'expectedSaveResult' => false,
 				'errMessage' => 'グループ名を入力してください。',
@@ -150,7 +160,8 @@ class GroupsControllerEditTest extends GroupsTestBase {
 						'id' => 1,
 						'name' => '',
 					],
-					'GroupsUser' => [['user_id' => '1'], ['user_id' => '3'], ['user_id' => '4'], ['user_id' => '2'], ['user_id' => '5']]
+					'GroupsUser' => [['user_id' => '1'], ['user_id' => '3'], ['user_id' => '4'], ['user_id' => '2'], ['user_id' => '5']],
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups']
 				],
 				'expectedSaveResult' => false,
 				'errMessage' => 'グループ名を入力してください。',
@@ -162,7 +173,8 @@ class GroupsControllerEditTest extends GroupsTestBase {
 						'id' => 1,
 						'name' => 'test5',
 					],
-					'GroupsUser' => [['user_id' => '4']]
+					'GroupsUser' => [['user_id' => '4']],
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups']
 				],
 				'expectedSaveResult' => true,
 			),
@@ -170,9 +182,39 @@ class GroupsControllerEditTest extends GroupsTestBase {
 	}
 
 /**
+ * edit()アクションのCancelリクエストテスト
+ *
+ * @return void
+ */
+	public function testEditCancel() {
+		//ログイン
+		TestAuthGeneral::login($this);
+
+		//データ登録
+		$this->_testPostAction(
+			'put',
+			array(
+				'cancel' => null,
+				'Group' => [
+					'id' => 1,
+					'name' => 'test1',
+				],
+				'GroupsUser' => [['user_id' => '1'], ['user_id' => '2']],
+				'_user' => ['redirect' => 'users/users/view/1#/user-groups']
+			),
+			array('action' => 'edit', 1),
+			null,
+			'view'
+		);
+
+		//表示ページ確認
+		$this->_assertRedirect(true);
+	}
+
+/**
  * フィクスチャに入っているデータを返す
- * 
- * @return array 
+ *
+ * @return array
  */
 	private function __getFixtureData() {
 		$groupFixture = new GroupFixture();

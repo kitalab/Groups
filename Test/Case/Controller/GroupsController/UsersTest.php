@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsTestBase', 'Groups.Test/Case');
+App::uses('GroupsControllerTestBase', 'Groups.Test/Case');
 
 /**
  * GroupsController::users()のテスト
@@ -17,7 +17,7 @@ App::uses('GroupsTestBase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller\GroupsController
  */
-class GroupsControllerUsersTest extends GroupsTestBase {
+class GroupsControllerUsersTest extends GroupsControllerTestBase {
 
 /**
  * Fixtures Setting
@@ -41,13 +41,16 @@ class GroupsControllerUsersTest extends GroupsTestBase {
 
 /**
  * users()アクションのGetリクエストテスト
- * 
+ *
  * @dataProvider dataProviderUsersGet
  * @param $paramGroupId 対象グループID
  * @param $existUserData ユーザ情報が返ってくるか否か
  * @return void
  */
 	public function testUsersGet($paramGroupId, $existUserData) {
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		$paramArray = null;
 		if (is_array($paramGroupId)) {
 			$paramArray = array_merge(
@@ -87,20 +90,30 @@ class GroupsControllerUsersTest extends GroupsTestBase {
 				$actualUser
 			);
 			foreach (array_keys($dbUserData) as $key) {
-				$this->assertEquals(
-					$dbUserData[$key],
-					$actualUser[$key]
-				);
+				if ($key === 'avatar') {
+					$this->assertTextContains(
+						$dbUserData[$key],
+						$actualUser[$key]
+					);
+				} else {
+					$this->assertEquals(
+						$dbUserData[$key],
+						$actualUser[$key]
+					);
+				}
 			}
 		}
 	}
 
 /**
  * users()アクションのGetリクエストテスト(RoomIdなし)
- * 
+ *
  * @return void
  */
 	public function testUsersGetNoRoomId() {
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		//テスト実行
 		$this->_testGetAction(
 			array('action' => 'users', '?' => [ 'group_id' => '1,2'] ),
@@ -113,10 +126,13 @@ class GroupsControllerUsersTest extends GroupsTestBase {
 
 /**
  * users()アクションのGetリクエストテスト(異なるRoomId)
- * 
+ *
  * @return void
  */
 	public function testUsersGetDifferentRoomId() {
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		//テスト実行
 		$this->_testGetAction(
 			array('action' => 'users', '?' => [ 'group_id' => '1,2', 'room_id' => 999999998] ),
@@ -138,7 +154,7 @@ class GroupsControllerUsersTest extends GroupsTestBase {
 
 /**
  * testUsersGet用dataProvider
- * 
+ *
  * ### 戻り値
  *  - groupIds : 対象グループID
  *  - existUserData:	ユーザ情報が返ってくるか否か
@@ -161,7 +177,7 @@ class GroupsControllerUsersTest extends GroupsTestBase {
 
 /**
  * 返ってきたjsonの確認
- * 
+ *
  * @param bool $existUserData ユーザ情報が存在するか否か
  * @return void
  */

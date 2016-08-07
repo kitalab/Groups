@@ -54,6 +54,18 @@ class GroupsComponentSetGroupListTest extends GroupsTestBase {
 	}
 
 /**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+
+		//ログイン
+		TestAuthGeneral::login($this);
+	}
+
+/**
  * setGroupList()のテスト
  *
  * @dataProvider dataProviderSetGroupList

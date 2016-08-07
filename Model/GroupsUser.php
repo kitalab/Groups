@@ -11,6 +11,7 @@
  */
 
 App::uses('GroupsAppModel', 'Groups.Model');
+App::uses('Room', 'Rooms.Model');
 
 /**
  * GroupsUser Model

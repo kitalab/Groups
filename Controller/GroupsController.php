@@ -40,12 +40,12 @@ class GroupsController extends GroupsAppController {
 	public $components = array(
 		'M17n.SwitchLanguage',
 		'UserAttributes.UserAttributeLayout',
-		'NetCommons.Permission' => array(
-			//アクセスの権限
-			'allow' => array(
-				'add,edit,delete' => null,
-			),
-		),
+		//'NetCommons.Permission' => array(
+		//	//アクセスの権限
+		//	'allow' => array(
+		//		'add,edit,delete' => null,
+		//	),
+		//),
 		'Groups.Groups',
 	);
 
@@ -110,6 +110,10 @@ class GroupsController extends GroupsAppController {
 		}
 
 		if ($this->request->is('post')) {
+			if (array_key_exists('cancel', $this->request->data)) {
+				return $this->__redirect();
+			}
+
 			// 登録処理
 			$group = $this->Group->saveGroup($this->request->data);
 			if ($group) {
@@ -117,10 +121,10 @@ class GroupsController extends GroupsAppController {
 				if ($isModal) {
 					return;
 				} else {
-					$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'),
-						array('class' => 'success'));
-					$this->redirect('/users/users/view/' . Current::read('User.id') . '#/user-groups');
-					return;
+					$this->NetCommons->setFlashNotification(
+						__d('net_commons', 'Successfully saved.'), array('class' => 'success')
+					);
+					return $this->__redirect();
 				}
 			} else {
 				if (isset($this->request->data['GroupsUser'])) {
@@ -130,6 +134,9 @@ class GroupsController extends GroupsAppController {
 				}
 			}
 			$this->NetCommons->handleValidationError($this->Group->validationErrors);
+		} else {
+			$redirectUrl = $this->request->referer(true);
+			$this->set('redirectUrl', $redirectUrl);
 		}
 		$this->set('isModal', $isModal);
 	}
@@ -148,6 +155,9 @@ class GroupsController extends GroupsAppController {
 		$this->PageLayout = $this->Components->load('Pages.PageLayout');
 
 		if ($this->request->is(array('post', 'put'))) {
+			if (array_key_exists('cancel', $this->request->data)) {
+				return $this->__redirect();
+			}
 
 			// 更新処理
 			$data = $this->request->data;
@@ -155,10 +165,10 @@ class GroupsController extends GroupsAppController {
 			$group = $this->Group->saveGroup($data);
 			if ($group) {
 				// 正常の場合
-				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'),
-					array('class' => 'success'));
-				$this->redirect('/users/users/view/' . Current::read('User.id') . '#/user-groups');
-				return;
+				$this->NetCommons->setFlashNotification(
+					__d('net_commons', 'Successfully saved.'), array('class' => 'success')
+				);
+				return $this->__redirect();
 			} else {
 				if (isset($this->request->data['GroupsUser'])) {
 					$userIdArr = Hash::extract($this->request->data['GroupsUser'], '{n}.user_id');
@@ -174,6 +184,8 @@ class GroupsController extends GroupsAppController {
 				)
 			);
 			$this->Groups->setGroupList($this, $query);
+			$redirectUrl = $this->request->referer(true);
+			$this->set('redirectUrl', $redirectUrl);
 		}
 		$isModal = 0;
 		$this->set('isModal', $isModal);
@@ -191,12 +203,28 @@ class GroupsController extends GroupsAppController {
 		if (!$this->Group->exists()) {
 			throw new NotFoundException(__('Invalid group'));
 		}
-		$this->request->onlyAllow('post', 'delete');
+		$this->request->onlyAllow('delete');
 		if ($this->Group->deleteGroup($id)) {
 			// 正常の場合
-			$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'),
-				array('class' => 'success'));
+			$this->NetCommons->setFlashNotification(
+				__d('net_commons', 'Successfully saved.'), array('class' => 'success')
+			);
 		}
-		return $this->redirect('/users/users/view/' . Current::read('User.id') . '#/user-groups');
+		return $this->__redirect();
+	}
+
+/**
+ * グループ管理にリダイレクト処理
+ *
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @return mixed リダイレクト
+ */
+	private function __redirect() {
+		$redirectUrl = Hash::get($this->request->data, '_user.redirect');
+		$this->NetCommons->setAppendHtml(
+			'<div class="hidden" ng-controller="Users.controller" ' .
+				'ng-init="showUser(null, ' . Current::read('User.id') . ', \'tab=user-groups\')"></div>'
+		);
+		return $this->redirect($redirectUrl);
 	}
 }

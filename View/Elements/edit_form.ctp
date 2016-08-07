@@ -28,22 +28,21 @@ if (isset($this->request->data['GroupsUser'])) {
 	}
 }
 $roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
+
+if (! isset($redirectUrl)) {
+	$redirectUrl = null;
+}
 ?>
-<?php if (! (int)$isModal): ?>
-	<h1>
-		<?php echo h(__d('groups', __d('groups', 'Group add'))); ?>
-	</h1>
-<?php endif; ?>
 
 <div id="groups-select-users" class="panel panel-default" ng-controller="GroupsAddGroup">
-	<?php echo $this->NetCommonsForm->create('Group', array('type' => 'file')); ?>
+	<?php echo $this->NetCommonsForm->create('Group'); ?>
 	<div class="panel-body">
 		<!-- グループ名 -->
 		<div id="groups-input-name-<?php echo Current::read('User.id'); ?>">
 			<?php echo $this->NetCommonsForm->input('Group.name', array(
 				'type' => 'text',
 				'label' => __d('groups', 'Group name'),
-				'onkeypress' => 'if (event.keyCode == 13) {return false;}',
+				'requred' => true,
 			)); ?>
 		</div>
 		<?php echo $this->NetCommonsForm->error('GroupsUser.user_id'); ?>
@@ -60,9 +59,7 @@ $roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
 		</div>
 	</div>
 
-	<?php echo $this->NetCommonsForm->hidden('Group.id', array(
-		'value' => isset($this->request->data['Group']['id']) ? $this->request->data['Group']['id'] : null,
-	)); ?>
+	<?php echo $this->NetCommonsForm->hidden('Group.id'); ?>
 
 	<!-- ボタン -->
 	<div class="panel-footer text-center">
@@ -74,17 +71,12 @@ $roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
 			); ?>
 
 		<?php else: ?>
+			<?php echo $this->NetCommonsForm->hidden('_user.redirect', ['value' => $redirectUrl]); ?>
 			<?php echo $this->Button->cancelAndSave(
 				__d('net_commons', 'Cancel'),
 				__d('net_commons', 'OK'),
-				NetCommonsUrl::actionUrlAsArray(
-					array(
-						'plugin' => 'users',
-						'controller' => 'users',
-						'action' => 'view' . '/' . Current::read('User.id') . '#/user-groups',
-					)
-				),
-				array()
+				false,
+				array('type' => 'submit', 'ng-click' => null)
 			); ?>
 		<?php endif; ?>
 

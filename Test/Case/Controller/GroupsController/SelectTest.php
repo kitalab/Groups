@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsTestBase', 'Groups.Test/Case');
+App::uses('GroupsControllerTestBase', 'Groups.Test/Case');
 
 /**
  * GroupsController::select()のテスト
@@ -17,7 +17,7 @@ App::uses('GroupsTestBase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller\GroupsController
  */
-class GroupsControllerSelectTest extends GroupsTestBase {
+class GroupsControllerSelectTest extends GroupsControllerTestBase {
 
 /**
  * select()アクションのGetリクエストテスト
@@ -27,6 +27,9 @@ class GroupsControllerSelectTest extends GroupsTestBase {
  * @return void
  */
 	public function testSelectGet($existGroupTableData = 1) {
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		//データが無いテストケースの場合はデータを全削除
 		if (!$existGroupTableData) {
 			$this->_group->deleteAll(true);
@@ -51,7 +54,7 @@ class GroupsControllerSelectTest extends GroupsTestBase {
 
 /**
  * testSelectGet用dataProvider
- * 
+ *
  * ### 戻り値
  *  - existGroupTableData:	データ有無
  */
