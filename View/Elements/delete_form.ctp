@@ -11,16 +11,20 @@
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
  */
+
+if (! isset($redirectUrl)) {
+	$redirectUrl = null;
+}
 ?>
 
 <div class="nc-danger-zone" ng-init="dangerZone=false;">
 	<?php echo $this->NetCommonsForm->create('Group', array(
 			'type' => 'delete',
-			'url' => $this->NetCommonsHtml->url(array('action' => 'delete/' . $this->data['Group']['id']))
+			'url' => NetCommonsUrl::actionUrlAsArray(array('action' => 'delete', 'key' => $this->data['Group']['id']))
 		)); ?>
 
 		<uib-accordion close-others="false">
-			<uib-accordion-group is-open="dangerZone" class="panel-danger">
+			<div uib-accordion-group is-open="dangerZone" class="panel-danger">
 				<uib-accordion-heading class="clearfix">
 					<span>
 						<?php echo __d('net_commons', 'Danger Zone'); ?>
@@ -32,6 +36,7 @@
 					<?php echo sprintf(__d('net_commons', 'Delete all data associated with the %s.'), __d('groups', 'Groups')); ?>
 				</div>
 				<?php echo $this->NetCommonsForm->hidden('User.id'); ?>
+				<?php echo $this->NetCommonsForm->hidden('_user.redirect', ['value' => $redirectUrl]); ?>
 
 				<?php echo $this->Button->delete(
 						__d('net_commons', 'Delete'),
@@ -39,7 +44,7 @@
 						array('addClass' => 'pull-right')
 					); ?>
 
-			</uib-accordion-group>
+			</div>
 		</uib-accordion>
 	<?php echo $this->NetCommonsForm->end(); ?>
 </div>

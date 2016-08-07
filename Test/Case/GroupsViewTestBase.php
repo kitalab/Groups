@@ -10,7 +10,6 @@
 
 App::uses('GroupsTestBase', 'Groups.Test/Case');
 
-
 /**
  * Groups Viewのテストケース
  *
@@ -20,8 +19,30 @@ App::uses('GroupsTestBase', 'Groups.Test/Case');
 class GroupsViewTestBase extends GroupsTestBase {
 
 /**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+		//ログイン
+		TestAuthGeneral::login($this);
+
+		CakeSession::write('Auth.User.UserRoleSetting.use_private_room', true);
+		Current::initialize($this->controller);
+
+		//コントローラ内モデル
+		$this->_group = $this->controller->Group;
+		$this->_groupsUser = $this->controller->GroupsUser;
+
+		//テスト用モデルclass
+		$this->_classGroup = ClassRegistry::init(Inflector::camelize($this->plugin) . '.Group');
+		$this->_classGroupsUser = ClassRegistry::init(Inflector::camelize($this->plugin) . '.GroupsUser');
+	}
+
+/**
  * phpmdエラー回避用メソッド
- * 
+ *
  * @return void
  */
 	public function testDummy() {

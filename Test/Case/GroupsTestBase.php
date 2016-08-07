@@ -11,8 +11,6 @@
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 App::uses('GroupsUser4UsersTestFixture', 'Groups.Test/Fixture');
 App::uses('GroupsUser', 'Groups.Model');
-App::uses('Room', 'Rooms.Model');
-
 
 /**
  * Groupsのテストケース
@@ -34,7 +32,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 		'plugin.groups.roles_rooms_user4_groups_test',
 		'plugin.groups.room4_groups_test',
 		'plugin.groups.user_attribute_layout4_groups_test',
-		'plugin.groups.user4_validation_test'
+		'plugin.groups.user4_validation_test',
 	);
 
 /**
@@ -53,28 +51,28 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * コントローラのGroupモデル
- * 
+ *
  * @var object
  */
 	protected $_group;
 
 /**
  * コントローラのGroupsUserモデル
- * 
+ *
  * @var object
  */
 	protected $_groupsUser;
 
 /**
  * GroupモデルClass
- * 
+ *
  * @var object
  */
 	protected $_classGroup;
 
 /**
  * GroupsUserモデルClass
- * 
+ *
  * @var object
  */
 	protected $_classGroupsUser;
@@ -87,14 +85,13 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		//ログイン
-		TestAuthGeneral::login($this);
 		CakeSession::write('Auth.User.UserRoleSetting.use_private_room', true);
-		Current::initialize($this->controller->request);
+		Current::initialize($this->controller);
 
 		//コントローラ内モデル
 		$this->_group = $this->controller->Group;
 		$this->_groupsUser = $this->controller->GroupsUser;
+
 		//テスト用モデルclass
 		$this->_classGroup = ClassRegistry::init(Inflector::camelize($this->plugin) . '.Group');
 		$this->_classGroupsUser = ClassRegistry::init(Inflector::camelize($this->plugin) . '.GroupsUser');
@@ -150,7 +147,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * exceptionのエラーを返す
- * 
+ *
  * @param $exception
  */
 	protected function _assertException($exception = null) {
@@ -167,7 +164,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * paramにIDを入れるテストのdataProvider
- * 
+ *
  * ### 戻り値
  *  - id : ID
  *  - exception:	想定されるエラー
@@ -191,7 +188,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * 取得予定のユーザ情報をフィクスチャから取得
- * 
+ *
  * @param $paramGroupId
  * @return array
  */
@@ -212,7 +209,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * リダイレクト処理確認
- * 
+ *
  * @param bool $isRedirect
  * @param string $errMessage
  * @return void
@@ -234,35 +231,24 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * ログインしていない時の表示テスト
- * 
+ *
  * @param string $methodName
  * @return void
  */
 	protected function _assertNotLogin($methodName = '') {
-		TestAuthGeneral::logout($this);
+		$result = $this->_testGetAction(
+			array('action' => $methodName, 1),
+			array('method' => 'assertNull'),
+			null,
+			'view'
+		);
 
-		$isLoginError = false;
-		try {
-			$this->_testGetAction(
-				array('action' => $methodName, 1),
-				array('method' => 'assertNotEmpty'),
-				null,
-				'view'
-			);
-		} catch(exception $e){
-			if ($e->getMessage() === 'Undefined index: Room') {
-				$isLoginError = true;
-			} else {
-				$this->_assertException($e);
-			}
-		}
-
-		$this->assertTrue($isLoginError, 'ログインしていないのにページが表示されています');
+		$this->assertNull($result, 'ログインしていないのにページが表示されています');
 	}
 
 /**
  * 削除処理のリンクが表示されているか否かを検証
- * 
+ *
  * @param bool 削除処理のリンクが表示されるべきか否か
  * @return void
  */
@@ -299,7 +285,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 
 /**
  * テストに使うViewクラスを作成
- * 
+ *
  * @param array $requestData リクエストdata
  * @return object Viewクラス
  */
@@ -307,7 +293,7 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 		$this->controller->set('userAttributes', []);
 		$this->controller->request->data = $requestData;
 		$View = new View($this->controller);
-		$View->Room = new Room();
+		$View->Room = ClassRegistry::init('Rooms.Room');
 		$View->plugin = Inflector::camelize($this->plugin);
 		$View->helpers = $this->controller->helpers;
 		$View->loadHelpers();

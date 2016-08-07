@@ -38,14 +38,12 @@ echo $this->NetCommonsHtml->script(array(
 	</ul>
 <?php else: ?>
 	<?php $this->start('title_for_modal'); ?>
-	<?php echo h(__d('groups', 'グループ登録')); ?>
+	<?php echo h(__d('groups', 'Group add')); ?>
 	<?php $this->end(); ?>
 <?php endif; ?>
 
-<!-- 編集フォーム -->
 <?php echo $this->element('Groups.edit_form', array('isModal' => $isModal)); ?>
 
-<!-- 削除エリア -->
 <?php if ($this->params['action'] === 'edit') : ?>
 	<?php echo $this->element('Groups.delete_form'); ?>
 <?php endif;

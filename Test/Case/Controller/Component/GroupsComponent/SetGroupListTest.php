@@ -21,21 +21,21 @@ class GroupsComponentSetGroupListTest extends GroupsTestBase {
 
 /**
  * UploadFileモデル名
- * 
+ *
  * @var string
  */
 	private $__modelUploadFile = 'UploadFile';
 
 /**
  * Groupモデル名
- * 
+ *
  * @var string
  */
 	private $__modelGroup = 'Group';
 
 /**
  * Fixtures Setting
- * 
+ *
  * @param string $name
  * @param array $data
  * @param string $dataName
@@ -54,6 +54,18 @@ class GroupsComponentSetGroupListTest extends GroupsTestBase {
 	}
 
 /**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+
+		//ログイン
+		TestAuthGeneral::login($this);
+	}
+
+/**
  * setGroupList()のテスト
  *
  * @dataProvider dataProviderSetGroupList
@@ -65,7 +77,7 @@ class GroupsComponentSetGroupListTest extends GroupsTestBase {
 		$userIds = $this->_getExpectedUserIds([$strGroupId]);
 
 		//テスト実行
-		Current::initialize($this->controller->request);
+		Current::initialize($this->controller);
 		$this->controller->Groups->setGroupList(
 			$this->controller,
 			$this->__createGroupCondition($groupIds)
@@ -91,7 +103,7 @@ class GroupsComponentSetGroupListTest extends GroupsTestBase {
 
 /**
  * testSetGroupList用dataProvider
- * 
+ *
  * ### 戻り値
  *  - strGroupId : データ検索するグループID
  */
@@ -103,7 +115,7 @@ class GroupsComponentSetGroupListTest extends GroupsTestBase {
 
 /**
  * Groupモデルでの取得クエリに渡す条件配列を作成
- * 
+ *
  * @param array $groupIds
  * @return array
  */
@@ -122,7 +134,7 @@ class GroupsComponentSetGroupListTest extends GroupsTestBase {
 
 /**
  * セットした値が正しいかを確認
- * 
+ *
  * @param array $actualDataArray　セットした値
  * @param array $checkOption 検索情報
  * @return void

@@ -11,11 +11,6 @@ $groupUsersList = array();
 if (!empty($users)) {
 	$groupUsersList = $this->GroupUserList->convertGroupUserListForDisplay($users);
 }
-
-echo $this->NetCommonsHtml->css(array(
-	'/groups/css/style.css',
-));
-echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 ?>
 
 <div class="text-right">
@@ -74,10 +69,10 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 							endif;
 							$displayUser = $groupUsersList[$groupsUser['user_id']];
 							?>
-							<img class="user-avatar-xs"
-								 src="<?php echo $displayUser['avatar']; ?>"
-								 alt="<?php echo $displayUser['handlename']; ?>"
-								 title="<?php echo $displayUser['handlename']; ?>" />
+
+							<?php echo $this->NetCommonsHtml->avatarLink(
+									$displayUser, ['alt' => $displayUser['handlename']], [], 'id'); ?>
+
 							<?php
 							if ($count >= GroupsUser::LIST_DISPLAY_NUM):
 								echo __d('groups', 'Group users truncate str');
@@ -93,5 +88,5 @@ echo $this->NetCommonsHtml->script('/groups/js/groups.js');
 	</table>
 	<?php else: ?>
 		<?php echo __d('groups', 'Not found the group.'); ?>
-	<?php endif;?>
+	<?php endif; ?>
 </div>

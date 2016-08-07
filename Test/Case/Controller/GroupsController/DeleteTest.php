@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsTestBase', 'Groups.Test/Case');
+App::uses('GroupsControllerTestBase', 'Groups.Test/Case');
 
 /**
  * GroupsController::delete()のテスト
@@ -17,93 +17,80 @@ App::uses('GroupsTestBase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller\GroupsController
  */
-class GroupsControllerDeleteTest extends GroupsTestBase {
+class GroupsControllerDeleteTest extends GroupsControllerTestBase {
 
 /**
  * delete()アクションのGetリクエストテスト
- * 
+ *
  * @dataProvider dataProviderParamId
  * @param $id ID
  * @param $exception	想定されるエラー
  * @return void
  */
 	public function testDeleteGet($id, $exception) {
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		$this->__testNotAllowDelete('get', $id, $exception);
 	}
 
 /**
  * delete()アクションのPutリクエストテスト
- * 
+ *
  * @dataProvider dataProviderParamId
  * @param $id ID
  * @param $exception	想定されるエラー
  * @return void
  */
 	public function testDeletePut($id, $exception) {
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		$this->__testNotAllowDelete('put', $id, $exception);
 	}
 
 /**
  * delete()アクションのPostリクエストテスト
- * 
+ *
  * @dataProvider dataProviderParamId
  * @param $id ID
  * @param $exception	想定されるエラー
  * @return void
  */
 	public function testDeletePost($id, $exception) {
-		$this->__testAllowDelete('post', $id, $exception);
+		//ログイン
+		TestAuthGeneral::login($this);
+
+		$this->__testNotAllowDelete('post', $id, $exception);
 	}
 
 /**
  * delete()アクションのDeleteリクエストテスト
- * 
+ *
  * @dataProvider dataProviderParamId
  * @param $id ID
  * @param $exception	想定されるエラー
  * @return void
  */
 	public function testDeleteDelete($id, $exception) {
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		$this->__testAllowDelete('delete', $id, $exception);
 	}
 
 /**
- * delete()アクションのGetリクエストテスト(ログインなし)
+ *　データ削除テスト(ログインなし)
  *
  * @return void
  */
-	public function testDeleteGetNotLogin() {
-		$this->_assertNotLogin('delete');
-	}
-
-/**
- *　データ削除テスト(ログインなし)
- * 
- * @dataProvider dataProviderDeleteNotLogin 
- * @param $rest REST
- * @return void
- */
-	public function testDeleteNotLogin($rest = 'get') {
-		TestAuthGeneral::logout($this);
-
-		$this->__testNotAllowDelete($rest, 1, 'Exception');
-	}
-
-/**
- * testDeleteNotLogin用dataProvider
- * 
- * ### 戻り値
- *  - rest REST
- */
-	public function dataProviderDeleteNotLogin() {
-		return array(
-			['get'], ['post'], ['put'], ['delete'],
-		);
+	public function testDeleteNotLogin() {
+		$this->__testNotAllowDelete('delete', null, 'Exception');
 	}
 
 /**
  * delete()アクションの許可されているRESTのテスト
- * 
+ *
  * @param $rest REST
  * @param $id ID
  * @param $exception	想定されるエラー
@@ -119,7 +106,7 @@ class GroupsControllerDeleteTest extends GroupsTestBase {
 
 /**
  * delete()アクションの許可されていないRESTのテスト
- * 
+ *
  * @param $rest REST
  * @param $id ID
  * @param $exception	想定されるエラー
@@ -128,14 +115,14 @@ class GroupsControllerDeleteTest extends GroupsTestBase {
 	private function __testNotAllowDelete($rest, $id, $exception) {
 		//存在するIDが入力されていた場合にはonlyAllowでエラーが出る
 		if (is_null($exception)) {
-			$exception = "MethodNotAllowedException";
+			$exception = 'Exception';
 		}
 		$this->__testDeleteAction($rest, $id, $exception);
 	}
 
 /**
  * deleteテスト実行
- * 
+ *
  * @param $rest REST
  * @param $id ID
  * @param $exception	想定されるエラー
@@ -149,7 +136,7 @@ class GroupsControllerDeleteTest extends GroupsTestBase {
 				'action' => 'delete',
 				$id
 			),
-			['method' => $rest],
+			['method' => $rest, 'data' => ['_user' => ['redirect' => 'users/users/view/1#/user-groups']]],
 			$exception,
 			'view'
 		);

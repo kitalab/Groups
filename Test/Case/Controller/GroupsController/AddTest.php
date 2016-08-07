@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('GroupsTestBase', 'Groups.Test/Case');
+App::uses('GroupsControllerTestBase', 'Groups.Test/Case');
 
 /**
  * GroupsController::add()のテスト
@@ -17,7 +17,16 @@ App::uses('GroupsTestBase', 'Groups.Test/Case');
  * @author Yuna Miyashita <butackle@gmail.com>
  * @package NetCommons\Groups\Test\Case\Controller\GroupsController
  */
-class GroupsControllerAddTest extends GroupsTestBase {
+class GroupsControllerAddTest extends GroupsControllerTestBase {
+
+/**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+	}
 
 /**
  * add()アクションのPostリクエストテスト
@@ -30,6 +39,9 @@ class GroupsControllerAddTest extends GroupsTestBase {
  * @return void
  */
 	public function testAddPost($isModal = null, $inputData = [], $expectedSaveResult = 1, $errMessage = '') {
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		//データを全削除
 		$this->_group->deleteAll(true);
 		//モーダルウィンドウで登録に成功する場合はモーダルが閉じるので設定する必要はないのだが、テストでエラーが出るため対処
@@ -63,11 +75,41 @@ class GroupsControllerAddTest extends GroupsTestBase {
 	}
 
 /**
+ * add()アクションのCancelリクエストテスト
+ *
+ * @return void
+ */
+	public function testAddCancel() {
+		//ログイン
+		TestAuthGeneral::login($this);
+
+		//データ登録
+		$this->_testPostAction(
+			'post',
+			array(
+				'cancel' => null,
+				'name' => 'test1',
+				'GroupsUser' => [['user_id' => '1'], ['user_id' => '2']],
+				'_user' => ['redirect' => 'users/users/view/1#/user-groups']
+			),
+			array('action' => 'add'),
+			null,
+			'view'
+		);
+
+		//表示ページ確認
+		$this->_assertRedirect(true);
+	}
+
+/**
  * add()アクションのGetリクエストテスト
  *
  * @return void
  */
 	public function testAddGet() {
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		$this->_testGetAction(
 			array('action' => 'add'),
 			array('method' => 'assertNotEmpty'),
@@ -88,7 +130,7 @@ class GroupsControllerAddTest extends GroupsTestBase {
 
 /**
  * testAddPost用dataProvider
- * 
+ *
  * ### 戻り値
  *  - isModal:	モーダル表示の有無
  *  - inputData:	入力データ
@@ -100,7 +142,8 @@ class GroupsControllerAddTest extends GroupsTestBase {
 				'isModal' => false,
 				'inputData' => [
 					'name' => 'test1',
-					'GroupsUser' => [['user_id' => '1'], ['user_id' => '2']]
+					'GroupsUser' => [['user_id' => '1'], ['user_id' => '2']],
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups']
 				],
 				'expectedSaveResult' => true,
 			),
@@ -108,7 +151,8 @@ class GroupsControllerAddTest extends GroupsTestBase {
 				'isModal' => false,
 				'inputData' => [
 					'name' => 'test2',
-					'GroupsUser' => [['user_id' => '3'], ['user_id' => '1']]
+					'GroupsUser' => [['user_id' => '3'], ['user_id' => '1']],
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups']
 				],
 				'expectedSaveResult' => true,
 			),
@@ -116,6 +160,7 @@ class GroupsControllerAddTest extends GroupsTestBase {
 				'isModal' => false,
 				'inputData' => [
 					'name' => 'test3',
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups']
 				],
 				'expectedSaveResult' => false,
 				'errMessage' => 'ユーザを選択してください。',
@@ -123,7 +168,8 @@ class GroupsControllerAddTest extends GroupsTestBase {
 			array(
 				'isModal' => false,
 				'inputData' => [
-					'GroupsUser' => [['user_id' => '1']]
+					'GroupsUser' => [['user_id' => '1']],
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups']
 				],
 				'expectedSaveResult' => false,
 				'errMessage' => 'グループ名を入力してください。',
@@ -132,7 +178,8 @@ class GroupsControllerAddTest extends GroupsTestBase {
 				'isModal' => true,
 				'inputData' => [
 					'name' => '',
-					'GroupsUser' => [['user_id' => '1'], ['user_id' => '3'], ['user_id' => '4'], ['user_id' => '2'], ['user_id' => '5']]
+					'GroupsUser' => [['user_id' => '1'], ['user_id' => '3'], ['user_id' => '4'], ['user_id' => '2'], ['user_id' => '5']],
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups']
 				],
 				'expectedSaveResult' => false,
 				'errMessage' => 'グループ名を入力してください。',
@@ -141,7 +188,8 @@ class GroupsControllerAddTest extends GroupsTestBase {
 				'isModal' => true,
 				'inputData' => [
 					'name' => 'test5',
-					'GroupsUser' => [['user_id' => '4']]
+					'GroupsUser' => [['user_id' => '4']],
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups']
 				],
 				'expectedSaveResult' => true,
 			),
@@ -149,7 +197,8 @@ class GroupsControllerAddTest extends GroupsTestBase {
 				'isModal' => true,
 				'inputData' => [
 					'name' => 'test5',
-					'GroupsUser' => [['user_id' => '3'], ['user_id' => '99999']]
+					'GroupsUser' => [['user_id' => '3'], ['user_id' => '99999']],
+					'_user' => ['redirect' => 'users/users/view/1#/user-groups']
 				],
 				'expectedSaveResult' => false,
 				'errMessage' => 'ユーザを選択してください。',
