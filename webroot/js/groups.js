@@ -16,7 +16,7 @@ NetCommonsApp.service('SelectGroupUsers',
  */
 NetCommonsApp.factory('AddGroup',
     ['NetCommonsModal', 'NC3_URL', function(NetCommonsModal, NC3_URL) {
-      return function($scope, userId, selectors, SelectGroupUsers) {
+      return function($scope, userId) {
         var getUrl = NC3_URL + '/groups/groups/add/' + userId +
             '/' + Math.random() + '?isModal=1';
         return NetCommonsModal.show(
@@ -38,8 +38,8 @@ NetCommonsApp.factory('AddGroup',
 
 
 NetCommonsApp.controller('GroupsAddGroup',
-    ['$scope', '$controller', 'AddGroup', 'SelectGroupUsers',
-      function($scope, $controller, AddGroup, SelectGroupUsers) {
+    ['$scope', '$controller', 'AddGroup',
+      function($scope, $controller, AddGroup) {
         $controller('GroupsSelect', {$scope: $scope});
 
         /**
@@ -73,10 +73,8 @@ NetCommonsApp.controller('GroupsAddGroup',
       }]);
 
 NetCommonsApp.controller('Group.add',
-    ['$scope', '$controller', '$http', '$q', '$location', '$window',
-      '$uibModalInstance', 'AddGroup', 'options', 'SelectGroupUsers', 'NC3_URL',
-      function($scope, $controller, $http, $q, $location, $window,
-          $uibModalInstance, AddGroup, options, SelectGroupUsers, NC3_URL) {
+    ['$scope', '$controller', '$http', '$q', '$uibModalInstance', 'options', 'NC3_URL',
+      function($scope, $controller, $http, $q, $uibModalInstance, options, NC3_URL) {
 
         $scope.userId = null;
         $scope.data = null;
@@ -318,7 +316,7 @@ NetCommonsApp.controller('GroupsSelectUser',
     }]);
 
 NetCommonsApp.controller('GroupsSelectGroup',
-    ['$scope', 'SelectGroup', 'SelectGroupUsers', function($scope, SelectGroup, SelectGroupUsers) {
+    ['$scope', 'SelectGroup', function($scope, SelectGroup) {
 
       $scope.showGroupSelectionDialog = function(userId, roomId) {
         SelectGroup($scope, userId, roomId).result.then(
