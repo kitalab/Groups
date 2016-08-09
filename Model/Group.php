@@ -269,4 +269,24 @@ class Group extends GroupsAppModel {
 
 		return true;
 	}
+
+/**
+ * グループ編集権限判定処理
+ *
+ * @param int $groupId グループID
+ * @return bool True if edit/delete operation should continue, false to abort
+ * @throws InternalErrorException
+ */
+	public function canEdit($groupId) {
+		$groupCnt = $this->find('count', array(
+			'conditions' => array(
+				'Group.id' => $groupId,
+				'Group.created_user' => Current::read('User.id'),
+			),
+		));
+		if ($groupCnt === 0) {
+			return false;
+		}
+		return true;
+	}
 }

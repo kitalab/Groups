@@ -40,12 +40,12 @@ class GroupsController extends GroupsAppController {
 	public $components = array(
 		'M17n.SwitchLanguage',
 		'UserAttributes.UserAttributeLayout',
-		//'NetCommons.Permission' => array(
-		//	//アクセスの権限
-		//	'allow' => array(
-		//		'add,edit,delete' => null,
-		//	),
-		//),
+		'NetCommons.Permission' => array(
+			//アクセスの権限
+			'allow' => array(
+				'add,edit,delete' => null,
+			),
+		),
 		'Groups.Groups',
 	);
 
@@ -149,8 +149,8 @@ class GroupsController extends GroupsAppController {
  * @throws NotFoundException
  */
 	public function edit($id = null) {
-		if (!$this->Group->exists($id)) {
-			throw new NotFoundException(__('Invalid group'));
+		if (!$this->Group->canEdit($id)) {
+			return $this->throwBadRequest();
 		}
 		$this->PageLayout = $this->Components->load('Pages.PageLayout');
 
@@ -200,8 +200,8 @@ class GroupsController extends GroupsAppController {
  */
 	public function delete($id = null) {
 		$this->Group->id = $id;
-		if (!$this->Group->exists()) {
-			throw new NotFoundException(__('Invalid group'));
+		if (!$this->Group->canEdit($id)) {
+			return $this->throwBadRequest();
 		}
 		$this->request->onlyAllow('delete');
 		if ($this->Group->deleteGroup($id)) {

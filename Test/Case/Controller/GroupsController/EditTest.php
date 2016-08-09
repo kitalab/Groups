@@ -51,9 +51,9 @@ class GroupsControllerEditTest extends GroupsControllerTestBase {
  *
  * @return void
  */
-	public function testEditGetNotLogin() {
-		$this->_assertNotLogin('edit');
-	}
+	//public function testEditGetNotLogin() {
+	//	$this->_assertNotLogin('edit');
+	//}
 
 /**
  * edit()アクションのPostリクエストテスト
