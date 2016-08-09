@@ -177,11 +177,11 @@ class GroupsTestBase extends NetCommonsControllerTestCase {
 			),
 			array(
 				'id' => 99,
-				'exception' => 'NotFoundException'
+				'exception' => 'BadRequestException'
 			),
 			array(
 				'id' => null,
-				'exception' => 'NotFoundException'
+				'exception' => 'BadRequestException'
 			)
 		);
 	}
