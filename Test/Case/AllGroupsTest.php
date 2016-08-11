@@ -9,18 +9,20 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+App::uses('NetCommonsTestSuite', 'NetCommons.TestSuite');
+
 /**
  * Groups All Test Case
  *
  * @package NetCommons\Groups\Test
  * @codeCoverageIgnore
  */
-class AllGroupsTest extends CakeTestSuite {
+class AllGroupsTest extends NetCommonsTestSuite {
 
 /**
  * All test suite
  *
- * @return CakeTestSuite
+ * @return NetCommonsTestSuite
  */
 	public static function suite() {
 		$plugin = preg_replace('/^All([\w]+)Test$/', '$1', __CLASS__);
