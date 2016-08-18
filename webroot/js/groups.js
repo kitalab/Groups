@@ -262,7 +262,7 @@ NetCommonsApp.controller('GroupsSelect',
 
         $scope.addUsers = function(users) {
           $.each(users, function(index, user) {
-            var result = filterFilter($scope.users, {id: user.id});
+            var result = filterFilter($scope.users, user);
             if (result.length == 0) {
               $scope.users.push(user);
             }
