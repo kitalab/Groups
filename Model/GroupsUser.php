@@ -160,7 +160,7 @@ class GroupsUser extends GroupsAppModel {
  * @param int $roomId Room.id
  * @return array Group users array
  */
-	public function getGroupUsers($userIdArr, $roomId = Room::PUBLIC_PARENT_ID) {
+	public function getGroupUsers($userIdArr, $roomId = Room::ROOM_PARENT_ID) {
 		if (empty($userIdArr)) {
 			return array();
 		}

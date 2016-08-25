@@ -137,7 +137,7 @@ class Group extends GroupsAppModel {
  * @return mixed On success Model::$groupUsers
  * @throws InternalErrorException
  */
-	public function getGroupUser($groupId, $roomId = Room::PUBLIC_PARENT_ID) {
+	public function getGroupUser($groupId, $roomId = Room::ROOM_PARENT_ID) {
 		$groups = $this->find('all', array(
 			'fields' => array('Group.id', 'Group.name', 'Group.modified'),
 			'conditions' => array(
