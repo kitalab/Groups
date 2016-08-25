@@ -77,6 +77,22 @@ class Room4GroupsTestFixture extends RoomFixture {
 			'default_participation' => '0',
 			'page_layout_permitted' => '0',
 		),
+		//コミュニティスペース
+		array(
+			'id' => '3',
+			'space_id' => '4',
+			'page_id_top' => null,
+			'root_id' => null,
+			'parent_id' => null,
+			'lft' => '13',
+			'rght' => '16',
+			'active' => true,
+			'default_role_key' => 'general_user',
+			'need_approval' => true,
+			'default_participation' => true,
+			'page_layout_permitted' => true,
+			'theme' => null,
+		),
 	);
 
 }

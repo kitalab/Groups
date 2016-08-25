@@ -27,7 +27,7 @@ if (isset($selectUsers) && is_array($selectUsers)) {
 	}
 }
 if (! isset($roomId)) {
-	$roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
+	$roomId = Room::ROOM_PARENT_ID;
 }
 ?>
 <div class="panel panel-default">

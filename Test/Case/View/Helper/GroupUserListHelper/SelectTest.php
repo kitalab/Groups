@@ -51,7 +51,7 @@ class GroupUserListHelperSelectTest extends NetCommonsHelperTestCase {
 		//データ生成
 		$title = '';
 		$pluginModel = 'GroupsUser';
-		$roomId = Room::PUBLIC_PARENT_ID;
+		$roomId = Room::ROOM_PARENT_ID;
 		$selectUsers = array();
 
 		//テスト実施

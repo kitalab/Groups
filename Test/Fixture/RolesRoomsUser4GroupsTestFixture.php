@@ -65,6 +65,26 @@ class RolesRoomsUser4GroupsTestFixture extends RolesRoomsUserFixture {
 			'user_id' => '3',
 			'room_id' => '1',
 		),
+		//コミュニティスペース
+		array(
+			'id' => '6',
+			'roles_room_id' => '15',
+			'user_id' => '1',
+			'room_id' => '3',
+		),
+		array(
+			'id' => '7',
+			'roles_room_id' => '16',
+			'user_id' => '2',
+			'room_id' => '3',
+		),
+		array(
+			'id' => '8',
+			'roles_room_id' => '15',
+			'user_id' => '3',
+			'room_id' => '3',
+		),
+
 	);
 
 }

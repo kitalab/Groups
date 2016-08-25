@@ -27,7 +27,7 @@ if (isset($this->request->data['GroupsUser'])) {
 		}
 	}
 }
-$roomId = Room::PUBLIC_PARENT_ID;	// FIXME ROOM_PARENT_IDに変更
+$roomId = Room::ROOM_PARENT_ID;
 
 if (! isset($redirectUrl)) {
 	$redirectUrl = null;
