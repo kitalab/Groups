@@ -70,3 +70,8 @@
 .nc-groups-search-separator {
 	margin: 0 8px;
 }
+
+.nc-groups-break-word {
+	word-break: break-all;
+	word-wrap: break-word;
+}
