@@ -192,7 +192,7 @@ NetCommonsApp.directive('groupsSelectedUsers',
       return {
         restrict: 'EA',
         template: '<div id="groups-selected-user-{{user.id}}"' +
-            ' class="nc-groups-user-selection-list">' +
+            ' class="nc-groups-user-selection-list nc-groups-break-word">' +
             '<img class="user-avatar-xs" ng-src="{{user.avatar}}" />' +
             '<span class="nc-groups-select-user-name">{{user.handlename}}</span>' +
             '<button id="groups-user-del-link{{user.id}}" href="#" ' +
