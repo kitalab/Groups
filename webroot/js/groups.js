@@ -92,7 +92,7 @@ NetCommonsApp.controller('Group.add',
           }, $scope);
 
           saveGroup(data, options)
-            .success(function(data) {
+              .success(function(data) {
                 $uibModalInstance.close();
               })
               .error(function(data, status) {
