@@ -38,7 +38,7 @@ if (!empty($users)) {
 			<tr>
 				<td class="nc-groups-group-name">
 					<span class="nc-groups-select-group-name">
-						<?php echo $group['Group']['name']; ?>
+						<?php echo h($group['Group']['name']); ?>
 						<span class="badge">
 							<?php echo count($group['GroupsUser']); ?>
 						</span>
