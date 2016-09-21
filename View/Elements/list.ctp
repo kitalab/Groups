@@ -19,7 +19,8 @@ if (!empty($users)) {
 			'plugin' => 'groups',
 			'controller' => 'groups',
 			'action' => 'add',
-		)
+		),
+		array('iconSize' => ' btn-sm')
 	); ?>
 </div>
 
